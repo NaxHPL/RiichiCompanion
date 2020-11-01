@@ -183,6 +183,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout_VeryBottom"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#282828"
@@ -271,6 +272,43 @@
             app:layout_constraintStart_toEndOf="@+id/ivHonba"
             app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout_Middle"
+        android:layout_width="210dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_Bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Top">
+
+        <ImageView
+            android:id="@+id/ivRoundWind"
+            android:layout_width="66dp"
+            android:layout_height="72dp"
+            android:translationY="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvRoundCount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/east" />
+
+        <TextView
+            android:id="@+id/tvRoundCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="1-1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:translationY="-2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivRoundWind" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
