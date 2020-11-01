@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScoreTrackerActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout_Bottom"
+        android:layout_width="383dp"
+        android:layout_height="97dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvBottomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="East"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvBottomScore"
+            app:layout_constraintStart_toStartOf="@+id/tvBottomScore" />
+
+        <TextView
+            android:id="@+id/tvBottomScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="25000"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivBottomWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvBottomScore"
+            app:srcCompat="@drawable/east" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout_Top"
+        android:layout_width="383dp"
+        android:layout_height="97dp"
+        android:rotation="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvTopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="West"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvTopScore"
+            app:layout_constraintStart_toStartOf="@+id/tvTopScore" />
+
+        <TextView
+            android:id="@+id/tvTopScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="25000"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivTopWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvTopScore"
+            app:srcCompat="@drawable/west" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout_Right"
+        android:layout_width="383dp"
+        android:layout_height="97dp"
+        android:rotation="-90"
+        android:translationX="137dp"
+        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_Bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Top">
+
+        <TextView
+            android:id="@+id/tvRightName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="South"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvRightScore"
+            app:layout_constraintStart_toStartOf="@+id/tvRightScore"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvRightScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="25000"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRightWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvRightScore"
+            app:srcCompat="@drawable/south" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstraintLayout_Left"
+        android:layout_width="383dp"
+        android:layout_height="97dp"
+        android:rotation="90"
+        android:translationX="-137dp"
+        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_Bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Top">
+
+        <TextView
+            android:id="@+id/tvLeftName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="North"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvLeftScore"
+            app:layout_constraintStart_toStartOf="@+id/tvLeftScore" />
+
+        <TextView
+            android:id="@+id/tvLeftScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:text="25000"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivLeftWind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvLeftScore"
+            app:srcCompat="@drawable/north" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
