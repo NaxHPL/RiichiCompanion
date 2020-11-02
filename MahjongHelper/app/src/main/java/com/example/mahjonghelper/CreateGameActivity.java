@@ -19,13 +19,13 @@ public class CreateGameActivity extends AppCompatActivity {
     }
 
     public void changeInitialPoints(int change) {
-        TextView tvInitialPoints = (TextView) findViewById(R.id.tvInitialPoints);
+        TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
         int initialPoints = Integer.parseInt(tvInitialPoints.getText().toString());
         tvInitialPoints.setText(String.format(Locale.getDefault(), "%d", initialPoints + change));
     }
 
     public void changeMinPointsToWin(int change) {
-        TextView tvMinPointsToWin = (TextView) findViewById(R.id.tvMinPointsToWin);
+        TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
         int minPointsToWin = Integer.parseInt(tvMinPointsToWin.getText().toString());
         tvMinPointsToWin.setText(String.format(Locale.getDefault(), "%d", minPointsToWin + change));
     }
@@ -47,45 +47,46 @@ public class CreateGameActivity extends AppCompatActivity {
     }
 
     public void createGame(View view) {
+        Game game = new Game(
+            new Player(getEastPlayerName(), getInitialPoints()),
+            new Player(getSouthPlayerName(), getInitialPoints()),
+            new Player(getWestPlayerName(), getInitialPoints()),
+            new Player(getNorthPlayerName(), getInitialPoints()),
+            getMinPointsToWin()
+        );
+
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-
-        intent.putExtra(ScoreTrackerActivity.KEY_EAST_PLAYER, getEastPlayerName());
-        intent.putExtra(ScoreTrackerActivity.KEY_SOUTH_PLAYER, getSouthPlayerName());
-        intent.putExtra(ScoreTrackerActivity.KEY_WEST_PLAYER, getWestPlayerName());
-        intent.putExtra(ScoreTrackerActivity.KEY_NORTH_PLAYER, getNorthPlayerName());
-        intent.putExtra(ScoreTrackerActivity.KEY_INITIAL_POINTS, getInitialPoints());
-        intent.putExtra(ScoreTrackerActivity.KEY_MIN_POINTS_TO_WIN, getMinPointsToWin());
-
+        intent.putExtra(ScoreTrackerActivity.GAME, game);
         startActivity(intent);
     }
 
     public String getEastPlayerName() {
-        EditText etEastPlayer = (EditText) findViewById(R.id.etEastPlayer);
+        EditText etEastPlayer = findViewById(R.id.etEastPlayer);
         return etEastPlayer.getText().toString().trim();
     }
 
     public String getSouthPlayerName() {
-        EditText etSouthPlayer = (EditText) findViewById(R.id.etSouthPlayer);
+        EditText etSouthPlayer = findViewById(R.id.etSouthPlayer);
         return etSouthPlayer.getText().toString().trim();
     }
 
     public String getWestPlayerName() {
-        EditText etWestPlayer = (EditText) findViewById(R.id.etWestPlayer);
+        EditText etWestPlayer = findViewById(R.id.etWestPlayer);
         return etWestPlayer.getText().toString().trim();
     }
 
     public String getNorthPlayerName() {
-        EditText etNorthPlayer = (EditText) findViewById(R.id.etNorthPlayer);
+        EditText etNorthPlayer = findViewById(R.id.etNorthPlayer);
         return etNorthPlayer.getText().toString().trim();
     }
 
-    public String getInitialPoints() {
-        TextView tvInitialPoints = (TextView) findViewById(R.id.tvInitialPoints);
-        return tvInitialPoints.getText().toString();
+    public int getInitialPoints() {
+        TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
+        return Integer.parseInt(tvInitialPoints.getText().toString());
     }
 
-    public String getMinPointsToWin() {
-        TextView tvMinPointsToWin = (TextView) findViewById(R.id.tvMinPointsToWin);
-        return tvMinPointsToWin.getText().toString();
+    public int getMinPointsToWin() {
+        TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
+        return Integer.parseInt(tvMinPointsToWin.getText().toString());
     }
 }
