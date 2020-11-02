@@ -52,7 +52,10 @@ public class CreateGameActivity extends AppCompatActivity {
             new Player(getSouthPlayerName(), getInitialPoints()),
             new Player(getWestPlayerName(), getInitialPoints()),
             new Player(getNorthPlayerName(), getInitialPoints()),
-            getMinPointsToWin()
+            getMinPointsToWin(),
+            0,
+            0,
+            1
         );
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);

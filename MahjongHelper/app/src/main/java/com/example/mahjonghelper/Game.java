@@ -3,6 +3,8 @@ package com.example.mahjonghelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Locale;
+
 public class Game implements Parcelable {
 
     private Player eastPlayer;
@@ -10,13 +12,20 @@ public class Game implements Parcelable {
     private Player westPlayer;
     private Player northPlayer;
     private int minPointsToWin;
+    private int riichiStickCount;
+    private int honbaStickCount;
+    private int roundNumber;
 
-    public Game(Player eastPlayer, Player southPlayer, Player westPlayer, Player northPlayer, int minPointsToWin) {
+    public Game(Player eastPlayer, Player southPlayer, Player westPlayer, Player northPlayer,
+                int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber) {
         this.eastPlayer = eastPlayer;
         this.southPlayer = southPlayer;
         this.westPlayer = westPlayer;
         this.northPlayer = northPlayer;
         this.minPointsToWin = minPointsToWin;
+        this.riichiStickCount = riichiStickCount;
+        this.honbaStickCount = honbaStickCount;
+        this.roundNumber = roundNumber;
     }
 
     public Player getEastPlayer() {
@@ -59,6 +68,50 @@ public class Game implements Parcelable {
         this.minPointsToWin = minPointsToWin;
     }
 
+    public int getRiichiStickCount() {
+        return riichiStickCount;
+    }
+
+    public void setRiichiStickCount(int riichiStickCount) {
+        this.riichiStickCount = riichiStickCount;
+    }
+
+    public int getHonbaStickCount() {
+        return honbaStickCount;
+    }
+
+    public void setHonbaStickCount(int honbaStickCount) {
+        this.honbaStickCount = honbaStickCount;
+    }
+
+    public void incrementRiichiStickCount() {
+        riichiStickCount++;
+    }
+
+    public void incrementHonbaStickCounter() {
+        honbaStickCount++;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public int getRoundNumberForDisplay() {
+        return roundNumber <= 4 ? roundNumber : roundNumber - 4;
+    }
+
+    public void incrementRoundNumber() {
+        roundNumber++;
+    }
+
+    public Wind getPrevalentWind() {
+        return roundNumber <= 4 ? Wind.East : Wind.South;
+    }
+
+//    public boolean gameIsOver() {
+//
+//    }
+
     //region Parcelable Implementation
 
     protected Game(Parcel in) {
@@ -67,6 +120,9 @@ public class Game implements Parcelable {
         westPlayer = in.readParcelable(Player.class.getClassLoader());
         northPlayer = in.readParcelable(Player.class.getClassLoader());
         minPointsToWin = in.readInt();
+        riichiStickCount = in.readInt();
+        honbaStickCount = in.readInt();
+        roundNumber = in.readInt();
     }
 
     @Override
@@ -76,6 +132,9 @@ public class Game implements Parcelable {
         dest.writeParcelable(westPlayer, flags);
         dest.writeParcelable(northPlayer, flags);
         dest.writeInt(minPointsToWin);
+        dest.writeInt(riichiStickCount);
+        dest.writeInt(honbaStickCount);
+        dest.writeInt(roundNumber);
     }
 
     @Override
