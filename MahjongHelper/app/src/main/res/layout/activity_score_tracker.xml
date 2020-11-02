@@ -272,6 +272,16 @@
             app:layout_constraintStart_toEndOf="@+id/ivHonba"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/btnEndRound"
+            android:layout_width="95dp"
+            android:layout_height="72dp"
+            android:layout_marginEnd="16dp"
+            android:text="End Round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
