@@ -13,9 +13,10 @@ public class Game implements Parcelable {
     private int riichiStickCount;
     private int honbaStickCount;
     private int roundNumber;
+    private int numberOfPlayers;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
-                int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber) {
+                int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber, int numberOfPlayers) {
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
@@ -24,6 +25,7 @@ public class Game implements Parcelable {
         this.riichiStickCount = riichiStickCount;
         this.honbaStickCount = honbaStickCount;
         this.roundNumber = roundNumber;
+        this.numberOfPlayers = numberOfPlayers;
     }
 
     //region Parcelable Implementation
@@ -37,6 +39,7 @@ public class Game implements Parcelable {
         riichiStickCount = in.readInt();
         honbaStickCount = in.readInt();
         roundNumber = in.readInt();
+        numberOfPlayers = in.readInt();
     }
 
     @Override
@@ -49,6 +52,7 @@ public class Game implements Parcelable {
         dest.writeInt(riichiStickCount);
         dest.writeInt(honbaStickCount);
         dest.writeInt(roundNumber);
+        dest.writeInt(numberOfPlayers);
     }
 
     @Override
@@ -120,6 +124,10 @@ public class Game implements Parcelable {
 
     public Wind getPrevalentWind() {
         return roundNumber <= 4 ? Wind.East : Wind.South;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
     }
 
 //    public boolean gameIsOver() {

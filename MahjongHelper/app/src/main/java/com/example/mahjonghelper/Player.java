@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Player implements Parcelable {
 
-    private String name;
+    private final String name;
     private int score;
     private Wind seatWind;
 
@@ -53,16 +53,8 @@ public class Player implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getScore() {
         return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public void changeScoreBy(int amount) {

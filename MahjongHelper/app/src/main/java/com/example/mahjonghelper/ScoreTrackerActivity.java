@@ -1,11 +1,13 @@
 package com.example.mahjonghelper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +34,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         northImage = ResourcesCompat.getDrawable(getResources(), R.drawable.north, getTheme());
 
         game = getIntent().getParcelableExtra(GAME_TO_SHOW);
+
+        if (game.getNumberOfPlayers() == 3) {
+            ConstraintLayout constraintLayout_left = findViewById(R.id.ConstraintLayout_Left);
+            constraintLayout_left.setVisibility(View.INVISIBLE);
+        }
+
         UpdateInterface();
     }
 

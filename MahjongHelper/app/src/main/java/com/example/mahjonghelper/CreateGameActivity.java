@@ -55,7 +55,8 @@ public class CreateGameActivity extends AppCompatActivity {
             getMinPointsToWin(),
             0,
             0,
-            1
+            1,
+            getNorthPlayerName().isEmpty() ? 3 : 4
         );
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
