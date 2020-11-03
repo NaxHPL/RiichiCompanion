@@ -48,10 +48,10 @@ public class CreateGameActivity extends AppCompatActivity {
 
     public void createGame(View view) {
         Game game = new Game(
-            new Player(getEastPlayerName(), getInitialPoints()),
-            new Player(getSouthPlayerName(), getInitialPoints()),
-            new Player(getWestPlayerName(), getInitialPoints()),
-            new Player(getNorthPlayerName(), getInitialPoints()),
+            new Player(getEastPlayerName(), getInitialPoints(), Wind.East),
+            new Player(getSouthPlayerName(), getInitialPoints(), Wind.South),
+            new Player(getWestPlayerName(), getInitialPoints(), Wind.West),
+            new Player(getNorthPlayerName(), getInitialPoints(), Wind.North),
             getMinPointsToWin(),
             0,
             0,
@@ -59,7 +59,7 @@ public class CreateGameActivity extends AppCompatActivity {
         );
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-        intent.putExtra(ScoreTrackerActivity.GAME, game);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);
         startActivity(intent);
     }
 
