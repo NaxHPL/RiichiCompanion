@@ -1,7 +1,16 @@
 package com.example.mahjonghelper;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.gson.Gson;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Game implements Parcelable {
 
@@ -13,7 +22,8 @@ public class Game implements Parcelable {
     private int riichiStickCount;
     private int honbaStickCount;
     private int roundNumber;
-    private int numberOfPlayers;
+    private final int numberOfPlayers;
+    private final String startDateTime;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
                 int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber, int numberOfPlayers) {
@@ -26,6 +36,10 @@ public class Game implements Parcelable {
         this.honbaStickCount = honbaStickCount;
         this.roundNumber = roundNumber;
         this.numberOfPlayers = numberOfPlayers;
+
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
+        startDateTime = dateFormat.format(date);
     }
 
     //region Parcelable Implementation
@@ -40,6 +54,7 @@ public class Game implements Parcelable {
         honbaStickCount = in.readInt();
         roundNumber = in.readInt();
         numberOfPlayers = in.readInt();
+        startDateTime = in.readString();
     }
 
     @Override
@@ -53,6 +68,7 @@ public class Game implements Parcelable {
         dest.writeInt(honbaStickCount);
         dest.writeInt(roundNumber);
         dest.writeInt(numberOfPlayers);
+        dest.writeString(startDateTime);
     }
 
     @Override
@@ -128,6 +144,20 @@ public class Game implements Parcelable {
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
+    }
+
+    public String getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void SaveAsOngoingGame(Context context) {
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(context.getString(R.string.ongoing_game_key), json);
+        editor.apply();
     }
 
 //    public boolean gameIsOver() {

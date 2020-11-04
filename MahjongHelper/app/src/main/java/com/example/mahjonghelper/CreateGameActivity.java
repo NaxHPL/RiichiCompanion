@@ -59,6 +59,8 @@ public class CreateGameActivity extends AppCompatActivity {
             getNorthPlayerName().isEmpty() ? 3 : 4
         );
 
+        game.SaveAsOngoingGame(this);
+
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
         intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);
         startActivity(intent);
@@ -66,17 +68,20 @@ public class CreateGameActivity extends AppCompatActivity {
 
     public String getEastPlayerName() {
         EditText etEastPlayer = findViewById(R.id.etEastPlayer);
-        return etEastPlayer.getText().toString().trim();
+        String name = etEastPlayer.getText().toString().trim();
+        return name.isEmpty() ? "East" : name;
     }
 
     public String getSouthPlayerName() {
         EditText etSouthPlayer = findViewById(R.id.etSouthPlayer);
-        return etSouthPlayer.getText().toString().trim();
+        String name = etSouthPlayer.getText().toString().trim();
+        return name.isEmpty() ? "South" : name;
     }
 
     public String getWestPlayerName() {
         EditText etWestPlayer = findViewById(R.id.etWestPlayer);
-        return etWestPlayer.getText().toString().trim();
+        String name = etWestPlayer.getText().toString().trim();
+        return name.isEmpty() ? "West" : name;
     }
 
     public String getNorthPlayerName() {

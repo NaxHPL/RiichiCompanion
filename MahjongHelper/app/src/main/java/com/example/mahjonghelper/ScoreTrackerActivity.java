@@ -15,23 +15,14 @@ import java.util.Locale;
 
 public class ScoreTrackerActivity extends AppCompatActivity {
 
-    public static final String GAME_TO_SHOW = "com.example.mahjonghelper.GAME";
+    public static final String GAME_TO_SHOW = "com.example.mahjonghelper.GAME_TO_SHOW";
 
     private Game game;
-    private Drawable eastImage;
-    private Drawable southImage;
-    private Drawable westImage;
-    private Drawable northImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
-
-        eastImage = ResourcesCompat.getDrawable(getResources(), R.drawable.east, getTheme());
-        southImage = ResourcesCompat.getDrawable(getResources(), R.drawable.south, getTheme());
-        westImage = ResourcesCompat.getDrawable(getResources(), R.drawable.west, getTheme());
-        northImage = ResourcesCompat.getDrawable(getResources(), R.drawable.north, getTheme());
 
         game = getIntent().getParcelableExtra(GAME_TO_SHOW);
 
@@ -62,7 +53,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvRoundCount.setText(String.format(Locale.getDefault(), "%d", game.getRoundNumberForDisplay()));
 
         ImageView ivRoundWind = findViewById(R.id.ivRoundWind);
-        ivRoundWind.setImageDrawable(game.getPrevalentWind() == Wind.East ? eastImage : southImage);
+        ivRoundWind.setImageDrawable(game.getPrevalentWind().getImage(this));
     }
 
     private void UpdatePlayerInformation() {
@@ -91,29 +82,16 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tv.setText(String.format(Locale.getDefault(), "%d", game.getLeftPlayer().getScore()));
 
         ImageView iv = findViewById(R.id.ivBottomWind);
-        iv.setImageDrawable(getWindImage(game.getBottomPlayer().getSeatWind()));
+        iv.setImageDrawable(game.getBottomPlayer().getSeatWind().getImage(this));
 
         iv = findViewById(R.id.ivRightWind);
-        iv.setImageDrawable(getWindImage(game.getRightPlayer().getSeatWind()));
+        iv.setImageDrawable(game.getRightPlayer().getSeatWind().getImage(this));
 
         iv = findViewById(R.id.ivTopWind);
-        iv.setImageDrawable(getWindImage(game.getTopPlayer().getSeatWind()));
+        iv.setImageDrawable(game.getTopPlayer().getSeatWind().getImage(this));
 
         iv = findViewById(R.id.ivLeftWind);
-        iv.setImageDrawable(getWindImage(game.getLeftPlayer().getSeatWind()));
-    }
-
-    private Drawable getWindImage(Wind wind) {
-        switch (wind) {
-            case East:
-                return eastImage;
-            case South:
-                return southImage;
-            case West:
-                return westImage;
-            default:
-                return northImage;
-        }
+        iv.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
     }
 
     @Override
