@@ -2,10 +2,8 @@ package com.example.mahjonghelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,16 +29,16 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             constraintLayout_left.setVisibility(View.INVISIBLE);
         }
 
-        UpdateInterface();
+        updateInterface();
     }
 
-    private void UpdateInterface() {
-        UpdateRoundInformation();
-        UpdateStickCounts();
-        UpdatePlayerInformation();
+    private void updateInterface() {
+        updateRoundInformation();
+        updateStickCounts();
+        updatePlayerInformation();
     }
 
-    private void UpdateStickCounts() {
+    private void updateStickCounts() {
         TextView tvRiichiCount = findViewById(R.id.tvRiichiCount);
         tvRiichiCount.setText(String.format(Locale.getDefault(), "%d", game.getRiichiStickCount()));
 
@@ -48,7 +46,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvHonbaCount.setText(String.format(Locale.getDefault(), "%d", game.getHonbaStickCount()));
     }
 
-    private void UpdateRoundInformation() {
+    private void updateRoundInformation() {
         TextView tvRoundCount = findViewById(R.id.tvRoundCount);
         tvRoundCount.setText(String.format(Locale.getDefault(), "%d", game.getRoundNumberForDisplay()));
 
@@ -56,7 +54,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         ivRoundWind.setImageDrawable(game.getPrevalentWind().getImage(this));
     }
 
-    private void UpdatePlayerInformation() {
+    private void updatePlayerInformation() {
         TextView tv = findViewById(R.id.tvBottomName);
         tv.setText(String.format(Locale.getDefault(), "%s", game.getBottomPlayer().getName()));
 

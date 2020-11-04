@@ -59,7 +59,7 @@ public class CreateGameActivity extends AppCompatActivity {
             getNorthPlayerName().isEmpty() ? 3 : 4
         );
 
-        game.SaveAsOngoingGame(this);
+        game.saveAsOngoingGame(this);
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
         intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);

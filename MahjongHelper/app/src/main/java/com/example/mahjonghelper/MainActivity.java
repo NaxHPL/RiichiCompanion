@@ -1,12 +1,11 @@
 package com.example.mahjonghelper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,10 +25,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ongoingGame = RetrieveOngoingGame();
+        ongoingGame = retrieveOngoingGame();
 
         if (ongoingGame != null) {
-            UpdateOngoingGameInfo();
+            updateOngoingGameInfo();
             findViewById(R.id.ConstraintLayout_ongoing_game).setVisibility(View.VISIBLE);
         }
         else
@@ -37,11 +36,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createNewGame(View view) {
+        if (ongoingGame == null) {
+            startCreateGameActivity();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.new_game_dialog_title);
+        builder.setMessage(R.string.new_game_dialog_message);
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> startCreateGameActivity());
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {});
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void startCreateGameActivity() {
         Intent intent = new Intent(this, CreateGameActivity.class);
         startActivity(intent);
     }
 
-    private Game RetrieveOngoingGame() {
+    private Game retrieveOngoingGame() {
         SharedPreferences prefs = getSharedPreferences(getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE);
         String gameAsJson = prefs.getString(getString(R.string.ongoing_game_key), getString(R.string.ongoing_game_default_value));
 
@@ -55,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void UpdateOngoingGameInfo() {
+    private void updateOngoingGameInfo() {
         String players = String.format(
             "%s, %s, %s",
             ongoingGame.getBottomPlayer().getName(),

@@ -150,7 +150,7 @@ public class Game implements Parcelable {
         return startDateTime;
     }
 
-    public void SaveAsOngoingGame(Context context) {
+    public void saveAsOngoingGame(Context context) {
         Gson gson = new Gson();
         String json = gson.toJson(this);
 
