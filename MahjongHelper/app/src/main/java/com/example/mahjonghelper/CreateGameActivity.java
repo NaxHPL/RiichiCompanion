@@ -18,6 +18,12 @@ public class CreateGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_game);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     public void changeInitialPoints(int change) {
         TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
         int initialPoints = Integer.parseInt(tvInitialPoints.getText().toString());

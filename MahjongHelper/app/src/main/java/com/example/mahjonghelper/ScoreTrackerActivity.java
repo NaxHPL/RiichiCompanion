@@ -32,6 +32,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         updateInterface();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     private void updateInterface() {
         updateRoundInformation();
         updateStickCounts();
@@ -90,11 +96,5 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         iv = findViewById(R.id.ivLeftWind);
         iv.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 }
