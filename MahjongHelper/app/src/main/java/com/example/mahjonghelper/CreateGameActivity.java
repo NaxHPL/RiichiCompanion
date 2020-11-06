@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -62,7 +63,8 @@ public class CreateGameActivity extends AppCompatActivity {
             0,
             0,
             1,
-            getNorthPlayerName().isEmpty() ? 3 : 4
+            getNorthPlayerName().isEmpty() ? 3 : 4,
+            getGameLength()
         );
 
         game.saveAsOngoingGame(this);
@@ -72,36 +74,42 @@ public class CreateGameActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public String getEastPlayerName() {
+    private String getEastPlayerName() {
         EditText etEastPlayer = findViewById(R.id.etEastPlayer);
         String name = etEastPlayer.getText().toString().trim();
         return name.isEmpty() ? "East" : name;
     }
 
-    public String getSouthPlayerName() {
+    private String getSouthPlayerName() {
         EditText etSouthPlayer = findViewById(R.id.etSouthPlayer);
         String name = etSouthPlayer.getText().toString().trim();
         return name.isEmpty() ? "South" : name;
     }
 
-    public String getWestPlayerName() {
+    private String getWestPlayerName() {
         EditText etWestPlayer = findViewById(R.id.etWestPlayer);
         String name = etWestPlayer.getText().toString().trim();
         return name.isEmpty() ? "West" : name;
     }
 
-    public String getNorthPlayerName() {
+    private String getNorthPlayerName() {
         EditText etNorthPlayer = findViewById(R.id.etNorthPlayer);
         return etNorthPlayer.getText().toString().trim();
     }
 
-    public int getInitialPoints() {
+    private int getInitialPoints() {
         TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
         return Integer.parseInt(tvInitialPoints.getText().toString());
     }
 
-    public int getMinPointsToWin() {
+    private int getMinPointsToWin() {
         TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
         return Integer.parseInt(tvMinPointsToWin.getText().toString());
+    }
+
+    private GameLength getGameLength() {
+        Spinner spinner = findViewById(R.id.spinGameLength);
+        String selectedValue = spinner.getSelectedItem().toString();
+        return GameLength.valueOf(selectedValue);
     }
 }

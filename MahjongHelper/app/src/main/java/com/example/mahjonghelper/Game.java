@@ -24,9 +24,11 @@ public class Game implements Parcelable {
     private int roundNumber;
     private final int numberOfPlayers;
     private final String startDateTime;
+    private final GameLength gameLength;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
-                int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber, int numberOfPlayers) {
+                int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber,
+                int numberOfPlayers, GameLength gameLength) {
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
@@ -36,6 +38,7 @@ public class Game implements Parcelable {
         this.honbaStickCount = honbaStickCount;
         this.roundNumber = roundNumber;
         this.numberOfPlayers = numberOfPlayers;
+        this.gameLength = gameLength;
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
@@ -55,6 +58,7 @@ public class Game implements Parcelable {
         roundNumber = in.readInt();
         numberOfPlayers = in.readInt();
         startDateTime = in.readString();
+        gameLength = GameLength.valueOf(in.readString());
     }
 
     @Override
@@ -69,6 +73,7 @@ public class Game implements Parcelable {
         dest.writeInt(roundNumber);
         dest.writeInt(numberOfPlayers);
         dest.writeString(startDateTime);
+        dest.writeString(gameLength.name());
     }
 
     @Override
@@ -148,6 +153,10 @@ public class Game implements Parcelable {
 
     public String getStartDateTime() {
         return startDateTime;
+    }
+
+    public GameLength getGameLength() {
+        return gameLength;
     }
 
     public void saveAsOngoingGame(Context context) {
