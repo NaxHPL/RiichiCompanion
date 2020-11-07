@@ -88,7 +88,7 @@ public class Scoring {
         return table.get(hanToEnum(han)).get(fuToEnum(fu));
     }
 
-    private static ScoreEntry getScoreEntry(int yakumans) {
+    public static ScoreEntry getScoreEntry(int yakumans) {
         int dealerRon = baseYakumanEntry.getDealerRon() * yakumans;
         int dealerTsumo = baseYakumanEntry.getDealerTsumo() * yakumans;
         int nonDealerRon = baseYakumanEntry.getNonDealerRon() * yakumans;
