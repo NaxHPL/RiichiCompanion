@@ -164,9 +164,9 @@ public class Game implements Parcelable {
         String json = gson.toJson(this);
 
         SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(context.getString(R.string.ongoing_game_key), json);
-        editor.apply();
+        prefs.edit()
+             .putString(context.getString(R.string.ongoing_game_key), json)
+             .apply();
     }
 
 //    public boolean gameIsOver() {

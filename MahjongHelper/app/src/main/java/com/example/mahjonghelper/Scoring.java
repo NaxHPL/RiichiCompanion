@@ -6,12 +6,14 @@ import java.util.EnumMap;
 
 public class Scoring {
 
+    private static final ScoreEntry baseYakumanEntry = new ScoreEntry(48000, 16000, 32000, Pair.create(8000, 16000));
+    private static final ScoreEntry reverseManganEntry = new ScoreEntry(-12000, -4000, -8000, Pair.create(-2000, -4000));
+
     private static final EnumMap<Han, EnumMap<Fu, ScoreEntry>> table = new EnumMap<Han, EnumMap<Fu, ScoreEntry>>(Han.class) {{
         ScoreEntry manganEntry = new ScoreEntry(12000, 4000, 8000, Pair.create(2000, 4000));
         ScoreEntry hanemanEntry = new ScoreEntry(18000, 6000, 12000, Pair.create(3000, 6000));
         ScoreEntry baimanEntry = new ScoreEntry(24000, 8000, 16000, Pair.create(4000, 8000));
         ScoreEntry sanbaimanEntry = new ScoreEntry(36000, 12000, 24000, Pair.create(6000, 12000));
-        ScoreEntry yakumanEntry = new ScoreEntry(48000, 16000, 32000, Pair.create(8000, 16000));
 
         put(Han.OneHan, new EnumMap<Fu, ScoreEntry>(Fu.class) {{
             put(Fu.Thirty, new ScoreEntry(1500, 500, 1000, Pair.create(300, 500)));
@@ -78,19 +80,25 @@ public class Scoring {
         }});
         put(Han.Yakuman, new EnumMap<Fu, ScoreEntry>(Fu.class) {{
             for (Fu fu : Fu.values())
-                put(fu, yakumanEntry);
+                put(fu, baseYakumanEntry);
         }});
     }};
 
-    public static ScoreEntry getScoreEntry(Han han, Fu fu) {
-        return table.get(han).get(fu);
-    }
-
     public static ScoreEntry getScoreEntry(int han, int fu) {
-        return getScoreEntry(hanToEnum(han), fuToEnum(fu));
+        return table.get(hanToEnum(han)).get(fuToEnum(fu));
     }
 
-    public static Han hanToEnum(int han) {
+    private static ScoreEntry getScoreEntry(int yakumans) {
+        int dealerRon = baseYakumanEntry.getDealerRon() * yakumans;
+        int dealerTsumo = baseYakumanEntry.getDealerTsumo() * yakumans;
+        int nonDealerRon = baseYakumanEntry.getNonDealerRon() * yakumans;
+        int nonDealerTsumoA = baseYakumanEntry.getNonDealerTsumo().first * yakumans;
+        int nonDealerTsumoB = baseYakumanEntry.getNonDealerTsumo().second * yakumans;
+
+        return new ScoreEntry(dealerRon, dealerTsumo, nonDealerRon, Pair.create(nonDealerTsumoA, nonDealerTsumoB));
+    }
+
+    private static Han hanToEnum(int han) {
         if (han <= 1)
             return Han.OneHan;
         if (han == 2)
@@ -111,7 +119,7 @@ public class Scoring {
         return Han.Yakuman;
     }
 
-    public static Fu fuToEnum(int fu) {
+    private static Fu fuToEnum(int fu) {
         if (fu <= 20)
             return Fu.Twenty;
         if (fu == 25)
@@ -134,5 +142,9 @@ public class Scoring {
             return Fu.Hundred;
 
         return Fu.HundredTen;
+    }
+
+    public static ScoreEntry getReverseManganEntry() {
+        return reverseManganEntry;
     }
 }
