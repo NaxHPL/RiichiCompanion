@@ -136,7 +136,8 @@ public class Game implements Parcelable {
     }
 
     public int getRoundNumberForDisplay() {
-        return roundNumber <= 4 ? roundNumber : roundNumber - 4;
+        int numForDisplay = roundNumber % 4;
+        return numForDisplay == 0 ? 4 : numForDisplay;
     }
 
     public void incrementRoundNumber() {
@@ -144,7 +145,12 @@ public class Game implements Parcelable {
     }
 
     public Wind getPrevalentWind() {
-        return roundNumber <= 4 ? Wind.East : Wind.South;
+        if (roundNumber <= 4)
+            return Wind.East;
+        if (roundNumber <= 8)
+            return Wind.South;
+
+        return Wind.West;
     }
 
     public int getNumberOfPlayers() {
@@ -163,13 +169,9 @@ public class Game implements Parcelable {
         Gson gson = new Gson();
         String json = gson.toJson(this);
 
-        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE);
-        prefs.edit()
-             .putString(context.getString(R.string.ongoing_game_key), json)
-             .apply();
+        context.getSharedPreferences(context.getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE)
+            .edit()
+            .putString(context.getString(R.string.ongoing_game_key), json)
+            .apply();
     }
-
-//    public boolean gameIsOver() {
-//
-//    }
 }
