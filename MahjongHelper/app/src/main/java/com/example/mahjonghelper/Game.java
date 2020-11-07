@@ -1,11 +1,7 @@
 package com.example.mahjonghelper;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -163,15 +159,5 @@ public class Game implements Parcelable {
 
     public GameLength getGameLength() {
         return gameLength;
-    }
-
-    public void saveAsOngoingGame(Context context) {
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
-
-        context.getSharedPreferences(context.getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE)
-            .edit()
-            .putString(context.getString(R.string.ongoing_game_key), json)
-            .apply();
     }
 }
