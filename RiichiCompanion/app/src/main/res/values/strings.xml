@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Riichi Companion</string>
+    <string name="ongoing_game_key">com.example.riichicompanion.ONGOING_GAME</string>
+    <string name="ongoing_game_file_name">OngoingGame</string>
+    <string name="ongoing_game_default_value">0</string>
+    <string name="new_game_dialog_title">Start new game?</string>
+    <string name="new_game_dialog_message">There is currently a game in progress. Are you sure you want to start a new game?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string-array name="game_length_types">
+        <item>Hanchan</item>
+        <item>Tonpuusen</item>
+    </string-array>
+</resources>

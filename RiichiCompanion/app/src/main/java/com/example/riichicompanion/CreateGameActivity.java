@@ -1,0 +1,115 @@
+package com.example.riichicompanion;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.Locale;
+
+public class CreateGameActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_game);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    public void changeInitialPoints(int change) {
+        TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
+        int initialPoints = Integer.parseInt(tvInitialPoints.getText().toString());
+        tvInitialPoints.setText(String.format(Locale.getDefault(), "%d", initialPoints + change));
+    }
+
+    public void changeMinPointsToWin(int change) {
+        TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
+        int minPointsToWin = Integer.parseInt(tvMinPointsToWin.getText().toString());
+        tvMinPointsToWin.setText(String.format(Locale.getDefault(), "%d", minPointsToWin + change));
+    }
+
+    public void decreaseInitialPointsBy1000(View view) {
+        changeInitialPoints(-1000);
+    }
+
+    public void increaseInitialPointsBy1000(View view) {
+        changeInitialPoints(1000);
+    }
+
+    public void decreaseMinPointsToWinBy1000(View view) {
+        changeMinPointsToWin(-1000);
+    }
+
+    public void increaseMinPointsToWinBy1000(View view) {
+        changeMinPointsToWin(1000);
+    }
+
+    public void createGame(View view) {
+        Game game = new Game(
+            new Player(getEastPlayerName(), getInitialPoints(), Wind.East),
+            new Player(getSouthPlayerName(), getInitialPoints(), Wind.South),
+            new Player(getWestPlayerName(), getInitialPoints(), Wind.West),
+            new Player(getNorthPlayerName(), getInitialPoints(), Wind.North),
+            getMinPointsToWin(),
+            0,
+            0,
+            1,
+            getNorthPlayerName().isEmpty() ? 3 : 4,
+            getGameLength()
+        );
+
+        PersistentStorage.saveOngoingGame(this, game);
+
+        Intent intent = new Intent(this, ScoreTrackerActivity.class);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);
+        startActivity(intent);
+    }
+
+    private String getEastPlayerName() {
+        EditText etEastPlayer = findViewById(R.id.etEastPlayer);
+        String name = etEastPlayer.getText().toString().trim();
+        return name.isEmpty() ? "East" : name;
+    }
+
+    private String getSouthPlayerName() {
+        EditText etSouthPlayer = findViewById(R.id.etSouthPlayer);
+        String name = etSouthPlayer.getText().toString().trim();
+        return name.isEmpty() ? "South" : name;
+    }
+
+    private String getWestPlayerName() {
+        EditText etWestPlayer = findViewById(R.id.etWestPlayer);
+        String name = etWestPlayer.getText().toString().trim();
+        return name.isEmpty() ? "West" : name;
+    }
+
+    private String getNorthPlayerName() {
+        EditText etNorthPlayer = findViewById(R.id.etNorthPlayer);
+        return etNorthPlayer.getText().toString().trim();
+    }
+
+    private int getInitialPoints() {
+        TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
+        return Integer.parseInt(tvInitialPoints.getText().toString());
+    }
+
+    private int getMinPointsToWin() {
+        TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
+        return Integer.parseInt(tvMinPointsToWin.getText().toString());
+    }
+
+    private GameLength getGameLength() {
+        Spinner spinner = findViewById(R.id.spinGameLength);
+        String selectedValue = spinner.getSelectedItem().toString();
+        return GameLength.valueOf(selectedValue);
+    }
+}
