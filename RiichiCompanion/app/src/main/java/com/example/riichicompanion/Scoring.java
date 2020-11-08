@@ -158,9 +158,9 @@ public class Scoring {
 
     public static Player getAtamahaneWinner(Player discarder, List<Player> winners) {
         for (int i = 1; i <= 3; i++) {
-            for (Player player : winners) {
-                if (player.getSeatWind().ordinal() == (discarder.getSeatWind().ordinal() + i) % 4)
-                    return player;
+            for (Player winner : winners) {
+                if (winner.getSeatWind().ordinal() == (discarder.getSeatWind().ordinal() + i) % 4)
+                    return winner;
             }
         }
 

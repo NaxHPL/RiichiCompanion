@@ -166,7 +166,10 @@ public class Game implements Parcelable {
     }
 
     public Player[] getPlayers() {
-        return new Player[] {bottomPlayer, rightPlayer, topPlayer, leftPlayer};
+        if (numberOfPlayers == 3)
+            return new Player[] {bottomPlayer, rightPlayer, topPlayer};
+        else
+            return new Player[] {bottomPlayer, rightPlayer, topPlayer, leftPlayer};
     }
 
     public Player getDealer() {
@@ -184,7 +187,37 @@ public class Game implements Parcelable {
     }
 
     private void rotatePlayerSeats() {
-        for (Player player : getPlayers())
-            player.incrementSeatWind();
+        if (numberOfPlayers == 3) {
+            for (Player player : getPlayers()) {
+                switch (player.getSeatWind()) {
+                    case East:
+                        player.setSeatWind(Wind.South);
+                        break;
+                    case South:
+                        player.setSeatWind(Wind.West);
+                        break;
+                    case West:
+                        player.setSeatWind(Wind.East);
+                }
+            }
+
+            return;
+        }
+
+        for (Player player : getPlayers()) {
+            switch (player.getSeatWind()) {
+                case East:
+                    player.setSeatWind(Wind.South);
+                    break;
+                case South:
+                    player.setSeatWind(Wind.West);
+                    break;
+                case West:
+                    player.setSeatWind(Wind.North);
+                    break;
+                case North:
+                    player.setSeatWind(Wind.East);
+            }
+        }
     }
 }
