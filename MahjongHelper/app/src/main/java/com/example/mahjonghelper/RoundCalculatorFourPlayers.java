@@ -9,7 +9,44 @@ public class RoundCalculatorFourPlayers {
     }
 
     public static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
+        ScoreEntry scoreEntry = Scoring.getScoreEntry(handScore);
 
+        if (winner.isDealer()) {
+            for (Player player : game.getPlayers()) {
+                if (player != winner) {
+                    player.changeScoreBy(-scoreEntry.getDealerTsumo());
+                    winner.changeScoreBy(scoreEntry.getDealerTsumo());
+                }
+            }
+        }
+        else {
+            for (Player player : game.getPlayers()) {
+                if (player != winner) {
+                    if (player.isDealer()) {
+                        player.changeScoreBy(-(scoreEntry.getNonDealerTsumo().second + 100 * game.getHonbaStickCount()));
+                        winner.changeScoreBy(scoreEntry.getNonDealerTsumo().second + 100 * game.getHonbaStickCount());
+                    }
+                    else {
+                        player.changeScoreBy(-(scoreEntry.getNonDealerTsumo().first + 100 * game.getHonbaStickCount()));
+                        winner.changeScoreBy(scoreEntry.getNonDealerTsumo().first + 100 * game.getHonbaStickCount());
+                    }
+                }
+            }
+        }
+
+        for (Player player : playersDeclaredRiichi) {
+            player.changeScoreBy(-1000);
+            game.incrementRiichiStickCount();
+        }
+
+        winner.changeScoreBy(1000 * game.getRiichiStickCount());
+
+        if (winner.isDealer())
+            game.incrementHonbaStickCounter();
+        else {
+            game.setHonbaStickCount(0);
+            game.nextRound();
+        }
     }
 
     public static void updateGameStateFromRyuukyoku(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
@@ -43,10 +80,10 @@ public class RoundCalculatorFourPlayers {
             game.incrementRiichiStickCount();
         }
 
+        game.incrementHonbaStickCounter();
+
         if (!playersInTenpai.contains(game.getDealer()))
             game.nextRound();
-
-        game.incrementHonbaStickCounter();
     }
 
     public static void updateGameStateFromChombo(Game game, Player playerFailed) {
