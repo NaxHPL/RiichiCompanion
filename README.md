@@ -1,2 +1,2 @@
-# MahjongHelper
-An Android app for score tracking and hand calculating for Riichi Mahjong games.
+# Riichi Companion
+An Android app which includes a score tracker and hand calculator for Riichi Mahjong games.
