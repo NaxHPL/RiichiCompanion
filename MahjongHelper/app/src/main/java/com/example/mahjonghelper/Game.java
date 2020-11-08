@@ -136,10 +136,6 @@ public class Game implements Parcelable {
         return numForDisplay == 0 ? 4 : numForDisplay;
     }
 
-    public void incrementRoundNumber() {
-        roundNumber++;
-    }
-
     public Wind getPrevalentWind() {
         if (roundNumber <= 4)
             return Wind.East;
@@ -159,5 +155,28 @@ public class Game implements Parcelable {
 
     public GameLength getGameLength() {
         return gameLength;
+    }
+
+    public Player[] getPlayers() {
+        return new Player[] {bottomPlayer, rightPlayer, topPlayer, leftPlayer};
+    }
+
+    public Player getDealer() {
+        for (Player player : getPlayers()) {
+            if (player.isDealer())
+                return player;
+        }
+
+        return null;
+    }
+
+    public void nextRound() {
+        rotatePlayerSeats();
+        roundNumber++;
+    }
+
+    private void rotatePlayerSeats() {
+        for (Player player : getPlayers())
+            player.incrementSeatWind();
     }
 }

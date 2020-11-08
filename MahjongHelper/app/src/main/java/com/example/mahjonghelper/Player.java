@@ -65,7 +65,23 @@ public class Player implements Parcelable {
         return seatWind;
     }
 
-    public void setSeatWind(Wind seatWind) {
-        this.seatWind = seatWind;
+    public void incrementSeatWind() {
+        switch (seatWind) {
+            case East:
+                seatWind = Wind.South;
+                break;
+            case South:
+                seatWind = Wind.West;
+                break;
+            case West:
+                seatWind = Wind.North;
+                break;
+            default:
+                seatWind = Wind.East;
+        }
+    }
+
+    public boolean isDealer() {
+        return seatWind == Wind.East;
     }
 }

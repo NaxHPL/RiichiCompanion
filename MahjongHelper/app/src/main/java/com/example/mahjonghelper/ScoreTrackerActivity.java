@@ -3,9 +3,9 @@ package com.example.mahjonghelper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +21,16 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         game = getIntent().getParcelableExtra(GAME_TO_SHOW);
 
         if (game.getNumberOfPlayers() == 3) {
-            ConstraintLayout constraintLayout_left = findViewById(R.id.ConstraintLayout_Left);
-            constraintLayout_left.setVisibility(View.INVISIBLE);
+            ConstraintLayout layout = findViewById(R.id.ConstraintLayout_Left);
+            layout.setVisibility(View.INVISIBLE);
         }
 
         updateInterface();
@@ -96,5 +100,25 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         iv = findViewById(R.id.ivLeftWind);
         iv.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
+    }
+
+    public void endRound(View view) {
+        ImageView iv = findViewById(R.id.ivRoundWind);
+        iv.setVisibility(View.INVISIBLE);
+
+        TextView tv = findViewById(R.id.tvRoundCount);
+        tv.setVisibility(View.INVISIBLE);
+
+        Button btn = findViewById(R.id.btnRon);
+        btn.setVisibility(View.VISIBLE);
+
+        btn = findViewById(R.id.btnTsumo);
+        btn.setVisibility(View.VISIBLE);
+
+        btn = findViewById(R.id.btnRyuukyoku);
+        btn.setVisibility(View.VISIBLE);
+
+        btn = findViewById(R.id.btnChombo);
+        btn.setVisibility(View.VISIBLE);
     }
 }

@@ -10,8 +10,7 @@
         android:id="@+id/ConstraintLayout_Bottom"
         android:layout_width="383dp"
         android:layout_height="97dp"
-        android:layout_marginBottom="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_VeryBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -185,19 +184,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayout_VeryBottom"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="82dp"
         android:background="#282828"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Bottom"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/ivRiichiStick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="17dp"
+            android:layout_height="59dp"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -228,7 +225,7 @@
             android:text="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="@color/white"
-            android:textSize="42sp"
+            android:textSize="38sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvX"
             app:layout_constraintTop_toTopOf="parent" />
@@ -243,15 +240,15 @@
             android:text="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textColor="@color/white"
-            android:textSize="42sp"
+            android:textSize="38sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvX2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivHonba"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="17dp"
+            android:layout_height="59dp"
             android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvRiichiCount"
@@ -274,9 +271,10 @@
 
         <Button
             android:id="@+id/btnEndRound"
-            android:layout_width="95dp"
-            android:layout_height="72dp"
+            android:layout_width="101dp"
+            android:layout_height="62dp"
             android:layout_marginEnd="16dp"
+            android:onClick="endRound"
             android:text="End Round"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -298,6 +296,7 @@
             android:layout_width="66dp"
             android:layout_height="72dp"
             android:translationY="2dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/tvRoundCount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -314,11 +313,80 @@
             android:text="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:translationY="-2dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivRoundWind" />
+
+        <Button
+            android:id="@+id/btnRon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ron"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnTsumo"
+            app:layout_constraintEnd_toEndOf="@+id/btnRyuukyoku"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/btnRyuukyoku"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/btnTsumo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tsumo"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnRyuukyoku"
+            app:layout_constraintEnd_toEndOf="@+id/btnRyuukyoku"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/btnRyuukyoku"
+            app:layout_constraintTop_toBottomOf="@+id/btnRon" />
+
+        <Button
+            android:id="@+id/btnRyuukyoku"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ryuukyoku"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnChombo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnTsumo" />
+
+        <Button
+            android:id="@+id/btnChombo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Chombo"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnRyuukyoku"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/btnRyuukyoku"
+            app:layout_constraintTop_toBottomOf="@+id/btnRyuukyoku" />
+
+        <TextView
+            android:id="@+id/tvMiddleText"
+            android:layout_width="146dp"
+            android:layout_height="135dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="This is the middle text!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
