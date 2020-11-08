@@ -3,6 +3,7 @@ package com.example.riichicompanion;
 import android.util.Pair;
 
 import java.util.EnumMap;
+import java.util.List;
 
 public class Scoring {
 
@@ -153,5 +154,16 @@ public class Scoring {
 
     public static ScoreEntry getReverseManganEntry() {
         return reverseManganEntry;
+    }
+
+    public static Player getAtamahaneWinner(Player discarder, List<Player> winners) {
+        for (int i = 1; i <= 3; i++) {
+            for (Player player : winners) {
+                if (player.getSeatWind().ordinal() == (discarder.getSeatWind().ordinal() + i) % 4)
+                    return player;
+            }
+        }
+
+        return null;
     }
 }

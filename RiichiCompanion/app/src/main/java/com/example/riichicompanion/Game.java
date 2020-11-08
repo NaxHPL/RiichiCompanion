@@ -123,6 +123,10 @@ public class Game implements Parcelable {
         this.honbaStickCount = honbaStickCount;
     }
 
+    public void setRiichiStickCount(int riichiStickCount) {
+        this.riichiStickCount = riichiStickCount;
+    }
+
     public void incrementRiichiStickCount() {
         riichiStickCount++;
     }

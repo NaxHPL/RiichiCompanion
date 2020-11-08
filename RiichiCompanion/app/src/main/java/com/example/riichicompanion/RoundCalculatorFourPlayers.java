@@ -1,15 +1,58 @@
 package com.example.riichicompanion;
 
+import android.util.Pair;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoundCalculatorFourPlayers {
 
-    public static void updateGameStateFromRon(Game game, Player loser, List<Player> winners, List<HandScore> handScores, List<Player> playersDeclaredRiichi) {
+    public static void updateGameStateFromRon(Game game, Player loser, List<Pair<Player, HandScore>> winnerHandScorePairs, List<Player> playersDeclaredRiichi) {
+        ArrayList<Player> winners = new ArrayList<>();
+        boolean repeatRound = false;
 
+        for (Pair<Player, HandScore> pair : winnerHandScorePairs) {
+            Player winner = pair.first;
+            ScoreEntry scoreEntry = Scoring.getScoreEntry(pair.second);
+
+            if (winner.isDealer()) {
+                loser.changeScoreBy(-scoreEntry.getDealerRon());
+                winner.changeScoreBy(scoreEntry.getDealerRon());
+                repeatRound = true;
+            }
+            else {
+                loser.changeScoreBy(-scoreEntry.getNonDealerRon());
+                winner.changeScoreBy(scoreEntry.getNonDealerRon());
+            }
+
+            playersDeclaredRiichi.remove(winner);
+            winners.add(winner);
+        }
+
+        for (Player player : playersDeclaredRiichi) {
+            player.changeScoreBy(-1000);
+            game.incrementRiichiStickCount();
+        }
+
+        Player atamahaneWinner = Scoring.getAtamahaneWinner(loser, winners);
+
+        atamahaneWinner.changeScoreBy(1000 * game.getRiichiStickCount());
+        game.setRiichiStickCount(0);
+
+        loser.changeScoreBy(-300 * game.getHonbaStickCount());
+        atamahaneWinner.changeScoreBy(300 * game.getHonbaStickCount());
+
+        if (repeatRound)
+            game.incrementHonbaStickCounter();
+        else {
+            game.setHonbaStickCount(0);
+            game.nextRound();
+        }
     }
 
     public static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
         ScoreEntry scoreEntry = Scoring.getScoreEntry(handScore);
+        boolean repeatRound = false;
 
         if (winner.isDealer()) {
             for (Player player : game.getPlayers()) {
@@ -18,6 +61,8 @@ public class RoundCalculatorFourPlayers {
                     winner.changeScoreBy(scoreEntry.getDealerTsumo());
                 }
             }
+
+            repeatRound = true;
         }
         else {
             for (Player player : game.getPlayers()) {
@@ -40,8 +85,9 @@ public class RoundCalculatorFourPlayers {
         }
 
         winner.changeScoreBy(1000 * game.getRiichiStickCount());
+        game.setRiichiStickCount(0);
 
-        if (winner.isDealer())
+        if (repeatRound)
             game.incrementHonbaStickCounter();
         else {
             game.setHonbaStickCount(0);
@@ -58,7 +104,7 @@ public class RoundCalculatorFourPlayers {
                     player.changeScoreBy(-1000);
             }
         }
-        if (playersInTenpai.size() == 2) {
+        else if (playersInTenpai.size() == 2) {
             for (Player player : game.getPlayers()) {
                 if (playersInTenpai.contains(player))
                     player.changeScoreBy(1500);
@@ -66,7 +112,7 @@ public class RoundCalculatorFourPlayers {
                     player.changeScoreBy(-1500);
             }
         }
-        if (playersInTenpai.size() == 3) {
+        else if (playersInTenpai.size() == 3) {
             for (Player player : game.getPlayers()) {
                 if (playersInTenpai.contains(player))
                     player.changeScoreBy(1000);
