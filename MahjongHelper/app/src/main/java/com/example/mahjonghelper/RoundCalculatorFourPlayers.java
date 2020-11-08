@@ -49,7 +49,31 @@ public class RoundCalculatorFourPlayers {
         game.incrementHonbaStickCounter();
     }
 
-    public static void updateGameStateFromChombo(Game game, List<Player> playersFailed) {
+    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
+        ScoreEntry reverseMangan = Scoring.getReverseManganEntry();
 
+        if (playerFailed.isDealer()) {
+            for (Player player : game.getPlayers()) {
+                if (player != playerFailed) {
+                    player.changeScoreBy(-reverseMangan.getDealerTsumo());
+                    playerFailed.changeScoreBy(reverseMangan.getDealerTsumo());
+                }
+            }
+
+            return;
+        }
+
+        for (Player player : game.getPlayers()) {
+            if (player != playerFailed) {
+                if (player.isDealer()) {
+                    player.changeScoreBy(-reverseMangan.getNonDealerTsumo().second);
+                    playerFailed.changeScoreBy(reverseMangan.getNonDealerTsumo().second);
+                }
+                else {
+                    player.changeScoreBy(-reverseMangan.getNonDealerTsumo().first);
+                    playerFailed.changeScoreBy(reverseMangan.getNonDealerTsumo().first);
+                }
+            }
+        }
     }
 }

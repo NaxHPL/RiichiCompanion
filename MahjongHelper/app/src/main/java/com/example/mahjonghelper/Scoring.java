@@ -84,11 +84,18 @@ public class Scoring {
         }});
     }};
 
-    public static ScoreEntry getScoreEntry(int han, int fu) {
+    public static ScoreEntry getScoreEntry(HandScore handScore) {
+        if (handScore.getYakumans() > 0)
+            return getScoreEntry(handScore.getYakumans());
+
+        return getScoreEntry(handScore.getHan(), handScore.getFu());
+    }
+
+    private static ScoreEntry getScoreEntry(int han, int fu) {
         return table.get(hanToEnum(han)).get(fuToEnum(fu));
     }
 
-    public static ScoreEntry getScoreEntry(int yakumans) {
+    private static ScoreEntry getScoreEntry(int yakumans) {
         int dealerRon = baseYakumanEntry.getDealerRon() * yakumans;
         int dealerTsumo = baseYakumanEntry.getDealerTsumo() * yakumans;
         int nonDealerRon = baseYakumanEntry.getNonDealerRon() * yakumans;
