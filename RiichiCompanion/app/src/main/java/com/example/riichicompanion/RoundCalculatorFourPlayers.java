@@ -57,8 +57,8 @@ public class RoundCalculatorFourPlayers {
         if (winner.isDealer()) {
             for (Player player : game.getPlayers()) {
                 if (player != winner) {
-                    player.changeScoreBy(-scoreEntry.getDealerTsumo());
-                    winner.changeScoreBy(scoreEntry.getDealerTsumo());
+                    player.changeScoreBy(-(scoreEntry.getDealerTsumo() + 100 * game.getHonbaStickCount()));
+                    winner.changeScoreBy(scoreEntry.getDealerTsumo() + 100 * game.getHonbaStickCount());
                 }
             }
 
