@@ -191,13 +191,13 @@ public class Game implements Parcelable {
             for (Player player : getPlayers()) {
                 switch (player.getSeatWind()) {
                     case East:
-                        player.setSeatWind(Wind.South);
-                        break;
-                    case South:
                         player.setSeatWind(Wind.West);
                         break;
-                    case West:
+                    case South:
                         player.setSeatWind(Wind.East);
+                        break;
+                    case West:
+                        player.setSeatWind(Wind.South);
                 }
             }
 
@@ -207,16 +207,16 @@ public class Game implements Parcelable {
         for (Player player : getPlayers()) {
             switch (player.getSeatWind()) {
                 case East:
-                    player.setSeatWind(Wind.South);
-                    break;
-                case South:
-                    player.setSeatWind(Wind.West);
-                    break;
-                case West:
                     player.setSeatWind(Wind.North);
                     break;
-                case North:
+                case South:
                     player.setSeatWind(Wind.East);
+                    break;
+                case West:
+                    player.setSeatWind(Wind.South);
+                    break;
+                case North:
+                    player.setSeatWind(Wind.West);
             }
         }
     }
