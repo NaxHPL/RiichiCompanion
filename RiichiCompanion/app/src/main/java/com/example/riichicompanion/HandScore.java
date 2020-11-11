@@ -6,9 +6,15 @@ public class HandScore {
     private final int fu;
     private final int yakumans;
 
-    public HandScore(int han, int fu, int yakumans) {
+    public HandScore(int han, int fu) {
         this.han = han;
         this.fu = fu;
+        this.yakumans = 0;
+    }
+
+    public HandScore(int yakumans) {
+        this.han = 0;
+        this.fu = 0;
         this.yakumans = yakumans;
     }
 
