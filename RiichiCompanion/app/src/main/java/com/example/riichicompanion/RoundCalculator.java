@@ -50,7 +50,7 @@ public class RoundCalculator {
         }
     }
 
-    private static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
+    public static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
         ScoreEntry scoreEntry = Scoring.getScoreEntry(handScore);
         boolean repeatRound = false;
 
@@ -110,44 +110,6 @@ public class RoundCalculator {
             updateGameRyuukyoku3Players(game, playersInTenpai, playersDeclaredRiichi);
         else
             updateGameRyuukyoku4Players(game, playersInTenpai, playersDeclaredRiichi);
-    }
-
-    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
-        ScoreEntry mangan = Scoring.getManganEntry();
-
-        if (playerFailed.isDealer()) {
-            for (Player player : game.getPlayers()) {
-                if (player != playerFailed) {
-                    playerFailed.changeScoreBy(-mangan.getDealerTsumo());
-                    player.changeScoreBy(mangan.getDealerTsumo());
-
-                    if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
-                        playerFailed.changeScoreBy(-roundUpToNearest100(mangan.getDealerTsumo() / 2));
-                        player.changeScoreBy(roundUpToNearest100(mangan.getDealerTsumo() / 2));
-                    }
-                }
-            }
-
-            return;
-        }
-
-        for (Player player : game.getPlayers()) {
-            if (player != playerFailed) {
-                if (player.isDealer()) {
-                    playerFailed.changeScoreBy(-mangan.getNonDealerTsumo().second);
-                    player.changeScoreBy(mangan.getNonDealerTsumo().second);
-                }
-                else {
-                    playerFailed.changeScoreBy(-mangan.getNonDealerTsumo().first);
-                    player.changeScoreBy(mangan.getNonDealerTsumo().first);
-                }
-
-                if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
-                    playerFailed.changeScoreBy(-roundUpToNearest100(mangan.getNonDealerTsumo().first / 2));
-                    player.changeScoreBy(roundUpToNearest100(mangan.getNonDealerTsumo().first / 2));
-                }
-            }
-        }
     }
 
     private static void updateGameRyuukyoku3Players(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
@@ -214,6 +176,44 @@ public class RoundCalculator {
 
         if (!playersInTenpai.contains(game.getDealer()))
             game.nextRound();
+    }
+
+    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
+        ScoreEntry mangan = Scoring.getManganEntry();
+
+        if (playerFailed.isDealer()) {
+            for (Player player : game.getPlayers()) {
+                if (player != playerFailed) {
+                    playerFailed.changeScoreBy(-mangan.getDealerTsumo());
+                    player.changeScoreBy(mangan.getDealerTsumo());
+
+                    if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
+                        playerFailed.changeScoreBy(-roundUpToNearest100(mangan.getDealerTsumo() / 2));
+                        player.changeScoreBy(roundUpToNearest100(mangan.getDealerTsumo() / 2));
+                    }
+                }
+            }
+
+            return;
+        }
+
+        for (Player player : game.getPlayers()) {
+            if (player != playerFailed) {
+                if (player.isDealer()) {
+                    playerFailed.changeScoreBy(-mangan.getNonDealerTsumo().second);
+                    player.changeScoreBy(mangan.getNonDealerTsumo().second);
+                }
+                else {
+                    playerFailed.changeScoreBy(-mangan.getNonDealerTsumo().first);
+                    player.changeScoreBy(mangan.getNonDealerTsumo().first);
+                }
+
+                if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
+                    playerFailed.changeScoreBy(-roundUpToNearest100(mangan.getNonDealerTsumo().first / 2));
+                    player.changeScoreBy(roundUpToNearest100(mangan.getNonDealerTsumo().first / 2));
+                }
+            }
+        }
     }
 
     private static int roundUpToNearest100(int x) {
