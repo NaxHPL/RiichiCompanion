@@ -15,28 +15,28 @@ public class Game implements Parcelable {
     private final Player topPlayer;
     private final Player leftPlayer;
     private final int minPointsToWin;
-    private int riichiStickCount;
-    private int honbaStickCount;
+    private int riichiCount;
+    private int honbaCount;
     private int roundNumber;
     private final int numberOfPlayers;
     private final String startDateTime;
     private final GameLength gameLength;
-    private final boolean tsumoLoss;
+    private final boolean useTsumoLoss;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
-                int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber,
-                int numberOfPlayers, GameLength gameLength, boolean tsumoLoss) {
+                int minPointsToWin, int riichiCount, int honbaCount, int roundNumber,
+                int numberOfPlayers, GameLength gameLength, boolean useTsumoLoss) {
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
         this.leftPlayer = leftPlayer;
         this.minPointsToWin = minPointsToWin;
-        this.riichiStickCount = riichiStickCount;
-        this.honbaStickCount = honbaStickCount;
+        this.riichiCount = riichiCount;
+        this.honbaCount = honbaCount;
         this.roundNumber = roundNumber;
         this.numberOfPlayers = numberOfPlayers;
         this.gameLength = gameLength;
-        this.tsumoLoss = tsumoLoss;
+        this.useTsumoLoss = useTsumoLoss;
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
@@ -51,13 +51,13 @@ public class Game implements Parcelable {
         topPlayer = in.readParcelable(Player.class.getClassLoader());
         leftPlayer = in.readParcelable(Player.class.getClassLoader());
         minPointsToWin = in.readInt();
-        riichiStickCount = in.readInt();
-        honbaStickCount = in.readInt();
+        riichiCount = in.readInt();
+        honbaCount = in.readInt();
         roundNumber = in.readInt();
         numberOfPlayers = in.readInt();
         startDateTime = in.readString();
         gameLength = GameLength.valueOf(in.readString());
-        tsumoLoss = in.readInt() == 1;
+        useTsumoLoss = in.readInt() == 1;
     }
 
     @Override
@@ -67,13 +67,13 @@ public class Game implements Parcelable {
         dest.writeParcelable(topPlayer, flags);
         dest.writeParcelable(leftPlayer, flags);
         dest.writeInt(minPointsToWin);
-        dest.writeInt(riichiStickCount);
-        dest.writeInt(honbaStickCount);
+        dest.writeInt(riichiCount);
+        dest.writeInt(honbaCount);
         dest.writeInt(roundNumber);
         dest.writeInt(numberOfPlayers);
         dest.writeString(startDateTime);
         dest.writeString(gameLength.name());
-        dest.writeInt(tsumoLoss ? 1 : 0);
+        dest.writeInt(useTsumoLoss ? 1 : 0);
     }
 
     @Override
@@ -115,28 +115,28 @@ public class Game implements Parcelable {
         return minPointsToWin;
     }
 
-    public int getRiichiStickCount() {
-        return riichiStickCount;
+    public int getRiichiCount() {
+        return riichiCount;
     }
 
-    public int getHonbaStickCount() {
-        return honbaStickCount;
+    public int getHonbaCount() {
+        return honbaCount;
     }
 
-    public void setHonbaStickCount(int honbaStickCount) {
-        this.honbaStickCount = honbaStickCount;
+    public void setHonbaCount(int honbaCount) {
+        this.honbaCount = honbaCount;
     }
 
-    public void setRiichiStickCount(int riichiStickCount) {
-        this.riichiStickCount = riichiStickCount;
+    public void setRiichiCount(int riichiCount) {
+        this.riichiCount = riichiCount;
     }
 
     public void incrementRiichiStickCount() {
-        riichiStickCount++;
+        riichiCount++;
     }
 
-    public void incrementHonbaStickCounter() {
-        honbaStickCount++;
+    public void incrementHonbaCount() {
+        honbaCount++;
     }
 
     public int getRoundNumber() {
@@ -169,8 +169,12 @@ public class Game implements Parcelable {
         return gameLength;
     }
 
-    public boolean useTsumoLoss() {
-        return tsumoLoss;
+    public boolean usesTsumoLoss() {
+        return useTsumoLoss;
+    }
+
+    public int getHonbaValue() {
+        return getNumberOfPlayers() == 3 ? 200 : 300;
     }
 
     public Player[] getPlayers() {

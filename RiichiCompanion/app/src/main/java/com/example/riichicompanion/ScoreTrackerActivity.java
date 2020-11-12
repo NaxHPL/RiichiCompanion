@@ -50,10 +50,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     private void updateStickCounts() {
         TextView tvRiichiCount = findViewById(R.id.tvRiichiCount);
-        tvRiichiCount.setText(String.format(Locale.getDefault(), "%d", game.getRiichiStickCount()));
+        tvRiichiCount.setText(String.format(Locale.getDefault(), "%d", game.getRiichiCount()));
 
         TextView tvHonbaCount = findViewById(R.id.tvHonbaCount);
-        tvHonbaCount.setText(String.format(Locale.getDefault(), "%d", game.getHonbaStickCount()));
+        tvHonbaCount.setText(String.format(Locale.getDefault(), "%d", game.getHonbaCount()));
     }
 
     private void updateRoundInformation() {

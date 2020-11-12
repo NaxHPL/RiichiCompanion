@@ -8,10 +8,9 @@ import java.util.List;
 public class Scoring {
 
     private static final ScoreEntry baseYakumanEntry = new ScoreEntry(48000, 16000, 32000, Pair.create(8000, 16000));
-    private static final ScoreEntry reverseManganEntry = new ScoreEntry(-12000, -4000, -8000, Pair.create(-2000, -4000));
+    private static final ScoreEntry manganEntry = new ScoreEntry(12000, 4000, 8000, Pair.create(2000, 4000));
 
     private static final EnumMap<Han, EnumMap<Fu, ScoreEntry>> table = new EnumMap<Han, EnumMap<Fu, ScoreEntry>>(Han.class) {{
-        ScoreEntry manganEntry = new ScoreEntry(12000, 4000, 8000, Pair.create(2000, 4000));
         ScoreEntry hanemanEntry = new ScoreEntry(18000, 6000, 12000, Pair.create(3000, 6000));
         ScoreEntry baimanEntry = new ScoreEntry(24000, 8000, 16000, Pair.create(4000, 8000));
         ScoreEntry sanbaimanEntry = new ScoreEntry(36000, 12000, 24000, Pair.create(6000, 12000));
@@ -152,8 +151,8 @@ public class Scoring {
         return Fu.HundredTen;
     }
 
-    public static ScoreEntry getReverseManganEntry() {
-        return reverseManganEntry;
+    public static ScoreEntry getManganEntry() {
+        return manganEntry;
     }
 
     public static Player getAtamahaneWinner(Player discarder, List<Player> winners) {

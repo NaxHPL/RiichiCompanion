@@ -36,54 +36,34 @@ public class RoundCalculator {
 
         Player atamahaneWinner = Scoring.getAtamahaneWinner(loser, winners);
 
-        atamahaneWinner.changeScoreBy(1000 * game.getRiichiStickCount());
-        game.setRiichiStickCount(0);
+        atamahaneWinner.changeScoreBy(1000 * game.getRiichiCount());
+        game.setRiichiCount(0);
 
-        loser.changeScoreBy(-300 * game.getHonbaStickCount());
-        atamahaneWinner.changeScoreBy(300 * game.getHonbaStickCount());
+        loser.changeScoreBy(-game.getHonbaValue() * game.getHonbaCount());
+        atamahaneWinner.changeScoreBy(game.getHonbaValue() * game.getHonbaCount());
 
         if (repeatRound)
-            game.incrementHonbaStickCounter();
+            game.incrementHonbaCount();
         else {
-            game.setHonbaStickCount(0);
+            game.setHonbaCount(0);
             game.nextRound();
         }
     }
 
-    public static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
-        if (game.getNumberOfPlayers() == 3)
-            updateGameTsumo3Players(game, winner, handScore, playersDeclaredRiichi);
-        else
-            updateGameTsumo4Players(game, winner, handScore, playersDeclaredRiichi);
-    }
-
-    public static void updateGameStateFromRyuukyoku(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
-        if (game.getNumberOfPlayers() == 3)
-            updateGameRyuukyoku3Players(game, playersInTenpai, playersDeclaredRiichi);
-        else
-            updateGameRyuukyoku4Players(game, playersInTenpai, playersDeclaredRiichi);
-    }
-
-    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
-        if (game.getNumberOfPlayers() == 3)
-            updateGameChombo3Players(game, playerFailed);
-        else
-            updateGameChombo4Players(game, playerFailed);
-    }
-
-    private static void updateGameTsumo3Players(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
-
-    }
-
-    private static void updateGameTsumo4Players(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
+    private static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
         ScoreEntry scoreEntry = Scoring.getScoreEntry(handScore);
         boolean repeatRound = false;
 
         if (winner.isDealer()) {
             for (Player player : game.getPlayers()) {
                 if (player != winner) {
-                    player.changeScoreBy(-(scoreEntry.getDealerTsumo() + 100 * game.getHonbaStickCount()));
-                    winner.changeScoreBy(scoreEntry.getDealerTsumo() + 100 * game.getHonbaStickCount());
+                    player.changeScoreBy(-(scoreEntry.getDealerTsumo() + 100 * game.getHonbaCount()));
+                    winner.changeScoreBy(scoreEntry.getDealerTsumo() + 100 * game.getHonbaCount());
+
+                    if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
+                        player.changeScoreBy(-roundUpToNearest100(scoreEntry.getDealerTsumo() / 2));
+                        winner.changeScoreBy(roundUpToNearest100(scoreEntry.getDealerTsumo() / 2));
+                    }
                 }
             }
 
@@ -93,12 +73,17 @@ public class RoundCalculator {
             for (Player player : game.getPlayers()) {
                 if (player != winner) {
                     if (player.isDealer()) {
-                        player.changeScoreBy(-(scoreEntry.getNonDealerTsumo().second + 100 * game.getHonbaStickCount()));
-                        winner.changeScoreBy(scoreEntry.getNonDealerTsumo().second + 100 * game.getHonbaStickCount());
+                        player.changeScoreBy(-(scoreEntry.getNonDealerTsumo().second + 100 * game.getHonbaCount()));
+                        winner.changeScoreBy(scoreEntry.getNonDealerTsumo().second + 100 * game.getHonbaCount());
                     }
                     else {
-                        player.changeScoreBy(-(scoreEntry.getNonDealerTsumo().first + 100 * game.getHonbaStickCount()));
-                        winner.changeScoreBy(scoreEntry.getNonDealerTsumo().first + 100 * game.getHonbaStickCount());
+                        player.changeScoreBy(-(scoreEntry.getNonDealerTsumo().first + 100 * game.getHonbaCount()));
+                        winner.changeScoreBy(scoreEntry.getNonDealerTsumo().first + 100 * game.getHonbaCount());
+                    }
+
+                    if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
+                        player.changeScoreBy(-roundUpToNearest100(scoreEntry.getNonDealerTsumo().first / 2));
+                        winner.changeScoreBy(roundUpToNearest100(scoreEntry.getNonDealerTsumo().first / 2));
                     }
                 }
             }
@@ -109,19 +94,89 @@ public class RoundCalculator {
             game.incrementRiichiStickCount();
         }
 
-        winner.changeScoreBy(1000 * game.getRiichiStickCount());
-        game.setRiichiStickCount(0);
+        winner.changeScoreBy(1000 * game.getRiichiCount());
+        game.setRiichiCount(0);
 
         if (repeatRound)
-            game.incrementHonbaStickCounter();
+            game.incrementHonbaCount();
         else {
-            game.setHonbaStickCount(0);
+            game.setHonbaCount(0);
             game.nextRound();
         }
     }
 
-    private static void updateGameRyuukyoku3Players(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
+    public static void updateGameStateFromRyuukyoku(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
+        if (game.getNumberOfPlayers() == 3)
+            updateGameRyuukyoku3Players(game, playersInTenpai, playersDeclaredRiichi);
+        else
+            updateGameRyuukyoku4Players(game, playersInTenpai, playersDeclaredRiichi);
+    }
 
+    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
+        ScoreEntry mangan = Scoring.getManganEntry();
+
+        if (playerFailed.isDealer()) {
+            for (Player player : game.getPlayers()) {
+                if (player != playerFailed) {
+                    playerFailed.changeScoreBy(-mangan.getDealerTsumo());
+                    player.changeScoreBy(mangan.getDealerTsumo());
+
+                    if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
+                        playerFailed.changeScoreBy(-roundUpToNearest100(mangan.getDealerTsumo() / 2));
+                        player.changeScoreBy(roundUpToNearest100(mangan.getDealerTsumo() / 2));
+                    }
+                }
+            }
+
+            return;
+        }
+
+        for (Player player : game.getPlayers()) {
+            if (player != playerFailed) {
+                if (player.isDealer()) {
+                    playerFailed.changeScoreBy(-mangan.getNonDealerTsumo().second);
+                    player.changeScoreBy(mangan.getNonDealerTsumo().second);
+                }
+                else {
+                    playerFailed.changeScoreBy(-mangan.getNonDealerTsumo().first);
+                    player.changeScoreBy(mangan.getNonDealerTsumo().first);
+                }
+
+                if (game.getNumberOfPlayers() == 3 && !game.usesTsumoLoss()) {
+                    playerFailed.changeScoreBy(-roundUpToNearest100(mangan.getNonDealerTsumo().first / 2));
+                    player.changeScoreBy(roundUpToNearest100(mangan.getNonDealerTsumo().first / 2));
+                }
+            }
+        }
+    }
+
+    private static void updateGameRyuukyoku3Players(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
+        if (playersInTenpai.size() == 1) {
+            for (Player player : game.getPlayers()) {
+                if (playersInTenpai.contains(player))
+                    player.changeScoreBy(2000);
+                else
+                    player.changeScoreBy(-1000);
+            }
+        }
+        else if (playersInTenpai.size() == 2) {
+            for (Player player : game.getPlayers()) {
+                if (playersInTenpai.contains(player))
+                    player.changeScoreBy(1000);
+                else
+                    player.changeScoreBy(-2000);
+            }
+        }
+
+        for (Player player : playersDeclaredRiichi) {
+            player.changeScoreBy(-1000);
+            game.incrementRiichiStickCount();
+        }
+
+        game.incrementHonbaCount();
+
+        if (!playersInTenpai.contains(game.getDealer()))
+            game.nextRound();
     }
 
     private static void updateGameRyuukyoku4Players(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
@@ -155,41 +210,13 @@ public class RoundCalculator {
             game.incrementRiichiStickCount();
         }
 
-        game.incrementHonbaStickCounter();
+        game.incrementHonbaCount();
 
         if (!playersInTenpai.contains(game.getDealer()))
             game.nextRound();
     }
 
-    private static void updateGameChombo3Players(Game game, Player playerFailed) {
-
-    }
-
-    private static void updateGameChombo4Players(Game game, Player playerFailed) {
-        ScoreEntry reverseMangan = Scoring.getReverseManganEntry();
-
-        if (playerFailed.isDealer()) {
-            for (Player player : game.getPlayers()) {
-                if (player != playerFailed) {
-                    player.changeScoreBy(-reverseMangan.getDealerTsumo());
-                    playerFailed.changeScoreBy(reverseMangan.getDealerTsumo());
-                }
-            }
-
-            return;
-        }
-
-        for (Player player : game.getPlayers()) {
-            if (player != playerFailed) {
-                if (player.isDealer()) {
-                    player.changeScoreBy(-reverseMangan.getNonDealerTsumo().second);
-                    playerFailed.changeScoreBy(reverseMangan.getNonDealerTsumo().second);
-                }
-                else {
-                    player.changeScoreBy(-reverseMangan.getNonDealerTsumo().first);
-                    playerFailed.changeScoreBy(reverseMangan.getNonDealerTsumo().first);
-                }
-            }
-        }
+    private static int roundUpToNearest100(int x) {
+        return ((x + 99) / 100 ) * 100;
     }
 }

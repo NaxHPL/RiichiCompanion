@@ -64,7 +64,8 @@ public class CreateGameActivity extends AppCompatActivity {
             0,
             1,
             getNorthPlayerName().isEmpty() ? 3 : 4,
-            getGameLength()
+            getGameLength(),
+            false
         );
 
         PersistentStorage.saveOngoingGame(this, game);
