@@ -1,13 +1,13 @@
 package com.example.riichicompanion;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Locale;
 
@@ -103,22 +103,33 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     public void endRound(View view) {
+        showRoundInfo(false);
+        showEndRoundOptions(true);
+    }
+
+    private void showRoundInfo(boolean show) {
+        int visibility = show ? View.VISIBLE : View.INVISIBLE;
+
         ImageView iv = findViewById(R.id.ivRoundWind);
-        iv.setVisibility(View.INVISIBLE);
+        iv.setVisibility(visibility);
 
         TextView tv = findViewById(R.id.tvRoundCount);
-        tv.setVisibility(View.INVISIBLE);
+        tv.setVisibility(visibility);
+    }
+
+    private void showEndRoundOptions(boolean show) {
+        int visibility = show ? View.VISIBLE : View.INVISIBLE;
 
         Button btn = findViewById(R.id.btnRon);
-        btn.setVisibility(View.VISIBLE);
+        btn.setVisibility(visibility);
 
         btn = findViewById(R.id.btnTsumo);
-        btn.setVisibility(View.VISIBLE);
+        btn.setVisibility(visibility);
 
         btn = findViewById(R.id.btnRyuukyoku);
-        btn.setVisibility(View.VISIBLE);
+        btn.setVisibility(visibility);
 
         btn = findViewById(R.id.btnChombo);
-        btn.setVisibility(View.VISIBLE);
+        btn.setVisibility(visibility);
     }
 }
