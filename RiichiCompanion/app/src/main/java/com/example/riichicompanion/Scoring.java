@@ -164,6 +164,6 @@ public class Scoring {
             }
         }
 
-        return null;
+        return winners.get(0);
     }
 }
