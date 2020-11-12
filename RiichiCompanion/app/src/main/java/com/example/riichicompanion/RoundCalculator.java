@@ -5,7 +5,7 @@ import android.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoundCalculatorFourPlayers {
+public class RoundCalculator {
 
     public static void updateGameStateFromRon(Game game, Player loser, List<Pair<Player, HandScore>> winnerHandScorePairs, List<Player> playersDeclaredRiichi) {
         ArrayList<Player> winners = new ArrayList<>();
@@ -51,6 +51,31 @@ public class RoundCalculatorFourPlayers {
     }
 
     public static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
+        if (game.getNumberOfPlayers() == 3)
+            updateGameTsumo3Players(game, winner, handScore, playersDeclaredRiichi);
+        else
+            updateGameTsumo4Players(game, winner, handScore, playersDeclaredRiichi);
+    }
+
+    public static void updateGameStateFromRyuukyoku(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
+        if (game.getNumberOfPlayers() == 3)
+            updateGameRyuukyoku3Players(game, playersInTenpai, playersDeclaredRiichi);
+        else
+            updateGameRyuukyoku4Players(game, playersInTenpai, playersDeclaredRiichi);
+    }
+
+    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
+        if (game.getNumberOfPlayers() == 3)
+            updateGameChombo3Players(game, playerFailed);
+        else
+            updateGameChombo4Players(game, playerFailed);
+    }
+
+    private static void updateGameTsumo3Players(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
+
+    }
+
+    private static void updateGameTsumo4Players(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
         ScoreEntry scoreEntry = Scoring.getScoreEntry(handScore);
         boolean repeatRound = false;
 
@@ -95,7 +120,11 @@ public class RoundCalculatorFourPlayers {
         }
     }
 
-    public static void updateGameStateFromRyuukyoku(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
+    private static void updateGameRyuukyoku3Players(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
+
+    }
+
+    private static void updateGameRyuukyoku4Players(Game game, List<Player> playersInTenpai, List<Player> playersDeclaredRiichi) {
         if (playersInTenpai.size() == 1) {
             for (Player player : game.getPlayers()) {
                 if (playersInTenpai.contains(player))
@@ -132,7 +161,11 @@ public class RoundCalculatorFourPlayers {
             game.nextRound();
     }
 
-    public static void updateGameStateFromChombo(Game game, Player playerFailed) {
+    private static void updateGameChombo3Players(Game game, Player playerFailed) {
+
+    }
+
+    private static void updateGameChombo4Players(Game game, Player playerFailed) {
         ScoreEntry reverseMangan = Scoring.getReverseManganEntry();
 
         if (playerFailed.isDealer()) {
