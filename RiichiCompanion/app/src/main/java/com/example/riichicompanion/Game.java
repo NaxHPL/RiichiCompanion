@@ -21,10 +21,11 @@ public class Game implements Parcelable {
     private final int numberOfPlayers;
     private final String startDateTime;
     private final GameLength gameLength;
+    private final boolean tsumoLoss;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
                 int minPointsToWin, int riichiStickCount, int honbaStickCount, int roundNumber,
-                int numberOfPlayers, GameLength gameLength) {
+                int numberOfPlayers, GameLength gameLength, boolean tsumoLoss) {
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
@@ -35,6 +36,7 @@ public class Game implements Parcelable {
         this.roundNumber = roundNumber;
         this.numberOfPlayers = numberOfPlayers;
         this.gameLength = gameLength;
+        this.tsumoLoss = tsumoLoss;
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
@@ -55,6 +57,7 @@ public class Game implements Parcelable {
         numberOfPlayers = in.readInt();
         startDateTime = in.readString();
         gameLength = GameLength.valueOf(in.readString());
+        tsumoLoss = in.readInt() == 1;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class Game implements Parcelable {
         dest.writeInt(numberOfPlayers);
         dest.writeString(startDateTime);
         dest.writeString(gameLength.name());
+        dest.writeInt(tsumoLoss ? 1 : 0);
     }
 
     @Override
@@ -163,6 +167,10 @@ public class Game implements Parcelable {
 
     public GameLength getGameLength() {
         return gameLength;
+    }
+
+    public boolean useTsumoLoss() {
+        return tsumoLoss;
     }
 
     public Player[] getPlayers() {
