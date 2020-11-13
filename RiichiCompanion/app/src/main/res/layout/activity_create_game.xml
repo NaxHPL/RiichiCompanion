@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutCreateGame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateGameActivity">
@@ -53,12 +54,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="North (leave blank for 3 player game)"
+        android:hint="North"
         android:inputType="textCapWords"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/fabRemoveFourthPlayer"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
 
@@ -79,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:text="Game Settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -114,6 +115,7 @@
         android:layout_height="wrap_content"
         android:onClick="decreaseInitialPointsBy1000"
         android:text="—"
+        android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
         app:layout_constraintStart_toStartOf="@+id/btnDecMinPointsToWin" />
 
@@ -124,6 +126,7 @@
         android:layout_height="wrap_content"
         android:onClick="increaseInitialPointsBy1000"
         android:text="+"
+        android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
         app:layout_constraintStart_toEndOf="@+id/tvInitialPoints" />
 
@@ -140,14 +143,26 @@
 
     <TextView
         android:id="@+id/tvGameLength"
-        android:layout_width="107dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="Game length:"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMinPointsToWinLabel" />
+
+    <TextView
+        android:id="@+id/tvTsumoLoss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Tsumo loss:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGameLength" />
 
     <TextView
         android:id="@+id/tvMinPointsToWin"
@@ -167,6 +182,7 @@
         android:layout_marginStart="16dp"
         android:onClick="decreaseMinPointsToWinBy1000"
         android:text="—"
+        android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
         app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinLabel" />
 
@@ -177,6 +193,7 @@
         android:layout_height="wrap_content"
         android:onClick="increaseMinPointsToWinBy1000"
         android:text="+"
+        android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
         app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWin" />
 
@@ -184,12 +201,12 @@
         android:id="@+id/btnCreate"
         android:layout_width="252dp"
         android:layout_height="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:onClick="createGame"
         android:text="Create"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinGameLength" />
 
@@ -201,5 +218,50 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tvGameLength"
         app:layout_constraintEnd_toEndOf="@+id/btnIncMinPointsToWin"
         app:layout_constraintStart_toStartOf="@+id/btnDecMinPointsToWin" />
+
+    <ToggleButton
+        android:id="@+id/tbUseTsumoLoss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="ToggleButton"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvTsumoLoss"
+        app:layout_constraintStart_toStartOf="@+id/spinGameLength" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRemoveFourthPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:onClick="removeFourthPlayer"
+        android:translationY="-2.5dp"
+        android:visibility="visible"
+        app:backgroundTint="@color/white"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabSize="mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etWestPlayer"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <Button
+        android:id="@+id/btnAddPlayer"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="121dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="32dp"
+        android:onClick="addFourthPlayer"
+        android:padding="0dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:text="Add Player"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:visibility="invisible"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconPadding="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

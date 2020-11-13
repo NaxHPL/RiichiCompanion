@@ -36,12 +36,6 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         updateInterface();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
-    }
-
     private void updateInterface() {
         updateRoundInformation();
         updateStickCounts();

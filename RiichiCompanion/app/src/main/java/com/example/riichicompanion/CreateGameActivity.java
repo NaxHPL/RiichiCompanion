@@ -1,38 +1,68 @@
 package com.example.riichicompanion;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Locale;
 
 public class CreateGameActivity extends AppCompatActivity {
 
+    private TextView tvInitialPoints;
+    private TextView tvMinPointsToWin;
+    private TextView tvTsumoLoss;
+    private EditText etEastPlayer;
+    private EditText etSouthPlayer;
+    private EditText etWestPlayer;
+    private EditText etNorthPlayer;
+    private Spinner spinGameLength;
+    private ToggleButton tbUseTsumoLoss;
+    private FloatingActionButton fabRemoveFourthPlayer;
+    private Button btnCreate;
+    private Button btnAddPlayer;
+    private ConstraintLayout constraintLayout;
+    private ConstraintSet constraintSet;
+    private boolean threePlayerGame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
+        tvInitialPoints = findViewById(R.id.tvInitialPoints);
+        tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
+        tvTsumoLoss = findViewById(R.id.tvTsumoLoss);
+        etEastPlayer = findViewById(R.id.etEastPlayer);
+        etSouthPlayer = findViewById(R.id.etSouthPlayer);
+        etWestPlayer = findViewById(R.id.etWestPlayer);
+        etNorthPlayer = findViewById(R.id.etNorthPlayer);
+        spinGameLength = findViewById(R.id.spinGameLength);
+        tbUseTsumoLoss = findViewById(R.id.tbUseTsumoLoss);
+        fabRemoveFourthPlayer = findViewById(R.id.fabRemoveFourthPlayer);
+        btnCreate = findViewById(R.id.btnCreate);
+        btnAddPlayer = findViewById(R.id.btnAddPlayer);
+        constraintLayout = findViewById(R.id.constraintLayoutCreateGame);
+        constraintSet = new ConstraintSet();
+        threePlayerGame = false;
     }
 
     public void changeInitialPoints(int change) {
-        TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
         int initialPoints = Integer.parseInt(tvInitialPoints.getText().toString());
         tvInitialPoints.setText(String.format(Locale.getDefault(), "%d", initialPoints + change));
     }
 
     public void changeMinPointsToWin(int change) {
-        TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
         int minPointsToWin = Integer.parseInt(tvMinPointsToWin.getText().toString());
         tvMinPointsToWin.setText(String.format(Locale.getDefault(), "%d", minPointsToWin + change));
     }
@@ -63,9 +93,9 @@ public class CreateGameActivity extends AppCompatActivity {
             0,
             0,
             1,
-            getNorthPlayerName().isEmpty() ? 3 : 4,
+            threePlayerGame ? 3 : 4,
             getGameLength(),
-            false
+            useTsumoLoss()
         );
 
         PersistentStorage.saveOngoingGame(this, game);
@@ -73,44 +103,80 @@ public class CreateGameActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
         intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);
         startActivity(intent);
+
+        finish();
     }
 
     private String getEastPlayerName() {
-        EditText etEastPlayer = findViewById(R.id.etEastPlayer);
         String name = etEastPlayer.getText().toString().trim();
         return name.isEmpty() ? "East" : name;
     }
 
     private String getSouthPlayerName() {
-        EditText etSouthPlayer = findViewById(R.id.etSouthPlayer);
         String name = etSouthPlayer.getText().toString().trim();
         return name.isEmpty() ? "South" : name;
     }
 
     private String getWestPlayerName() {
-        EditText etWestPlayer = findViewById(R.id.etWestPlayer);
         String name = etWestPlayer.getText().toString().trim();
         return name.isEmpty() ? "West" : name;
     }
 
     private String getNorthPlayerName() {
-        EditText etNorthPlayer = findViewById(R.id.etNorthPlayer);
-        return etNorthPlayer.getText().toString().trim();
+        String name = etNorthPlayer.getText().toString().trim();
+        return name.isEmpty() ? "North" : name;
     }
 
     private int getInitialPoints() {
-        TextView tvInitialPoints = findViewById(R.id.tvInitialPoints);
         return Integer.parseInt(tvInitialPoints.getText().toString());
     }
 
     private int getMinPointsToWin() {
-        TextView tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
         return Integer.parseInt(tvMinPointsToWin.getText().toString());
     }
 
     private GameLength getGameLength() {
-        Spinner spinner = findViewById(R.id.spinGameLength);
-        String selectedValue = spinner.getSelectedItem().toString();
+        String selectedValue = spinGameLength.getSelectedItem().toString();
         return GameLength.valueOf(selectedValue);
+    }
+
+    private boolean useTsumoLoss() {
+        return tbUseTsumoLoss.isChecked();
+    }
+
+    public void removeFourthPlayer(View view) {
+        fabRemoveFourthPlayer.setVisibility(View.INVISIBLE);
+        etNorthPlayer.setVisibility(View.INVISIBLE);
+        btnAddPlayer.setVisibility(View.VISIBLE);
+
+        tvTsumoLoss.setVisibility(View.VISIBLE);
+        tbUseTsumoLoss.setVisibility(View.VISIBLE);
+
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(
+            btnCreate.getId(), ConstraintSet.TOP,
+            tbUseTsumoLoss.getId(), ConstraintSet.BOTTOM
+        );
+        constraintSet.applyTo(constraintLayout);
+
+        threePlayerGame = true;
+    }
+
+    public void addFourthPlayer(View view) {
+        fabRemoveFourthPlayer.setVisibility(View.VISIBLE);
+        etNorthPlayer.setVisibility(View.VISIBLE);
+        btnAddPlayer.setVisibility(View.INVISIBLE);
+
+        tvTsumoLoss.setVisibility(View.INVISIBLE);
+        tbUseTsumoLoss.setVisibility(View.INVISIBLE);
+
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(
+            btnCreate.getId(), ConstraintSet.TOP,
+            spinGameLength.getId(), ConstraintSet.BOTTOM
+        );
+        constraintSet.applyTo(constraintLayout);
+
+        threePlayerGame = false;
     }
 }
