@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        ongoingGame = retrieveOngoingGame();
+        ongoingGame = PersistentStorage.retrieveOngoingGame(this);
 
         if (ongoingGame != null) {
             updateOngoingGameInfo();
@@ -60,20 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private void startCreateGameActivity() {
         Intent intent = new Intent(this, CreateGameActivity.class);
         startActivity(intent);
-    }
-
-    private Game retrieveOngoingGame() {
-        SharedPreferences prefs = getSharedPreferences(getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE);
-        String gameAsJson = prefs.getString(getString(R.string.ongoing_game_key), getString(R.string.ongoing_game_default_value));
-
-        Gson gson = new Gson();
-
-        try {
-            return gson.fromJson(gameAsJson, Game.class);
-        }
-        catch (JsonSyntaxException ex) {
-            return null;
-        }
     }
 
     private void updateOngoingGameInfo() {
