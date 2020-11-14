@@ -39,6 +39,7 @@ public class CreateGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
+        setSupportActionBar(findViewById(R.id.toolbarCreateGameActivity));
 
         tvInitialPoints = findViewById(R.id.tvInitialPoints);
         tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);

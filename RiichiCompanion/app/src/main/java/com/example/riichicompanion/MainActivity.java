@@ -1,6 +1,7 @@
 package com.example.riichicompanion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,12 +19,25 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ConstraintLayout constraintLayoutOngoingGame;
+    private TextView tvOngoingGamePlayers;
+    private TextView tvOngoingGameDateTime;
+    private TextView tvOngoingGameRoundNumber;
+    private ImageView ivOngoingGameRoundWind;
+
     private Game ongoingGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(findViewById(R.id.toolbarMainActivity));
+
+        constraintLayoutOngoingGame = findViewById(R.id.ConstraintLayout_ongoing_game);
+        tvOngoingGamePlayers = findViewById(R.id.tvOngoingGamePlayers);
+        tvOngoingGameDateTime = findViewById(R.id.tvOngoingGameDateTime);
+        tvOngoingGameRoundNumber = findViewById(R.id.tvOngoingGameRoundNumber);
+        ivOngoingGameRoundWind = findViewById(R.id.ivOngoingGameRoundWind);
     }
 
     @Override
@@ -34,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (ongoingGame != null) {
             updateOngoingGameInfo();
-            findViewById(R.id.ConstraintLayout_ongoing_game).setVisibility(View.VISIBLE);
+            constraintLayoutOngoingGame.setVisibility(View.VISIBLE);
         }
         else
-            findViewById(R.id.ConstraintLayout_ongoing_game).setVisibility(View.GONE);
+            constraintLayoutOngoingGame.setVisibility(View.GONE);
     }
 
     public void createNewGame(View view) {
@@ -73,18 +87,10 @@ public class MainActivity extends AppCompatActivity {
         if (ongoingGame.getNumberOfPlayers() == 4)
             players = players.concat(String.format(", %s", ongoingGame.getLeftPlayer().getName()));
 
-        TextView tv = findViewById(R.id.tvOngoingGamePlayers);
-        tv.setText(String.format(Locale.getDefault(), "%s", players));
-
-        tv = findViewById(R.id.tvOngoingGameDateTime);
-        tv.setText(String.format(Locale.getDefault(), "%s", ongoingGame.getStartDateTime()));
-
-        tv = findViewById(R.id.tvOngoingGameRoundNumber);
-        tv.setText(String.format(Locale.getDefault(), "%d", ongoingGame.getRoundNumberForDisplay()));
-
-        ImageView iv = findViewById(R.id.ivOngoingGameRoundWind);
-        iv.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
-        iv.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
+        tvOngoingGamePlayers.setText(String.format(Locale.getDefault(), "%s", players));
+        tvOngoingGameDateTime.setText(String.format(Locale.getDefault(), "%s", ongoingGame.getStartDateTime()));
+        tvOngoingGameRoundNumber.setText(String.format(Locale.getDefault(), "%d", ongoingGame.getRoundNumberForDisplay()));
+        ivOngoingGameRoundWind.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
     }
 
     public void openOngoingGame(View view) {

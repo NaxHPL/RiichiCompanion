@@ -21,6 +21,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
+        setSupportActionBar(findViewById(R.id.toolbarScoreTrackerActivity));
     }
 
     @Override
