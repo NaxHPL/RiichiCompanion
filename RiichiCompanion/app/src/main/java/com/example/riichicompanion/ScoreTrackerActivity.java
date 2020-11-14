@@ -1,11 +1,13 @@
 package com.example.riichicompanion;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -22,6 +24,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
         setSupportActionBar(findViewById(R.id.toolbarScoreTrackerActivity));
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null)
+            ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -35,6 +41,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         }
 
         updateInterface();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_score_tracker, menu);
+        return true;
     }
 
     private void updateInterface() {
