@@ -17,6 +17,27 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     public static final String GAME_TO_SHOW = "com.example.mahjonghelper.GAME_TO_SHOW";
 
+    private TextView tvRiichiCount;
+    private TextView tvHonbaCount;
+    private TextView tvRoundCount;
+    private TextView tvBottomName;
+    private TextView tvRightName;
+    private TextView tvTopName;
+    private TextView tvLeftName;
+    private TextView tvBottomScore;
+    private TextView tvRightScore;
+    private TextView tvTopScore;
+    private TextView tvLeftScore;
+    private ImageView ivRoundWind;
+    private ImageView ivBottomWind;
+    private ImageView ivRightWind;
+    private ImageView ivTopWind;
+    private ImageView ivLeftWind;
+    private Button btnRon;
+    private Button btnTsumo;
+    private Button btnRyuukyoku;
+    private Button btnChombo;
+
     private Game game;
 
     @Override
@@ -28,6 +49,28 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         if (ab != null)
             ab.setDisplayHomeAsUpEnabled(true);
+
+        tvRiichiCount = findViewById(R.id.tvRiichiCount);
+        tvHonbaCount = findViewById(R.id.tvHonbaCount);
+        tvRoundCount = findViewById(R.id.tvRoundCount);
+        tvBottomName = findViewById(R.id.tvBottomName);
+        tvRightName = findViewById(R.id.tvRightName);
+        tvTopName = findViewById(R.id.tvTopName);
+        tvLeftName = findViewById(R.id.tvLeftName);
+        tvBottomScore = findViewById(R.id.tvBottomScore);
+        tvRightScore = findViewById(R.id.tvRightScore);
+        tvTopScore = findViewById(R.id.tvTopScore);
+        tvLeftScore = findViewById(R.id.tvLeftScore);
+        tvLeftScore = findViewById(R.id.tvLeftScore);
+        ivRoundWind = findViewById(R.id.ivRoundWind);
+        ivBottomWind = findViewById(R.id.ivBottomWind);
+        ivRightWind = findViewById(R.id.ivRightWind);
+        ivTopWind = findViewById(R.id.ivTopWind);
+        ivLeftWind = findViewById(R.id.ivLeftWind);
+        btnRon = findViewById(R.id.btnRon);
+        btnTsumo = findViewById(R.id.btnTsumo);
+        btnRyuukyoku = findViewById(R.id.btnRyuukyoku);
+        btnChombo = findViewById(R.id.btnChombo);
     }
 
     @Override
@@ -56,57 +99,28 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     private void updateStickCounts() {
-        TextView tvRiichiCount = findViewById(R.id.tvRiichiCount);
         tvRiichiCount.setText(String.format(Locale.getDefault(), "%d", game.getRiichiCount()));
-
-        TextView tvHonbaCount = findViewById(R.id.tvHonbaCount);
         tvHonbaCount.setText(String.format(Locale.getDefault(), "%d", game.getHonbaCount()));
     }
 
     private void updateRoundInformation() {
-        TextView tvRoundCount = findViewById(R.id.tvRoundCount);
         tvRoundCount.setText(String.format(Locale.getDefault(), "%d", game.getRoundNumberForDisplay()));
-
-        ImageView ivRoundWind = findViewById(R.id.ivRoundWind);
         ivRoundWind.setImageDrawable(game.getPrevalentWind().getImage(this));
     }
 
     private void updatePlayerInformation() {
-        TextView tv = findViewById(R.id.tvBottomName);
-        tv.setText(String.format(Locale.getDefault(), "%s", game.getBottomPlayer().getName()));
-
-        tv = findViewById(R.id.tvRightName);
-        tv.setText(String.format(Locale.getDefault(), "%s", game.getRightPlayer().getName()));
-
-        tv = findViewById(R.id.tvTopName);
-        tv.setText(String.format(Locale.getDefault(), "%s", game.getTopPlayer().getName()));
-
-        tv = findViewById(R.id.tvLeftName);
-        tv.setText(String.format(Locale.getDefault(), "%s", game.getLeftPlayer().getName()));
-
-        tv = findViewById(R.id.tvBottomScore);
-        tv.setText(String.format(Locale.getDefault(), "%d", game.getBottomPlayer().getScore()));
-
-        tv = findViewById(R.id.tvRightScore);
-        tv.setText(String.format(Locale.getDefault(), "%d", game.getRightPlayer().getScore()));
-
-        tv = findViewById(R.id.tvTopScore);
-        tv.setText(String.format(Locale.getDefault(), "%d", game.getTopPlayer().getScore()));
-
-        tv = findViewById(R.id.tvLeftScore);
-        tv.setText(String.format(Locale.getDefault(), "%d", game.getLeftPlayer().getScore()));
-
-        ImageView iv = findViewById(R.id.ivBottomWind);
-        iv.setImageDrawable(game.getBottomPlayer().getSeatWind().getImage(this));
-
-        iv = findViewById(R.id.ivRightWind);
-        iv.setImageDrawable(game.getRightPlayer().getSeatWind().getImage(this));
-
-        iv = findViewById(R.id.ivTopWind);
-        iv.setImageDrawable(game.getTopPlayer().getSeatWind().getImage(this));
-
-        iv = findViewById(R.id.ivLeftWind);
-        iv.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
+        tvBottomName.setText(String.format(Locale.getDefault(), "%s", game.getBottomPlayer().getName()));
+        tvRightName.setText(String.format(Locale.getDefault(), "%s", game.getRightPlayer().getName()));
+        tvTopName.setText(String.format(Locale.getDefault(), "%s", game.getTopPlayer().getName()));
+        tvLeftName.setText(String.format(Locale.getDefault(), "%s", game.getLeftPlayer().getName()));
+        tvBottomScore.setText(String.format(Locale.getDefault(), "%d", game.getBottomPlayer().getScore()));
+        tvRightScore.setText(String.format(Locale.getDefault(), "%d", game.getRightPlayer().getScore()));
+        tvTopScore.setText(String.format(Locale.getDefault(), "%d", game.getTopPlayer().getScore()));
+        tvLeftScore.setText(String.format(Locale.getDefault(), "%d", game.getLeftPlayer().getScore()));
+        ivBottomWind.setImageDrawable(game.getBottomPlayer().getSeatWind().getImage(this));
+        ivRightWind.setImageDrawable(game.getRightPlayer().getSeatWind().getImage(this));
+        ivTopWind.setImageDrawable(game.getTopPlayer().getSeatWind().getImage(this));
+        ivLeftWind.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
     }
 
     public void endRound(View view) {
@@ -117,26 +131,16 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private void showRoundInfo(boolean show) {
         int visibility = show ? View.VISIBLE : View.INVISIBLE;
 
-        ImageView iv = findViewById(R.id.ivRoundWind);
-        iv.setVisibility(visibility);
-
-        TextView tv = findViewById(R.id.tvRoundCount);
-        tv.setVisibility(visibility);
+        ivRoundWind.setVisibility(visibility);
+        tvRoundCount.setVisibility(visibility);
     }
 
     private void showEndRoundOptions(boolean show) {
         int visibility = show ? View.VISIBLE : View.INVISIBLE;
 
-        Button btn = findViewById(R.id.btnRon);
-        btn.setVisibility(visibility);
-
-        btn = findViewById(R.id.btnTsumo);
-        btn.setVisibility(visibility);
-
-        btn = findViewById(R.id.btnRyuukyoku);
-        btn.setVisibility(visibility);
-
-        btn = findViewById(R.id.btnChombo);
-        btn.setVisibility(visibility);
+        btnRon.setVisibility(visibility);
+        btnTsumo.setVisibility(visibility);
+        btnRyuukyoku.setVisibility(visibility);
+        btnChombo.setVisibility(visibility);
     }
 }
