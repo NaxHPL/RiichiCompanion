@@ -14,6 +14,7 @@ public class Game implements Parcelable {
     private final Player rightPlayer;
     private final Player topPlayer;
     private final Player leftPlayer;
+    private final int initialPoints;
     private final int minPointsToWin;
     private int riichiCount;
     private int honbaCount;
@@ -24,12 +25,13 @@ public class Game implements Parcelable {
     private final boolean useTsumoLoss;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
-                int minPointsToWin, int riichiCount, int honbaCount, int roundNumber,
+                int initialPoints, int minPointsToWin, int riichiCount, int honbaCount, int roundNumber,
                 int numberOfPlayers, GameLength gameLength, boolean useTsumoLoss) {
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
         this.leftPlayer = leftPlayer;
+        this.initialPoints = initialPoints;
         this.minPointsToWin = minPointsToWin;
         this.riichiCount = riichiCount;
         this.honbaCount = honbaCount;
@@ -50,6 +52,7 @@ public class Game implements Parcelable {
         rightPlayer = in.readParcelable(Player.class.getClassLoader());
         topPlayer = in.readParcelable(Player.class.getClassLoader());
         leftPlayer = in.readParcelable(Player.class.getClassLoader());
+        initialPoints = in.readInt();
         minPointsToWin = in.readInt();
         riichiCount = in.readInt();
         honbaCount = in.readInt();
@@ -66,6 +69,7 @@ public class Game implements Parcelable {
         dest.writeParcelable(rightPlayer, flags);
         dest.writeParcelable(topPlayer, flags);
         dest.writeParcelable(leftPlayer, flags);
+        dest.writeInt(initialPoints);
         dest.writeInt(minPointsToWin);
         dest.writeInt(riichiCount);
         dest.writeInt(honbaCount);
@@ -109,6 +113,10 @@ public class Game implements Parcelable {
 
     public Player getLeftPlayer() {
         return leftPlayer;
+    }
+
+    public int getInitialPoints() {
+        return initialPoints;
     }
 
     public int getMinPointsToWin() {

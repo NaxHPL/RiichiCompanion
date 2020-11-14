@@ -1,12 +1,15 @@
 package com.example.riichicompanion;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -39,6 +42,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private Button btnChombo;
 
     private Game game;
+    private AlertDialog.Builder gameSettingsDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +75,19 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnTsumo = findViewById(R.id.btnTsumo);
         btnRyuukyoku = findViewById(R.id.btnRyuukyoku);
         btnChombo = findViewById(R.id.btnChombo);
+
+        game = getIntent().getParcelableExtra(GAME_TO_SHOW);
+
+        gameSettingsDialogBuilder = new AlertDialog.Builder(this) {{
+            setTitle(R.string.game_settings_dialog_title);
+            setMessage(getGameSettingsDialogMessage());
+            setPositiveButton(R.string.close, (dialog, which) -> {});
+        }};
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        game = getIntent().getParcelableExtra(GAME_TO_SHOW);
 
         if (game.getNumberOfPlayers() == 3) {
             ConstraintLayout layout = findViewById(R.id.ConstraintLayout_Left);
@@ -90,6 +101,16 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_bar_score_tracker, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.miGameSettings) {
+            gameSettingsDialogBuilder.create().show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateInterface() {
@@ -142,5 +163,25 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnTsumo.setVisibility(visibility);
         btnRyuukyoku.setVisibility(visibility);
         btnChombo.setVisibility(visibility);
+    }
+
+    private String getGameSettingsDialogMessage() {
+        String message = String.format(
+            Locale.getDefault(),
+            "Initial points: %d\nMin. points to win: %d\nGame length: %s",
+            game.getInitialPoints(),
+            game.getMinPointsToWin(),
+            game.getGameLength().name()
+        );
+
+        if (game.getNumberOfPlayers() == 3) {
+            message = message.concat(String.format(
+                Locale.getDefault(),
+                "\nUse tsumo loss: %s",
+                game.usesTsumoLoss() ? "Yes" : "No"
+            ));
+        }
+
+        return message;
     }
 }

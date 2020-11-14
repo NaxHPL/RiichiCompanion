@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivOngoingGameRoundWind;
 
     private Game ongoingGame;
+    private AlertDialog.Builder newGameDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         tvOngoingGameDateTime = findViewById(R.id.tvOngoingGameDateTime);
         tvOngoingGameRoundNumber = findViewById(R.id.tvOngoingGameRoundNumber);
         ivOngoingGameRoundWind = findViewById(R.id.ivOngoingGameRoundWind);
+
+        newGameDialogBuilder = new AlertDialog.Builder(this) {{
+            setTitle(R.string.new_game_dialog_title);
+            setMessage(R.string.new_game_dialog_message);
+            setPositiveButton(R.string.yes, (dialog, which) -> startCreateGameActivity());
+            setNegativeButton(R.string.no, (dialog, which) -> {});
+        }};
     }
 
     @Override
@@ -62,15 +70,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(R.string.new_game_dialog_title);
-        builder.setMessage(R.string.new_game_dialog_message);
-        builder.setPositiveButton(R.string.yes, (dialog, which) -> startCreateGameActivity());
-        builder.setNegativeButton(R.string.no, (dialog, which) -> {});
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        newGameDialogBuilder.create().show();
     }
 
     private void startCreateGameActivity() {
