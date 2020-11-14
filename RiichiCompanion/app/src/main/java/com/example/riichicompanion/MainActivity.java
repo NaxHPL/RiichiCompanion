@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         newGameDialogBuilder = new AlertDialog.Builder(this) {{
             setTitle(R.string.new_game_dialog_title);
             setMessage(R.string.new_game_dialog_message);
-            setPositiveButton(R.string.yes, (dialog, which) -> startCreateGameActivity());
-            setNegativeButton(R.string.no, (dialog, which) -> {});
+            setPositiveButton(R.string.new_game, (dialog, which) -> startCreateGameActivity());
+            setNegativeButton(R.string.cancel, (dialog, which) -> {});
         }};
     }
 
