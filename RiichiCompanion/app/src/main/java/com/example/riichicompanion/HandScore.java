@@ -1,5 +1,7 @@
 package com.example.riichicompanion;
 
+import java.util.Locale;
+
 public class HandScore {
 
     private final int han;
@@ -28,5 +30,11 @@ public class HandScore {
 
     public int getYakumans() {
         return yakumans;
+    }
+
+    public String toDisplayString() {
+        return yakumans > 0 ?
+            String.format(Locale.getDefault(), "%d Yakuman", yakumans) :
+            String.format(Locale.getDefault(), "%d Han, %d Fu", han, fu);
     }
 }
