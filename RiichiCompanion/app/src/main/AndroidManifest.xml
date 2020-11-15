@@ -9,19 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="com.example.riichicompanion.ScoreTrackerActivity"
+        <activity
+            android:name=".ScoreTrackerActivity"
             android:label="Game"
-            android:parentActivityName="com.example.riichicompanion.MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="com.example.riichicompanion.CreateGameActivity"
+            android:name=".CreateGameActivity"
             android:label="Create Game"
-            android:parentActivityName="com.example.riichicompanion.MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="com.example.riichicompanion.MainActivity"
+            android:name=".MainActivity"
             android:label="Riichi Companion">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class ScoreTrackerActivity extends AppCompatActivity {
 
-    public static final String GAME_TO_SHOW = "com.example.mahjonghelper.GAME_TO_SHOW";
+    public static final String GAME_TO_SHOW = "com.example.riichicompanion.GAME_TO_SHOW";
 
     private TextView tvRiichiCount;
     private TextView tvHonbaCount;
@@ -31,15 +31,20 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private TextView tvRightScore;
     private TextView tvTopScore;
     private TextView tvLeftScore;
+    private TextView tvX;
+    private TextView tvX2;
     private ImageView ivRoundWind;
     private ImageView ivBottomWind;
     private ImageView ivRightWind;
     private ImageView ivTopWind;
     private ImageView ivLeftWind;
+    private ImageView ivRiichi;
+    private ImageView ivHonba;
     private Button btnRon;
     private Button btnTsumo;
     private Button btnRyuukyoku;
     private Button btnChombo;
+    private Button btnEndRound;
 
     private Game game;
     private AlertDialog.Builder gameSettingsDialogBuilder;
@@ -65,24 +70,48 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvRightScore = findViewById(R.id.tvRightScore);
         tvTopScore = findViewById(R.id.tvTopScore);
         tvLeftScore = findViewById(R.id.tvLeftScore);
-        tvLeftScore = findViewById(R.id.tvLeftScore);
+        tvX = findViewById(R.id.tvX);
+        tvX2 = findViewById(R.id.tvX2);
         ivRoundWind = findViewById(R.id.ivRoundWind);
         ivBottomWind = findViewById(R.id.ivBottomWind);
         ivRightWind = findViewById(R.id.ivRightWind);
         ivTopWind = findViewById(R.id.ivTopWind);
         ivLeftWind = findViewById(R.id.ivLeftWind);
+        ivRiichi = findViewById(R.id.ivRiichi);
+        ivHonba = findViewById(R.id.ivHonba);
         btnRon = findViewById(R.id.btnRon);
         btnTsumo = findViewById(R.id.btnTsumo);
         btnRyuukyoku = findViewById(R.id.btnRyuukyoku);
         btnChombo = findViewById(R.id.btnChombo);
+        btnEndRound = findViewById(R.id.btnEndRound);
 
         game = getIntent().getParcelableExtra(GAME_TO_SHOW);
 
-        gameSettingsDialogBuilder = new AlertDialog.Builder(this) {{
-            setTitle(R.string.game_settings_dialog_title);
-            setMessage(getGameSettingsDialogMessage());
-            setPositiveButton(R.string.close, (dialog, which) -> {});
-        }};
+        setupGameSettingsDialog();
+    }
+
+    private void setupGameSettingsDialog() {
+        String message = String.format(
+            Locale.getDefault(),
+            "Initial points: %d\nMin. points to win: %d\nGame length: %s",
+            game.getInitialPoints(),
+            game.getMinPointsToWin(),
+            game.getGameLength().toString()
+        );
+
+        if (game.getNumberOfPlayers() == 3) {
+            message = message.concat(String.format(
+                Locale.getDefault(),
+                "\nUse tsumo loss: %s",
+                game.usesTsumoLoss() ? "Yes" : "No"
+            ));
+        }
+
+        gameSettingsDialogBuilder = new AlertDialog.Builder(this);
+
+        gameSettingsDialogBuilder.setTitle(R.string.game_settings_dialog_title)
+                                 .setMessage(message)
+                                 .setPositiveButton(R.string.close, (dialog, which) -> {});
     }
 
     @Override
@@ -134,10 +163,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvRightName.setText(String.format(Locale.getDefault(), "%s", game.getRightPlayer().getName()));
         tvTopName.setText(String.format(Locale.getDefault(), "%s", game.getTopPlayer().getName()));
         tvLeftName.setText(String.format(Locale.getDefault(), "%s", game.getLeftPlayer().getName()));
+
         tvBottomScore.setText(String.format(Locale.getDefault(), "%d", game.getBottomPlayer().getScore()));
         tvRightScore.setText(String.format(Locale.getDefault(), "%d", game.getRightPlayer().getScore()));
         tvTopScore.setText(String.format(Locale.getDefault(), "%d", game.getTopPlayer().getScore()));
         tvLeftScore.setText(String.format(Locale.getDefault(), "%d", game.getLeftPlayer().getScore()));
+
         ivBottomWind.setImageDrawable(game.getBottomPlayer().getSeatWind().getImage(this));
         ivRightWind.setImageDrawable(game.getRightPlayer().getSeatWind().getImage(this));
         ivTopWind.setImageDrawable(game.getTopPlayer().getSeatWind().getImage(this));
@@ -145,8 +176,21 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     public void endRound(View view) {
+        btnEndRound.setVisibility(View.INVISIBLE);
         showRoundInfo(false);
+        showRiichiAndHonba(false);
         showEndRoundOptions(true);
+    }
+
+    private void showRiichiAndHonba(boolean show) {
+        int visibility = show ? View.VISIBLE : View.INVISIBLE;
+
+        ivRiichi.setVisibility(visibility);
+        tvX.setVisibility(visibility);
+        tvRiichiCount.setVisibility(visibility);
+        ivHonba.setVisibility(visibility);
+        tvX2.setVisibility(visibility);
+        tvHonbaCount.setVisibility(visibility);
     }
 
     private void showRoundInfo(boolean show) {
@@ -165,23 +209,19 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnChombo.setVisibility(visibility);
     }
 
-    private String getGameSettingsDialogMessage() {
-        String message = String.format(
-            Locale.getDefault(),
-            "Initial points: %d\nMin. points to win: %d\nGame length: %s",
-            game.getInitialPoints(),
-            game.getMinPointsToWin(),
-            game.getGameLength().name()
-        );
+    public void selectBottomPlayer(View view) {
 
-        if (game.getNumberOfPlayers() == 3) {
-            message = message.concat(String.format(
-                Locale.getDefault(),
-                "\nUse tsumo loss: %s",
-                game.usesTsumoLoss() ? "Yes" : "No"
-            ));
-        }
+    }
 
-        return message;
+    public void selectRightPlayer(View view) {
+
+    }
+
+    public void selectTopPlayer(View view) {
+
+    }
+
+    public void selectLeftPlayer(View view) {
+
     }
 }
