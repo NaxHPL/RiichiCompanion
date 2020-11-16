@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ScoreTrackerActivity extends AppCompatActivity {
@@ -29,9 +30,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private AlertDialog.Builder gameSettingsDialogBuilder;
     private boolean inEndRoundProcess;
     private EndRoundStep currentStep;
-    private Player selectedLoser;
     private Handler beforeFadeOutHandler;
     private Handler afterFadeOutHandler;
+
+    private Player selectedLoser;
+    private ArrayList<Player> selectedPlayersInTenpai;
+    private ArrayList<Player> selectedPlayersDeclaredRiichi;
 
     //region Views
 
@@ -64,6 +68,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private ImageView ivLeftWind;
     private ImageView ivRiichi;
     private ImageView ivHonba;
+    private ImageView ivRiichiBottom;
+    private ImageView ivRiichiRight;
+    private ImageView ivRiichiTop;
+    private ImageView ivRiichiLeft;
     private Button btnRon;
     private Button btnTsumo;
     private Button btnRyuukyoku;
@@ -75,6 +83,68 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     //endregion
 
     //region End round steps
+
+    private final EndRoundStep ryuukyokuStep3 = new EndRoundStep(
+        "",
+        () -> {
+            tvMiddleText.setVisibility(View.INVISIBLE);
+            btnConfirm.setVisibility(View.VISIBLE);
+        },
+        (player) -> {},
+        () -> {
+            int bottomPlayerScoreBefore = game.getBottomPlayer().getScore();
+            int rightPlayerScoreBefore = game.getRightPlayer().getScore();
+            int topPlayerScoreBefore = game.getTopPlayer().getScore();
+            int leftPlayerScoreBefore = game.getLeftPlayer().getScore();
+
+            RoundCalculator.updateGameStateFromRyuukyoku(game, selectedPlayersInTenpai, selectedPlayersDeclaredRiichi);
+            PersistentStorage.saveOngoingGame(this, game);
+            updateInterface();
+
+            hidePlayerRiichiSticks();
+            btnConfirm.setVisibility(View.INVISIBLE);
+            btnEndRound.setVisibility(View.VISIBLE);
+            showRiichiAndHonba(true);
+            showRoundInfo(true);
+
+            showScoreChange(game.getBottomPlayer().getScore() - bottomPlayerScoreBefore, tvBottomPlayerAux);
+            showScoreChange(game.getRightPlayer().getScore() - rightPlayerScoreBefore, tvRightPlayerAux);
+            showScoreChange(game.getTopPlayer().getScore() - topPlayerScoreBefore, tvTopPlayerAux);
+            showScoreChange(game.getLeftPlayer().getScore() - leftPlayerScoreBefore, tvLeftPlayerAux);
+            beforeFadeOutHandler.postDelayed(this::fadeOutAuxViews, TIME_BEFORE_AUX_FADE_OUT);
+
+            inEndRoundProcess = false;
+        },
+        null
+    );
+    private final EndRoundStep ryuukyokuStep2 = new EndRoundStep(
+        "Who declared riichi?",
+        () -> {
+            selectedPlayersDeclaredRiichi.clear();
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            setAllPlayersClickable(true);
+        },
+        this::setPlayerAsDeclaredRiichi,
+        () -> {
+            btnContinue.setVisibility(View.INVISIBLE);
+            setAllPlayersClickable(false);
+        },
+        ryuukyokuStep3
+    );
+    private final EndRoundStep ryuukyokuStep1 = new EndRoundStep(
+        "Who was in tenpai?",
+        () -> {
+            selectedPlayersInTenpai.clear();
+            showEndRoundButtons(false);
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setVisibility(View.VISIBLE);
+            btnContinue.setVisibility(View.VISIBLE);
+            setAllPlayersClickable(true);
+        },
+        this::setPlayerAsInTenpai,
+        () -> setAllPlayersClickable(false),
+        ryuukyokuStep2
+    );
 
     private final EndRoundStep chomboStep2 = new EndRoundStep(
         "",
@@ -119,7 +189,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         },
         (player) -> {
             setPlayerAsChomboLoser(player);
-            continueToNextStep();
+            continueToNextStep(btnContinue);
         },
         () -> setAllPlayersClickable(false),
         chomboStep2
@@ -142,6 +212,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         inEndRoundProcess = false;
         beforeFadeOutHandler = new Handler();
         afterFadeOutHandler = new Handler();
+        selectedPlayersInTenpai = new ArrayList<>();
+        selectedPlayersDeclaredRiichi = new ArrayList<>();
 
         //region Views
 
@@ -174,6 +246,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         ivLeftWind = findViewById(R.id.ivLeftWind);
         ivRiichi = findViewById(R.id.ivRiichi);
         ivHonba = findViewById(R.id.ivHonba);
+        ivRiichiBottom = findViewById(R.id.ivRiichiBottom);
+        ivRiichiRight = findViewById(R.id.ivRiichiRight);
+        ivRiichiTop = findViewById(R.id.ivRiichiTop);
+        ivRiichiLeft = findViewById(R.id.ivRiichiLeft);
         btnRon = findViewById(R.id.btnRon);
         btnTsumo = findViewById(R.id.btnTsumo);
         btnRyuukyoku = findViewById(R.id.btnRyuukyoku);
@@ -329,26 +405,72 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvLeftPlayerAux.setVisibility(View.INVISIBLE);
     }
 
+    private void hidePlayerRiichiSticks() {
+        ivRiichiBottom.setVisibility(View.INVISIBLE);
+        ivRiichiRight.setVisibility(View.INVISIBLE);
+        ivRiichiTop.setVisibility(View.INVISIBLE);
+        ivRiichiLeft.setVisibility(View.INVISIBLE);
+    }
+
+    public void startRyuukyokuProcess(View view) {
+        currentStep = ryuukyokuStep1;
+        currentStep.doOnStepStart();
+    }
+
     public void startChomboProcess(View view) {
         currentStep = chomboStep1;
-        chomboStep1.doOnStepStart();
+        currentStep.doOnStepStart();
+    }
+
+    private void setPlayerAsInTenpai(Player player) {
+        if (!selectedPlayersInTenpai.contains(player))
+            selectedPlayersInTenpai.add(player);
+
+        TextView tvPlayerAux;
+
+        if (player == game.getBottomPlayer())
+            tvPlayerAux = tvBottomPlayerAux;
+        else if (player == game.getRightPlayer())
+            tvPlayerAux = tvRightPlayerAux;
+        else if (player == game.getTopPlayer())
+            tvPlayerAux = tvTopPlayerAux;
+        else
+            tvPlayerAux = tvLeftPlayerAux;
+
+        tvPlayerAux.setText(String.format(Locale.getDefault(),  "%s", "Tenpai"));
+        tvPlayerAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.won_text, getTheme()));
+        tvPlayerAux.setVisibility(View.VISIBLE);
+    }
+
+    private void setPlayerAsDeclaredRiichi(Player player) {
+        if(!selectedPlayersDeclaredRiichi.contains(player))
+            selectedPlayersDeclaredRiichi.add(player);
+
+        if (player == game.getBottomPlayer())
+            ivRiichiBottom.setVisibility(View.VISIBLE);
+        else if (player == game.getRightPlayer())
+            ivRiichiRight.setVisibility(View.VISIBLE);
+        else if (player == game.getTopPlayer())
+            ivRiichiTop.setVisibility(View.VISIBLE);
+        else
+            ivRiichiLeft.setVisibility(View.VISIBLE);
     }
 
     private void setPlayerAsChomboLoser(Player player) {
-        TextView tvPlayerState;
+        TextView tvPlayerAux;
 
         if (player == game.getBottomPlayer())
-            tvPlayerState = tvBottomPlayerAux;
+            tvPlayerAux = tvBottomPlayerAux;
         else if (player == game.getRightPlayer())
-            tvPlayerState = tvRightPlayerAux;
+            tvPlayerAux = tvRightPlayerAux;
         else if (player == game.getTopPlayer())
-            tvPlayerState = tvTopPlayerAux;
+            tvPlayerAux = tvTopPlayerAux;
         else
-            tvPlayerState = tvLeftPlayerAux;
+            tvPlayerAux = tvLeftPlayerAux;
 
-        tvPlayerState.setText(String.format(Locale.getDefault(),  "%s", "Failed"));
-        tvPlayerState.setTextColor(ResourcesCompat.getColor(getResources(), R.color.lost_text, getTheme()));
-        tvPlayerState.setVisibility(View.VISIBLE);
+        tvPlayerAux.setText(String.format(Locale.getDefault(),  "%s", "Failed"));
+        tvPlayerAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.lost_text, getTheme()));
+        tvPlayerAux.setVisibility(View.VISIBLE);
 
         selectedLoser = player;
     }
@@ -381,10 +503,6 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     public void continueToNextStep(View view) {
-        continueToNextStep();
-    }
-
-    private void continueToNextStep() {
         currentStep.doOnStepEnd();
         currentStep = currentStep.getNextStep();
 

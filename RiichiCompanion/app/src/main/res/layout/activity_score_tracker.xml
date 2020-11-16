@@ -60,6 +60,17 @@
             app:layout_constraintEnd_toStartOf="@+id/tvBottomScore"
             app:srcCompat="@drawable/east" />
 
+        <ImageView
+            android:id="@+id/ivRiichiBottom"
+            android:layout_width="17dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvBottomScore"
+            app:srcCompat="@drawable/riichi_stick" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,6 +115,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvTopScore"
             app:srcCompat="@drawable/west" />
+
+        <ImageView
+            android:id="@+id/ivRiichiTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvTopScore"
+            app:srcCompat="@drawable/riichi_stick" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,6 +175,17 @@
             app:layout_constraintEnd_toStartOf="@+id/tvRightScore"
             app:srcCompat="@drawable/south" />
 
+        <ImageView
+            android:id="@+id/ivRiichiRight"
+            android:layout_width="17dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvRightScore"
+            app:srcCompat="@drawable/riichi_stick" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -198,6 +231,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvLeftScore"
             app:srcCompat="@drawable/north" />
+
+        <ImageView
+            android:id="@+id/ivRiichiLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvLeftScore"
+            app:srcCompat="@drawable/riichi_stick" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -380,6 +424,7 @@
             android:id="@+id/btnRyuukyoku"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="startRyuukyokuProcess"
             android:text="Ryuukyoku"
             android:textSize="14sp"
             android:visibility="invisible"
@@ -432,11 +477,12 @@
 
     <TextView
         android:id="@+id/tvBottomPlayerAux"
-        android:layout_width="wrap_content"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="95dp"
         android:shadowRadius="7"
         android:text="4 Han, 50 Fu"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#009600"
         android:textSize="24sp"
@@ -470,7 +516,7 @@
         android:layout_height="wrap_content"
         android:rotation="90"
         android:shadowRadius="7"
-        android:text="In tenpai"
+        android:text="Tenpai"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#009600"
@@ -484,12 +530,13 @@
 
     <TextView
         android:id="@+id/tvTopPlayerAux"
-        android:layout_width="wrap_content"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="95dp"
         android:rotation="180"
         android:shadowRadius="7"
         android:text="TextView"
+        android:textAlignment="center"
         android:textColor="@color/lost_text"
         android:textSize="24sp"
         android:textStyle="bold"
