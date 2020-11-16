@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnDecreaseHan"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="—"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvHan"
+        app:layout_constraintEnd_toStartOf="@+id/tvHan" />
+
+    <Button
+        android:id="@+id/btnDecreaseFu"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="—"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvFu"
+        app:layout_constraintEnd_toStartOf="@+id/tvFu" />
+
+    <Button
+        android:id="@+id/btnDecreaseYakuman"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="—"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvYakuman"
+        app:layout_constraintEnd_toStartOf="@+id/tvYakuman" />
+
+    <Button
+        android:id="@+id/btnIncreaseHan"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvHan"
+        app:layout_constraintStart_toEndOf="@+id/tvHan" />
+
+    <Button
+        android:id="@+id/btnIncreaseFu"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvFu"
+        app:layout_constraintStart_toEndOf="@+id/tvFu" />
+
+    <Button
+        android:id="@+id/btnIncreaseYakuman"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvYakuman"
+        app:layout_constraintStart_toEndOf="@+id/tvYakuman" />
+
+    <TextView
+        android:id="@+id/tvHan"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="1"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFu"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="20"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHan" />
+
+    <TextView
+        android:id="@+id/tvYakuman"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="1"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chkYakuman" />
+
+    <TextView
+        android:id="@+id/tvHanLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Han:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvHan"
+        app:layout_constraintEnd_toStartOf="@+id/btnDecreaseHan" />
+
+    <TextView
+        android:id="@+id/tvFuLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Fu:"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvFu"
+        app:layout_constraintEnd_toStartOf="@+id/btnDecreaseFu" />
+
+    <TextView
+        android:id="@+id/tvYakumanLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Yakuman:"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvYakuman"
+        app:layout_constraintEnd_toStartOf="@+id/btnDecreaseYakuman" />
+
+    <CheckBox
+        android:id="@+id/chkYakuman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Yakuman"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
