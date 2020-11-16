@@ -30,10 +30,7 @@ public class CreateGameActivity extends AppCompatActivity {
     private Spinner spinGameLength;
     private ToggleButton tbUseTsumoLoss;
     private FloatingActionButton fabRemoveFourthPlayer;
-    private Button btnCreate;
     private Button btnAddPlayer;
-    private ConstraintLayout constraintLayout;
-    private ConstraintSet constraintSet;
     private boolean threePlayerGame;
 
     @Override
@@ -56,10 +53,7 @@ public class CreateGameActivity extends AppCompatActivity {
         spinGameLength = findViewById(R.id.spinGameLength);
         tbUseTsumoLoss = findViewById(R.id.tbUseTsumoLoss);
         fabRemoveFourthPlayer = findViewById(R.id.fabRemoveFourthPlayer);
-        btnCreate = findViewById(R.id.btnCreate);
         btnAddPlayer = findViewById(R.id.btnAddPlayer);
-        constraintLayout = findViewById(R.id.constraintLayoutCreateGame);
-        constraintSet = new ConstraintSet();
         threePlayerGame = false;
     }
 
@@ -156,15 +150,8 @@ public class CreateGameActivity extends AppCompatActivity {
         etNorthPlayer.setVisibility(View.INVISIBLE);
         btnAddPlayer.setVisibility(View.VISIBLE);
 
-        tvTsumoLoss.setVisibility(View.VISIBLE);
-        tbUseTsumoLoss.setVisibility(View.VISIBLE);
-
-        constraintSet.clone(constraintLayout);
-        constraintSet.connect(
-            btnCreate.getId(), ConstraintSet.TOP,
-            tbUseTsumoLoss.getId(), ConstraintSet.BOTTOM
-        );
-        constraintSet.applyTo(constraintLayout);
+        tvTsumoLoss.setEnabled(true);
+        tbUseTsumoLoss.setEnabled(true);
 
         threePlayerGame = true;
     }
@@ -174,15 +161,8 @@ public class CreateGameActivity extends AppCompatActivity {
         etNorthPlayer.setVisibility(View.VISIBLE);
         btnAddPlayer.setVisibility(View.INVISIBLE);
 
-        tvTsumoLoss.setVisibility(View.INVISIBLE);
-        tbUseTsumoLoss.setVisibility(View.INVISIBLE);
-
-        constraintSet.clone(constraintLayout);
-        constraintSet.connect(
-            btnCreate.getId(), ConstraintSet.TOP,
-            spinGameLength.getId(), ConstraintSet.BOTTOM
-        );
-        constraintSet.applyTo(constraintLayout);
+        tvTsumoLoss.setEnabled(false);
+        tbUseTsumoLoss.setEnabled(false);
 
         threePlayerGame = false;
     }
