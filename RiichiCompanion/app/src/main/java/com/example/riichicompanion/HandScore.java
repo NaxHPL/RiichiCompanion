@@ -33,8 +33,20 @@ public class HandScore {
     }
 
     public String toDisplayString() {
-        return yakumans > 0 ?
-            String.format(Locale.getDefault(), "%d Yakuman", yakumans) :
-            String.format(Locale.getDefault(), "%d Han, %d Fu", han, fu);
+        if (yakumans > 0)
+            return String.format(Locale.getDefault(), "%d Yakuman", yakumans);
+
+        int displayFu = fu;
+
+        if (displayFu < 20)
+            displayFu = 20;
+        else if (displayFu != 25)
+            displayFu = roundUpToNearest10(fu);
+
+        return String.format(Locale.getDefault(), "%d Han, %d Fu", han, displayFu);
+    }
+
+    private int roundUpToNearest10(int x) {
+        return ((x + 9) / 10 ) * 10;
     }
 }
