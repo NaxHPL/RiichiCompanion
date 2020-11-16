@@ -18,14 +18,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayout_Bottom"
+        android:id="@+id/clBottom"
         android:layout_width="310dp"
         android:layout_height="97dp"
         android:background="?attr/selectableItemBackground"
-        android:clickable="false"
-        android:focusable="true"
         android:onClick="selectBottomPlayer"
-        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_VeryBottom"
+        app:layout_constraintBottom_toTopOf="@+id/clVeryBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -65,12 +63,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayout_Top"
+        android:id="@+id/clTop"
         android:layout_width="310dp"
         android:layout_height="97dp"
         android:background="?attr/selectableItemBackground"
-        android:clickable="false"
-        android:focusable="true"
         android:onClick="selectTopPlayer"
         android:rotation="180"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,18 +108,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayout_Right"
+        android:id="@+id/clRight"
         android:layout_width="310dp"
         android:layout_height="97dp"
         android:background="?attr/selectableItemBackground"
-        android:clickable="false"
-        android:focusable="true"
         android:onClick="selectRightPlayer"
         android:rotation="-90"
         android:translationX="102dp"
-        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_Bottom"
+        app:layout_constraintBottom_toTopOf="@+id/clBottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Top">
+        app:layout_constraintTop_toBottomOf="@+id/clTop">
 
         <TextView
             android:id="@+id/tvRightName"
@@ -162,18 +156,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayout_Left"
+        android:id="@+id/clLeft"
         android:layout_width="310dp"
         android:layout_height="97dp"
         android:background="?attr/selectableItemBackground"
-        android:clickable="false"
-        android:focusable="true"
         android:onClick="selectLeftPlayer"
         android:rotation="90"
         android:translationX="-102dp"
-        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_Bottom"
+        app:layout_constraintBottom_toTopOf="@+id/clBottom"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Top">
+        app:layout_constraintTop_toBottomOf="@+id/clTop">
 
         <TextView
             android:id="@+id/tvLeftName"
@@ -209,7 +201,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayout_VeryBottom"
+        android:id="@+id/clVeryBottom"
         android:layout_width="0dp"
         android:layout_height="82dp"
         android:background="#282828"
@@ -307,16 +299,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="101dp"
+            android:layout_height="62dp"
+            android:layout_marginEnd="16dp"
+            android:onClick="continueToNextStep"
+            android:text="Confirm"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ConstraintLayout_Middle"
+        android:id="@+id/clMiddle"
         android:layout_width="210dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/ConstraintLayout_Bottom"
+        app:layout_constraintBottom_toTopOf="@+id/clBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout_Top">
+        app:layout_constraintTop_toBottomOf="@+id/clTop">
 
         <ImageView
             android:id="@+id/ivRoundWind"
@@ -389,6 +393,7 @@
             android:id="@+id/btnChombo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:onClick="startChomboProcess"
             android:text="Chombo"
             android:textSize="14sp"
             android:visibility="invisible"
@@ -401,7 +406,7 @@
         <TextView
             android:id="@+id/tvMiddleText"
             android:layout_width="130dp"
-            android:layout_height="450dp"
+            android:layout_height="100dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="Who declared riichi?"
@@ -412,70 +417,85 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvBottomPlayerState"
+        <Button
+            android:id="@+id/btnContinue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:shadowColor="#BF00FF00"
-            android:shadowRadius="7"
-            android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#009600"
-            android:textSize="24sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tvRightPlayerState"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="-90"
-            android:shadowColor="#BF00FF00"
-            android:shadowRadius="7"
-            android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#009600"
-            android:textSize="24sp"
-            android:translationX="34dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvLeftPlayerState"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="90"
-            android:shadowColor="#BF00FF00"
-            android:shadowRadius="7"
-            android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#009600"
-            android:textSize="24sp"
-            android:translationX="-34dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvTopPlayerState"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="180"
-            android:shadowColor="@color/lost_text_shadow"
-            android:shadowRadius="7"
-            android:text="TextView"
-            android:textColor="@color/lost_text"
-            android:textSize="24sp"
+            android:onClick="continueToNextStep"
+            android:text="Continue"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMiddleText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvBottomPlayerState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="95dp"
+        android:shadowRadius="7"
+        android:text="4 Han, 50 Fu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#009600"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/clVeryBottom"
+        app:layout_constraintEnd_toEndOf="@+id/clBottom"
+        app:layout_constraintStart_toStartOf="@+id/clBottom" />
+
+    <TextView
+        android:id="@+id/tvRightPlayerState"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:rotation="-90"
+        android:shadowRadius="7"
+        android:text="3 Han, 25 Fu"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#009600"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:translationX="41dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/clRight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/clRight" />
+
+    <TextView
+        android:id="@+id/tvLeftPlayerState"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:rotation="90"
+        android:shadowRadius="7"
+        android:text="In tenpai"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#009600"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:translationX="-41dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/clLeft"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/clLeft" />
+
+    <TextView
+        android:id="@+id/tvTopPlayerState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="95dp"
+        android:rotation="180"
+        android:shadowRadius="7"
+        android:text="TextView"
+        android:textColor="@color/lost_text"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/clTop"
+        app:layout_constraintStart_toStartOf="@+id/clTop"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarScoreTrackerActivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

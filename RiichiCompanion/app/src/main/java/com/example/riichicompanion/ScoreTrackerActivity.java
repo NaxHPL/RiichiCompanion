@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.Locale;
 
@@ -20,6 +21,17 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     public static final String GAME_TO_SHOW = "com.example.riichicompanion.GAME_TO_SHOW";
 
+    private Game game;
+    private AlertDialog.Builder gameSettingsDialogBuilder;
+    private EndRoundStep currentStep;
+    private Player selectedLoser;
+
+    //region Views
+
+    private ConstraintLayout clBottom;
+    private ConstraintLayout clRight;
+    private ConstraintLayout clTop;
+    private ConstraintLayout clLeft;
     private TextView tvRiichiCount;
     private TextView tvHonbaCount;
     private TextView tvRoundCount;
@@ -33,6 +45,11 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private TextView tvLeftScore;
     private TextView tvX;
     private TextView tvX2;
+    private TextView tvBottomPlayerState;
+    private TextView tvRightPlayerState;
+    private TextView tvTopPlayerState;
+    private TextView tvLeftPlayerState;
+    private TextView tvMiddleText;
     private ImageView ivRoundWind;
     private ImageView ivBottomWind;
     private ImageView ivRightWind;
@@ -45,9 +62,50 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private Button btnRyuukyoku;
     private Button btnChombo;
     private Button btnEndRound;
+    private Button btnContinue;
+    private Button btnConfirm;
 
-    private Game game;
-    private AlertDialog.Builder gameSettingsDialogBuilder;
+    //endregion
+
+    //region End round steps
+
+    private final EndRoundStep chomboStep2 = new EndRoundStep(
+        "",
+        () -> {
+            tvMiddleText.setVisibility(View.INVISIBLE);
+            btnConfirm.setVisibility(View.VISIBLE);
+        },
+        (player) -> {},
+        () -> {
+            RoundCalculator.updateGameStateFromChombo(game, selectedLoser);
+            PersistentStorage.saveOngoingGame(this, game);
+            updateInterface();
+
+            btnConfirm.setVisibility(View.INVISIBLE);
+            btnEndRound.setVisibility(View.VISIBLE);
+            showPlayerStateTextViews(false);
+            showRiichiAndHonba(true);
+            showRoundInfo(true);
+        },
+        null
+    );
+    private final EndRoundStep chomboStep1 = new EndRoundStep(
+        "Who failed?",
+        () -> {
+            showEndRoundButtons(false);
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setVisibility(View.VISIBLE);
+            setAllPlayersClickable(true);
+        },
+        (player) -> {
+            setPlayerAsChomboLoser(player);
+            continueToNextStep();
+        },
+        () -> setAllPlayersClickable(false),
+        chomboStep2
+    );
+
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +117,15 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         if (ab != null)
             ab.setDisplayHomeAsUpEnabled(true);
 
+        game = getIntent().getParcelableExtra(GAME_TO_SHOW);
+        setupGameSettingsDialog();
+
+        //region Views
+
+        clBottom = findViewById(R.id.clBottom);
+        clRight = findViewById(R.id.clRight);
+        clTop = findViewById(R.id.clTop);
+        clLeft = findViewById(R.id.clLeft);
         tvRiichiCount = findViewById(R.id.tvRiichiCount);
         tvHonbaCount = findViewById(R.id.tvHonbaCount);
         tvRoundCount = findViewById(R.id.tvRoundCount);
@@ -72,6 +139,11 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvLeftScore = findViewById(R.id.tvLeftScore);
         tvX = findViewById(R.id.tvX);
         tvX2 = findViewById(R.id.tvX2);
+        tvBottomPlayerState = findViewById(R.id.tvBottomPlayerState);
+        tvRightPlayerState = findViewById(R.id.tvRightPlayerState);
+        tvTopPlayerState = findViewById(R.id.tvTopPlayerState);
+        tvLeftPlayerState = findViewById(R.id.tvLeftPlayerState);
+        tvMiddleText = findViewById(R.id.tvMiddleText);
         ivRoundWind = findViewById(R.id.ivRoundWind);
         ivBottomWind = findViewById(R.id.ivBottomWind);
         ivRightWind = findViewById(R.id.ivRightWind);
@@ -84,10 +156,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnRyuukyoku = findViewById(R.id.btnRyuukyoku);
         btnChombo = findViewById(R.id.btnChombo);
         btnEndRound = findViewById(R.id.btnEndRound);
+        btnContinue = findViewById(R.id.btnContinue);
+        btnConfirm = findViewById(R.id.btnConfirm);
 
-        game = getIntent().getParcelableExtra(GAME_TO_SHOW);
-
-        setupGameSettingsDialog();
+        //endregion
     }
 
     private void setupGameSettingsDialog() {
@@ -108,7 +180,6 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         }
 
         gameSettingsDialogBuilder = new AlertDialog.Builder(this);
-
         gameSettingsDialogBuilder.setTitle(R.string.game_settings_dialog_title)
                                  .setMessage(message)
                                  .setPositiveButton(R.string.close, (dialog, which) -> {});
@@ -119,11 +190,16 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         super.onStart();
 
         if (game.getNumberOfPlayers() == 3) {
-            ConstraintLayout layout = findViewById(R.id.ConstraintLayout_Left);
-            layout.setVisibility(View.INVISIBLE);
+            clLeft.setVisibility(View.INVISIBLE);
+            clLeft.setOnClickListener(null);
         }
 
         updateInterface();
+
+        clBottom.setClickable(false);
+        clRight.setClickable(false);
+        clTop.setClickable(false);
+        clLeft.setClickable(false);
     }
 
     @Override
@@ -179,7 +255,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnEndRound.setVisibility(View.INVISIBLE);
         showRoundInfo(false);
         showRiichiAndHonba(false);
-        showEndRoundOptions(true);
+        showEndRoundButtons(true);
     }
 
     private void showRiichiAndHonba(boolean show) {
@@ -200,7 +276,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvRoundCount.setVisibility(visibility);
     }
 
-    private void showEndRoundOptions(boolean show) {
+    private void showEndRoundButtons(boolean show) {
         int visibility = show ? View.VISIBLE : View.INVISIBLE;
 
         btnRon.setVisibility(visibility);
@@ -209,19 +285,75 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnChombo.setVisibility(visibility);
     }
 
-    public void selectBottomPlayer(View view) {
+    private void showPlayerStateTextViews(boolean show) {
+        int visibility = show ? View.VISIBLE : View.INVISIBLE;
 
+        tvBottomPlayerState.setVisibility(visibility);
+        tvRightPlayerState.setVisibility(visibility);
+        tvTopPlayerState.setVisibility(visibility);
+        tvLeftPlayerState.setVisibility(visibility);
+    }
+
+    public void startChomboProcess(View view) {
+        currentStep = chomboStep1;
+        chomboStep1.doOnStepStart();
+    }
+
+    private void setPlayerAsChomboLoser(Player player) {
+        TextView tvPlayerState;
+
+        if (player == game.getBottomPlayer())
+            tvPlayerState = tvBottomPlayerState;
+        else if (player == game.getRightPlayer())
+            tvPlayerState = tvRightPlayerState;
+        else if (player == game.getTopPlayer())
+            tvPlayerState = tvTopPlayerState;
+        else
+            tvPlayerState = tvLeftPlayerState;
+
+        tvPlayerState.setText(String.format(Locale.getDefault(),  "%s", "Failed"));
+        tvPlayerState.setTextColor(ResourcesCompat.getColor(getResources(), R.color.lost_text, getTheme()));
+        tvPlayerState.setVisibility(View.VISIBLE);
+
+        selectedLoser = player;
+    }
+
+    public void selectBottomPlayer(View view) {
+        clBottom.setClickable(false);
+        currentStep.doOnPlayerSelected(game.getBottomPlayer());
     }
 
     public void selectRightPlayer(View view) {
-
+        clRight.setClickable(false);
+        currentStep.doOnPlayerSelected(game.getRightPlayer());
     }
 
     public void selectTopPlayer(View view) {
-
+        clTop.setClickable(false);
+        currentStep.doOnPlayerSelected(game.getTopPlayer());
     }
 
     public void selectLeftPlayer(View view) {
+        clLeft.setClickable(false);
+        currentStep.doOnPlayerSelected(game.getLeftPlayer());
+    }
 
+    private void setAllPlayersClickable(boolean clickable) {
+        clBottom.setClickable(clickable);
+        clRight.setClickable(clickable);
+        clTop.setClickable(clickable);
+        clLeft.setClickable(clickable);
+    }
+
+    public void continueToNextStep(View view) {
+        continueToNextStep();
+    }
+
+    private void continueToNextStep() {
+        currentStep.doOnStepEnd();
+        currentStep = currentStep.getNextStep();
+
+        if (currentStep != null)
+            currentStep.doOnStepStart();
     }
 }
