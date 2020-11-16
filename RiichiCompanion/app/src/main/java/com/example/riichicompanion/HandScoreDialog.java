@@ -32,10 +32,17 @@ public class HandScoreDialog extends AppCompatDialogFragment {
     private Button btnIncreaseYakuman;
     private CheckBox chkYakuman;
 
+    private final WinType winType;
     private HandScoreDialogListener listener;
+    private Button positiveButton;
+
+    public HandScoreDialog(WinType winType) {
+        this.winType = winType;
+    }
 
     public interface HandScoreDialogListener {
-        void applyHandScore(HandScore hs);
+        void onHandScoreConfirm(HandScore hs);
+        void onHandScoreDismiss();
     }
 
     @NonNull
@@ -47,7 +54,7 @@ public class HandScoreDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_hand_score, null);
 
         builder.setView(view)
-               .setNegativeButton("Cancel", (dialog, which) -> {})
+               .setNegativeButton("Cancel", (dialog, which) -> listener.onHandScoreDismiss())
                .setPositiveButton("OK", (dialog, which) -> {
                    HandScore hs;
 
@@ -56,11 +63,18 @@ public class HandScoreDialog extends AppCompatDialogFragment {
                    else
                        hs = new HandScore(getHan(), getFu());
 
-                   listener.applyHandScore(hs);
+                   listener.onHandScoreConfirm(hs);
                });
 
         initializeViews(view);
-        return builder.create();
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener((dialog) -> {
+            positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setEnabled(false);
+        });
+
+        return alertDialog;
     }
 
     @Override
@@ -105,6 +119,7 @@ public class HandScoreDialog extends AppCompatDialogFragment {
             enableHan(!checked);
             enableFu(!checked);
             showYakuman(checked);
+            disablePositiveButtonIfInvalidScore();
         });
     }
 
@@ -143,17 +158,20 @@ public class HandScoreDialog extends AppCompatDialogFragment {
         btnIncreaseYakuman.setVisibility(visibility);
     }
 
-    public void increaseHan() {
+    private void increaseHan() {
         tvHan.setText(String.format(Locale.getDefault(), "%d", getHan() + 1));
+        disablePositiveButtonIfInvalidScore();
     }
 
-    public void decreaseHan() {
+    private void decreaseHan() {
         int han = getHan();
         if (han > 1)
             tvHan.setText(String.format(Locale.getDefault(), "%d", han - 1));
+
+        disablePositiveButtonIfInvalidScore();
     }
 
-    public void increaseFu() {
+    private void increaseFu() {
         int fu = getFu();
 
         if (fu < 110) {
@@ -166,9 +184,11 @@ public class HandScoreDialog extends AppCompatDialogFragment {
 
             tvFu.setText(String.format(Locale.getDefault(), "%d", fu));
         }
+
+        disablePositiveButtonIfInvalidScore();
     }
 
-    public void decreaseFu() {
+    private void decreaseFu() {
         int fu = getFu();
 
         if (fu > 20) {
@@ -181,15 +201,35 @@ public class HandScoreDialog extends AppCompatDialogFragment {
 
             tvFu.setText(String.format(Locale.getDefault(), "%d", fu));
         }
+
+        disablePositiveButtonIfInvalidScore();
     }
 
-    public void increaseYakuman() {
+    private void increaseYakuman() {
         tvYakuman.setText(String.format(Locale.getDefault(), "%d", getYakuman() + 1));
     }
 
-    public void decreaseYakuman() {
+    private void decreaseYakuman() {
         int yakuman = getYakuman();
         if (yakuman > 1)
             tvYakuman.setText(String.format(Locale.getDefault(), "%d", yakuman - 1));
+    }
+
+    private void disablePositiveButtonIfInvalidScore() {
+        if (!chkYakuman.isChecked()) {
+            int han = getHan();
+            int fu = getFu();
+
+            if (han == 1 && fu <= 25) {
+                positiveButton.setEnabled(false);
+                return;
+            }
+            else if (han == 2 && fu == 25 && winType == WinType.Tsumo) {
+                positiveButton.setEnabled(false);
+                return;
+            }
+        }
+
+        positiveButton.setEnabled(true);
     }
 }
