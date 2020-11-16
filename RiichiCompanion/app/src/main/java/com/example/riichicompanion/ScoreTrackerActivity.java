@@ -2,9 +2,11 @@ package com.example.riichicompanion;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,11 +22,16 @@ import java.util.Locale;
 public class ScoreTrackerActivity extends AppCompatActivity {
 
     public static final String GAME_TO_SHOW = "com.example.riichicompanion.GAME_TO_SHOW";
+    private static final int TIME_BEFORE_AUX_FADE_OUT = 8000;
+    private static final int FADE_OUT_TIME = 1000;
 
     private Game game;
     private AlertDialog.Builder gameSettingsDialogBuilder;
+    private boolean inEndRoundProcess;
     private EndRoundStep currentStep;
     private Player selectedLoser;
+    private Handler beforeFadeOutHandler;
+    private Handler afterFadeOutHandler;
 
     //region Views
 
@@ -45,10 +52,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     private TextView tvLeftScore;
     private TextView tvX;
     private TextView tvX2;
-    private TextView tvBottomPlayerState;
-    private TextView tvRightPlayerState;
-    private TextView tvTopPlayerState;
-    private TextView tvLeftPlayerState;
+    private TextView tvBottomPlayerAux;
+    private TextView tvRightPlayerAux;
+    private TextView tvTopPlayerAux;
+    private TextView tvLeftPlayerAux;
     private TextView tvMiddleText;
     private ImageView ivRoundWind;
     private ImageView ivBottomWind;
@@ -77,21 +84,34 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         },
         (player) -> {},
         () -> {
+            int bottomPlayerScoreBefore = game.getBottomPlayer().getScore();
+            int rightPlayerScoreBefore = game.getRightPlayer().getScore();
+            int topPlayerScoreBefore = game.getTopPlayer().getScore();
+            int leftPlayerScoreBefore = game.getLeftPlayer().getScore();
+
             RoundCalculator.updateGameStateFromChombo(game, selectedLoser);
             PersistentStorage.saveOngoingGame(this, game);
             updateInterface();
 
             btnConfirm.setVisibility(View.INVISIBLE);
             btnEndRound.setVisibility(View.VISIBLE);
-            showPlayerStateTextViews(false);
             showRiichiAndHonba(true);
             showRoundInfo(true);
+
+            showScoreChange(game.getBottomPlayer().getScore() - bottomPlayerScoreBefore, tvBottomPlayerAux);
+            showScoreChange(game.getRightPlayer().getScore() - rightPlayerScoreBefore, tvRightPlayerAux);
+            showScoreChange(game.getTopPlayer().getScore() - topPlayerScoreBefore, tvTopPlayerAux);
+            showScoreChange(game.getLeftPlayer().getScore() - leftPlayerScoreBefore, tvLeftPlayerAux);
+            beforeFadeOutHandler.postDelayed(this::fadeOutAuxViews, TIME_BEFORE_AUX_FADE_OUT);
+
+            inEndRoundProcess = false;
         },
         null
     );
     private final EndRoundStep chomboStep1 = new EndRoundStep(
         "Who failed?",
         () -> {
+            selectedLoser = null;
             showEndRoundButtons(false);
             tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
             tvMiddleText.setVisibility(View.VISIBLE);
@@ -119,6 +139,9 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         game = getIntent().getParcelableExtra(GAME_TO_SHOW);
         setupGameSettingsDialog();
+        inEndRoundProcess = false;
+        beforeFadeOutHandler = new Handler();
+        afterFadeOutHandler = new Handler();
 
         //region Views
 
@@ -139,10 +162,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvLeftScore = findViewById(R.id.tvLeftScore);
         tvX = findViewById(R.id.tvX);
         tvX2 = findViewById(R.id.tvX2);
-        tvBottomPlayerState = findViewById(R.id.tvBottomPlayerState);
-        tvRightPlayerState = findViewById(R.id.tvRightPlayerState);
-        tvTopPlayerState = findViewById(R.id.tvTopPlayerState);
-        tvLeftPlayerState = findViewById(R.id.tvLeftPlayerState);
+        tvBottomPlayerAux = findViewById(R.id.tvBottomPlayerAux);
+        tvRightPlayerAux = findViewById(R.id.tvRightPlayerAux);
+        tvTopPlayerAux = findViewById(R.id.tvTopPlayerAux);
+        tvLeftPlayerAux = findViewById(R.id.tvLeftPlayerAux);
         tvMiddleText = findViewById(R.id.tvMiddleText);
         ivRoundWind = findViewById(R.id.ivRoundWind);
         ivBottomWind = findViewById(R.id.ivBottomWind);
@@ -218,6 +241,14 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (inEndRoundProcess)
+            cancelEndRoundProcess();
+        else
+            super.onBackPressed();
+    }
+
     private void updateInterface() {
         updateRoundInformation();
         updateStickCounts();
@@ -252,7 +283,13 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     public void endRound(View view) {
+        inEndRoundProcess = true;
+
+        beforeFadeOutHandler.removeCallbacksAndMessages(null);
+        afterFadeOutHandler.removeCallbacksAndMessages(null);
+
         btnEndRound.setVisibility(View.INVISIBLE);
+        hidePlayerAuxTextViews();
         showRoundInfo(false);
         showRiichiAndHonba(false);
         showEndRoundButtons(true);
@@ -285,13 +322,11 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnChombo.setVisibility(visibility);
     }
 
-    private void showPlayerStateTextViews(boolean show) {
-        int visibility = show ? View.VISIBLE : View.INVISIBLE;
-
-        tvBottomPlayerState.setVisibility(visibility);
-        tvRightPlayerState.setVisibility(visibility);
-        tvTopPlayerState.setVisibility(visibility);
-        tvLeftPlayerState.setVisibility(visibility);
+    private void hidePlayerAuxTextViews() {
+        tvBottomPlayerAux.setVisibility(View.INVISIBLE);
+        tvRightPlayerAux.setVisibility(View.INVISIBLE);
+        tvTopPlayerAux.setVisibility(View.INVISIBLE);
+        tvLeftPlayerAux.setVisibility(View.INVISIBLE);
     }
 
     public void startChomboProcess(View view) {
@@ -303,13 +338,13 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         TextView tvPlayerState;
 
         if (player == game.getBottomPlayer())
-            tvPlayerState = tvBottomPlayerState;
+            tvPlayerState = tvBottomPlayerAux;
         else if (player == game.getRightPlayer())
-            tvPlayerState = tvRightPlayerState;
+            tvPlayerState = tvRightPlayerAux;
         else if (player == game.getTopPlayer())
-            tvPlayerState = tvTopPlayerState;
+            tvPlayerState = tvTopPlayerAux;
         else
-            tvPlayerState = tvLeftPlayerState;
+            tvPlayerState = tvLeftPlayerAux;
 
         tvPlayerState.setText(String.format(Locale.getDefault(),  "%s", "Failed"));
         tvPlayerState.setTextColor(ResourcesCompat.getColor(getResources(), R.color.lost_text, getTheme()));
@@ -355,5 +390,55 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         if (currentStep != null)
             currentStep.doOnStepStart();
+    }
+
+    private void cancelEndRoundProcess() {
+        tvMiddleText.setVisibility(View.INVISIBLE);
+        btnConfirm.setVisibility(View.INVISIBLE);
+        btnContinue.setVisibility(View.INVISIBLE);
+        hidePlayerAuxTextViews();
+        showEndRoundButtons(false);
+
+        btnEndRound.setVisibility(View.VISIBLE);
+        showRiichiAndHonba(true);
+        showRoundInfo(true);
+
+        inEndRoundProcess = false;
+    }
+
+    private void showScoreChange(int scoreDelta, TextView auxView) {
+        if (scoreDelta == 0) {
+            auxView.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        if (scoreDelta > 0) {
+            auxView.setTextColor(ResourcesCompat.getColor(getResources(), R.color.won_text, getTheme()));
+            auxView.setText(String.format(Locale.getDefault(), "+%d", scoreDelta));
+        }
+        else {
+            auxView.setTextColor(ResourcesCompat.getColor(getResources(), R.color.lost_text, getTheme()));
+            auxView.setText(String.format(Locale.getDefault(), "%d", scoreDelta));
+        }
+
+        auxView.setVisibility(View.VISIBLE);
+    }
+
+    private void fadeOutAuxViews() {
+        for (TextView tv : new TextView[] {tvBottomPlayerAux, tvRightPlayerAux, tvTopPlayerAux, tvLeftPlayerAux}) {
+            if (tv.getVisibility() == View.VISIBLE) {
+                tv.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
+            }
+        }
+
+        afterFadeOutHandler.postDelayed(
+            () -> {
+                tvBottomPlayerAux.setVisibility(View.INVISIBLE);
+                tvRightPlayerAux.setVisibility(View.INVISIBLE);
+                tvTopPlayerAux.setVisibility(View.INVISIBLE);
+                tvLeftPlayerAux.setVisibility(View.INVISIBLE);
+            },
+            FADE_OUT_TIME
+        );
     }
 }

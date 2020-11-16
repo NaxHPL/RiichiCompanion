@@ -431,7 +431,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tvBottomPlayerState"
+        android:id="@+id/tvBottomPlayerAux"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="95dp"
@@ -447,7 +447,7 @@
         app:layout_constraintStart_toStartOf="@+id/clBottom" />
 
     <TextView
-        android:id="@+id/tvRightPlayerState"
+        android:id="@+id/tvRightPlayerAux"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:rotation="-90"
@@ -465,7 +465,7 @@
         app:layout_constraintTop_toTopOf="@+id/clRight" />
 
     <TextView
-        android:id="@+id/tvLeftPlayerState"
+        android:id="@+id/tvLeftPlayerAux"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:rotation="90"
@@ -483,7 +483,7 @@
         app:layout_constraintTop_toTopOf="@+id/clLeft" />
 
     <TextView
-        android:id="@+id/tvTopPlayerState"
+        android:id="@+id/tvTopPlayerAux"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="95dp"
