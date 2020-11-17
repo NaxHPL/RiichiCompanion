@@ -23,22 +23,25 @@ public class Game implements Parcelable {
     private final String startDateTime;
     private final GameLength gameLength;
     private final boolean useTsumoLoss;
+    private boolean isFinished;
+    private boolean dealerRecentlyWonInAllLast;
 
-    public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer,
-                int initialPoints, int minPointsToWin, int riichiCount, int honbaCount, int roundNumber,
-                int numberOfPlayers, GameLength gameLength, boolean useTsumoLoss) {
+    public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer, int initialPoints,
+                int minPointsToWin, int numberOfPlayers, GameLength gameLength, boolean useTsumoLoss) {
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
         this.leftPlayer = leftPlayer;
         this.initialPoints = initialPoints;
         this.minPointsToWin = minPointsToWin;
-        this.riichiCount = riichiCount;
-        this.honbaCount = honbaCount;
-        this.roundNumber = roundNumber;
+        this.riichiCount = 0;
+        this.honbaCount = 0;
+        this.roundNumber = 1;
         this.numberOfPlayers = numberOfPlayers;
         this.gameLength = gameLength;
         this.useTsumoLoss = useTsumoLoss;
+        this.isFinished = false;
+        this.dealerRecentlyWonInAllLast = false;
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
@@ -61,6 +64,8 @@ public class Game implements Parcelable {
         startDateTime = in.readString();
         gameLength = GameLength.valueOf(in.readString());
         useTsumoLoss = in.readInt() == 1;
+        isFinished = in.readInt() == 1;
+        dealerRecentlyWonInAllLast = in.readInt() == 1;
     }
 
     @Override
@@ -78,6 +83,8 @@ public class Game implements Parcelable {
         dest.writeString(startDateTime);
         dest.writeString(gameLength.name());
         dest.writeInt(useTsumoLoss ? 1 : 0);
+        dest.writeInt(isFinished ? 1 : 0);
+        dest.writeInt(dealerRecentlyWonInAllLast ? 1 : 0);
     }
 
     @Override
@@ -147,10 +154,6 @@ public class Game implements Parcelable {
         honbaCount++;
     }
 
-    public int getRoundNumber() {
-        return roundNumber;
-    }
-
     public int getRoundNumberForDisplay() {
         int numForDisplay = roundNumber % 4;
         return numForDisplay == 0 ? 4 : numForDisplay;
@@ -183,6 +186,18 @@ public class Game implements Parcelable {
 
     public int getHonbaValue() {
         return getNumberOfPlayers() == 3 ? 200 : 300;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+    }
+
+    public void setDealerRecentlyWonInAllLast(boolean dealerWon) {
+        this.dealerRecentlyWonInAllLast = dealerWon;
     }
 
     public Player[] getPlayers() {
@@ -241,26 +256,58 @@ public class Game implements Parcelable {
         }
     }
 
-//    public boolean isOver() {
-//        if (aPlayerHasNegativeScore())
-//            return true;
-//
-//
-//    }
-//
-//    private boolean aPlayerHasNegativeScore() {
-//        for (Player player : getPlayers()) {
-//            if (player.getScore() < 0)
-//                return true;
-//        }
-//
-//        return false;
-//    }
-//
-//    private boolean aPlayerHasEnoughPointsToWin() {
-//        for (Player player : getPlayers()) {
-//            if (player.getScore() >= minPointsToWin)
-//                return true;
-//        }
-//    }
+    public boolean satisfiesFinishConditions() {
+        if (isInExtraRound() && aPlayerHasEnoughPointsToWin())
+            return true;
+        if (aPlayerHasNegativeScore())
+            return true;
+        if (dealerRecentlyWonInAllLast && getDealer() == getPlayerInFirst())
+            return true;
+
+        return false;
+    }
+
+    private boolean aPlayerHasNegativeScore() {
+        for (Player player : getPlayers()) {
+            if (player.getScore() < 0)
+                return true;
+        }
+
+        return false;
+    }
+
+    private boolean aPlayerHasEnoughPointsToWin() {
+        for (Player player : getPlayers()) {
+            if (player.getScore() >= minPointsToWin)
+                return true;
+        }
+
+        return false;
+    }
+
+    private boolean isInExtraRound() {
+        if (gameLength == GameLength.Tonpuusen)
+            return roundNumber > 4;
+        else
+            return roundNumber > 8;
+    }
+
+    public boolean isInAllLast() {
+        if (gameLength == GameLength.Tonpuusen)
+            return roundNumber == 4;
+        else
+            return roundNumber == 8;
+    }
+
+    private Player getPlayerInFirst() {
+        Player[] players = getPlayers();
+        Player playerInFirst = players[0];
+
+        for (int i = 1; i < players.length; i++) {
+            if (players[i].getScore() > playerInFirst.getScore())
+                playerInFirst = players[i];
+        }
+
+        return playerInFirst;
+    }
 }

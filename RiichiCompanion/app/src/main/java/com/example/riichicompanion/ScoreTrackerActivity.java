@@ -106,6 +106,11 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             PersistentStorage.saveOngoingGame(this, game);
             updateInterface();
 
+            if (game.satisfiesFinishConditions()) {
+                finishGame();
+                return;
+            }
+
             hidePlayerRiichiSticks();
             btnConfirm.setVisibility(View.INVISIBLE);
             btnEndRound.setVisibility(View.VISIBLE);
@@ -182,6 +187,11 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             PersistentStorage.saveOngoingGame(this, game);
             updateInterface();
 
+            if (game.satisfiesFinishConditions()) {
+                finishGame();
+                return;
+            }
+
             hidePlayerRiichiSticks();
             btnConfirm.setVisibility(View.INVISIBLE);
             btnEndRound.setVisibility(View.VISIBLE);
@@ -243,6 +253,11 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             PersistentStorage.saveOngoingGame(this, game);
             updateInterface();
 
+            if (game.satisfiesFinishConditions()) {
+                finishGame();
+                return;
+            }
+
             hidePlayerRiichiSticks();
             btnConfirm.setVisibility(View.INVISIBLE);
             btnEndRound.setVisibility(View.VISIBLE);
@@ -303,6 +318,11 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             RoundCalculator.updateGameStateFromChombo(game, loser);
             PersistentStorage.saveOngoingGame(this, game);
             updateInterface();
+
+            if (game.satisfiesFinishConditions()) {
+                finishGame();
+                return;
+            }
 
             btnConfirm.setVisibility(View.INVISIBLE);
             btnEndRound.setVisibility(View.VISIBLE);
@@ -442,6 +462,17 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         clRight.setClickable(false);
         clTop.setClickable(false);
         clLeft.setClickable(false);
+
+        if (game.isFinished()) {
+            showRoundInfo(false);
+            showRiichiAndHonba(false);
+            btnEndRound.setVisibility(View.INVISIBLE);
+            hidePlayerAuxTextViews();
+
+            tvMiddleText.setTextSize(34.0f);
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
+            tvMiddleText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -472,7 +503,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setEnabled(!inEndRoundProcess);
+        menu.getItem(0).setEnabled(!inEndRoundProcess && !game.isFinished());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -795,10 +826,14 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         showRoundInfo(false);
         showRiichiAndHonba(false);
         btnEndRound.setVisibility(View.INVISIBLE);
+        btnConfirm.setVisibility(View.INVISIBLE);
         hidePlayerAuxTextViews();
 
         tvMiddleText.setTextSize(34.0f);
         tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
         tvMiddleText.setVisibility(View.VISIBLE);
+
+        game.setFinished(true);
+        PersistentStorage.saveOngoingGame(this, game);
     }
 }

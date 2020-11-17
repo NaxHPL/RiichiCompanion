@@ -89,9 +89,6 @@ public class CreateGameActivity extends AppCompatActivity {
             new Player(getNorthPlayerName(), getInitialPoints(), Wind.North),
             getInitialPoints(),
             getMinPointsToWin(),
-            0,
-            0,
-            1,
             threePlayerGame ? 3 : 4,
             getGameLength(),
             useTsumoLoss()

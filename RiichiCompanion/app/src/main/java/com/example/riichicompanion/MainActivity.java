@@ -91,8 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
         tvOngoingGamePlayers.setText(String.format(Locale.getDefault(), "%s", players));
         tvOngoingGameDateTime.setText(String.format(Locale.getDefault(), "%s", ongoingGame.getStartDateTime()));
-        tvOngoingGameRoundNumber.setText(String.format(Locale.getDefault(), "%d", ongoingGame.getRoundNumberForDisplay()));
-        ivOngoingGameRoundWind.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
+
+        if (ongoingGame.isFinished()) {
+            ivOngoingGameRoundWind.setVisibility(View.INVISIBLE);
+            tvOngoingGameRoundNumber.setText(String.format(Locale.getDefault(), "%s", "Finished"));
+        }
+        else {
+            tvOngoingGameRoundNumber.setText(String.format(Locale.getDefault(), "%d", ongoingGame.getRoundNumberForDisplay()));
+            ivOngoingGameRoundWind.setVisibility(View.VISIBLE);
+            ivOngoingGameRoundWind.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
+        }
     }
 
     public void openOngoingGame(View view) {

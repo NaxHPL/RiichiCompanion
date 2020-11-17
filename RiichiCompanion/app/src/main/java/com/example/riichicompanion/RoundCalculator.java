@@ -42,6 +42,8 @@ public class RoundCalculator {
         loser.changeScoreBy(-game.getHonbaValue() * game.getHonbaCount());
         atamahaneWinner.changeScoreBy(game.getHonbaValue() * game.getHonbaCount());
 
+        game.setDealerRecentlyWonInAllLast(game.isInAllLast() && winners.contains(game.getDealer()));
+
         if (repeatRound)
             game.incrementHonbaCount();
         else {
@@ -97,6 +99,8 @@ public class RoundCalculator {
         winner.changeScoreBy(1000 * game.getRiichiCount());
         game.setRiichiCount(0);
 
+        game.setDealerRecentlyWonInAllLast(game.isInAllLast() && winner.isDealer());
+
         if (repeatRound)
             game.incrementHonbaCount();
         else {
@@ -137,6 +141,8 @@ public class RoundCalculator {
 
         game.incrementHonbaCount();
 
+        game.setDealerRecentlyWonInAllLast(game.isInAllLast() && playersInTenpai.contains(game.getDealer()));
+
         if (!playersInTenpai.contains(game.getDealer()))
             game.nextRound();
     }
@@ -173,6 +179,8 @@ public class RoundCalculator {
         }
 
         game.incrementHonbaCount();
+
+        game.setDealerRecentlyWonInAllLast(game.isInAllLast() && playersInTenpai.contains(game.getDealer()));
 
         if (!playersInTenpai.contains(game.getDealer()))
             game.nextRound();
