@@ -160,12 +160,18 @@ public class Game implements Parcelable {
     }
 
     public Wind getPrevalentWind() {
-        if (roundNumber <= 4)
-            return Wind.East;
-        if (roundNumber <= 8)
-            return Wind.South;
+        int d = roundNumber <= 1 ? 0 : (roundNumber - 1) / 4;
 
-        return Wind.West;
+        switch (d % 4) {
+            case 0:
+                return Wind.East;
+            case 1:
+                return Wind.South;
+            case 2:
+                return Wind.West;
+            default:
+                return Wind.North;
+        }
     }
 
     public int getNumberOfPlayers() {
@@ -219,6 +225,9 @@ public class Game implements Parcelable {
     public void nextRound() {
         rotatePlayerSeats();
         roundNumber++;
+
+        if (numberOfPlayers == 3 && roundNumber % 4 == 0)
+            roundNumber++;
     }
 
     private void rotatePlayerSeats() {
@@ -293,10 +302,16 @@ public class Game implements Parcelable {
     }
 
     public boolean isInAllLast() {
-        if (gameLength == GameLength.Tonpuusen)
-            return roundNumber == 4;
-        else
-            return roundNumber == 8;
+        if (gameLength == GameLength.Tonpuusen) {
+            return numberOfPlayers == 3 ?
+                roundNumber == 3 :
+                roundNumber == 4;
+        }
+        else {
+            return numberOfPlayers == 3 ?
+                roundNumber == 7 :
+                roundNumber == 8;
+        }
     }
 
     private Player getPlayerInFirst() {
