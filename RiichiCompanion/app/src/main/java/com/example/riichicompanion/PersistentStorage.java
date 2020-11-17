@@ -37,4 +37,16 @@ public class PersistentStorage {
             return null;
         }
     }
+
+    public static void saveKeepScreenOn(Context context, boolean keepScreenOn) {
+        context.getSharedPreferences(context.getString(R.string.settings_file_name), Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(context.getString(R.string.keep_screen_on_key), keepScreenOn)
+            .apply();
+    }
+
+    public static boolean getKeepScreenOn(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.settings_file_name), Context.MODE_PRIVATE);
+        return prefs.getBoolean(context.getString(R.string.keep_screen_on_key), true);
+    }
 }

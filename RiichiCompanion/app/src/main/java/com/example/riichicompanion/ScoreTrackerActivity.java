@@ -428,6 +428,9 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
         btnContinue.setOnClickListener((v) -> continueToNextStep());
         btnConfirm.setOnClickListener((v) -> continueToNextStep());
+
+        ConstraintLayout clScoreTrackerMain = findViewById(R.id.clScoreTrackerMain);
+        clScoreTrackerMain.setKeepScreenOn(PersistentStorage.getKeepScreenOn(this));
     }
 
     @Override
