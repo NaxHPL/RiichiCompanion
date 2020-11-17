@@ -240,4 +240,27 @@ public class Game implements Parcelable {
             }
         }
     }
+
+//    public boolean isOver() {
+//        if (aPlayerHasNegativeScore())
+//            return true;
+//
+//
+//    }
+//
+//    private boolean aPlayerHasNegativeScore() {
+//        for (Player player : getPlayers()) {
+//            if (player.getScore() < 0)
+//                return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    private boolean aPlayerHasEnoughPointsToWin() {
+//        for (Player player : getPlayers()) {
+//            if (player.getScore() >= minPointsToWin)
+//                return true;
+//        }
+//    }
 }

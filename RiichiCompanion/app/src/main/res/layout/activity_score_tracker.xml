@@ -396,6 +396,7 @@
             android:id="@+id/btnRon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:onClick="startRonProcess"
             android:text="Ron"
             android:textSize="14sp"
             android:visibility="invisible"

@@ -69,10 +69,7 @@ public class HandScoreDialog extends AppCompatDialogFragment {
         initializeViews(view);
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.setOnShowListener((dialog) -> {
-            positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setEnabled(false);
-        });
+        alertDialog.setOnShowListener((dialog) -> positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE));
 
         return alertDialog;
     }
