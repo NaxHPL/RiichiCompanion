@@ -104,12 +104,14 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
             RoundCalculator.updateGameStateFromRon(game, loser, ronWinnersAndHandScores, playersDeclaredRiichi);
             PersistentStorage.saveOngoingGame(this, game);
-            updateInterface();
 
             if (game.satisfiesFinishConditions()) {
+                updateInterface(false);
                 finishGame();
                 return;
             }
+
+            updateInterface(true);
 
             hidePlayerRiichiSticks();
             btnConfirm.setVisibility(View.INVISIBLE);
@@ -185,12 +187,14 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
             RoundCalculator.updateGameStateFromTsumo(game, tsumoWinnerAndHandScore.first, tsumoWinnerAndHandScore.second, playersDeclaredRiichi);
             PersistentStorage.saveOngoingGame(this, game);
-            updateInterface();
 
             if (game.satisfiesFinishConditions()) {
+                updateInterface(false);
                 finishGame();
                 return;
             }
+
+            updateInterface(true);
 
             hidePlayerRiichiSticks();
             btnConfirm.setVisibility(View.INVISIBLE);
@@ -251,12 +255,14 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
             RoundCalculator.updateGameStateFromRyuukyoku(game, playersInTenpai, playersDeclaredRiichi);
             PersistentStorage.saveOngoingGame(this, game);
-            updateInterface();
 
             if (game.satisfiesFinishConditions()) {
+                updateInterface(false);
                 finishGame();
                 return;
             }
+
+            updateInterface(true);
 
             hidePlayerRiichiSticks();
             btnConfirm.setVisibility(View.INVISIBLE);
@@ -317,12 +323,14 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
             RoundCalculator.updateGameStateFromChombo(game, loser);
             PersistentStorage.saveOngoingGame(this, game);
-            updateInterface();
 
             if (game.satisfiesFinishConditions()) {
+                updateInterface(false);
                 finishGame();
                 return;
             }
+
+            updateInterface(true);
 
             btnConfirm.setVisibility(View.INVISIBLE);
             btnEndRound.setVisibility(View.VISIBLE);
@@ -456,7 +464,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             clLeft.setOnClickListener(null);
         }
 
-        updateInterface();
+        updateInterface(true);
 
         clBottom.setClickable(false);
         clRight.setClickable(false);
@@ -515,10 +523,10 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             super.onBackPressed();
     }
 
-    private void updateInterface() {
+    private void updateInterface(boolean updateSeatWinds) {
         updateRoundInformation();
         updateStickCounts();
-        updatePlayerInformation();
+        updatePlayerInformation(updateSeatWinds);
     }
 
     private void updateStickCounts() {
@@ -531,7 +539,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         ivRoundWind.setImageDrawable(game.getPrevalentWind().getImage(this));
     }
 
-    private void updatePlayerInformation() {
+    private void updatePlayerInformation(boolean updateSeatWinds) {
         tvBottomName.setText(String.format(Locale.getDefault(), "%s", game.getBottomPlayer().getName()));
         tvRightName.setText(String.format(Locale.getDefault(), "%s", game.getRightPlayer().getName()));
         tvTopName.setText(String.format(Locale.getDefault(), "%s", game.getTopPlayer().getName()));
@@ -542,10 +550,12 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         tvTopScore.setText(String.format(Locale.getDefault(), "%d", game.getTopPlayer().getScore()));
         tvLeftScore.setText(String.format(Locale.getDefault(), "%d", game.getLeftPlayer().getScore()));
 
-        ivBottomWind.setImageDrawable(game.getBottomPlayer().getSeatWind().getImage(this));
-        ivRightWind.setImageDrawable(game.getRightPlayer().getSeatWind().getImage(this));
-        ivTopWind.setImageDrawable(game.getTopPlayer().getSeatWind().getImage(this));
-        ivLeftWind.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
+        if (updateSeatWinds) {
+            ivBottomWind.setImageDrawable(game.getBottomPlayer().getSeatWind().getImage(this));
+            ivRightWind.setImageDrawable(game.getRightPlayer().getSeatWind().getImage(this));
+            ivTopWind.setImageDrawable(game.getTopPlayer().getSeatWind().getImage(this));
+            ivLeftWind.setImageDrawable(game.getLeftPlayer().getSeatWind().getImage(this));
+        }
     }
 
     public void endRound(View view) {
