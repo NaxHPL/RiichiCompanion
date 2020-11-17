@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvInitialPointsGameSettingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Initial points:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMinPointsToWinGameSettingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Min. points to win:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInitialPointsGameSettingsLabel" />
+
+    <TextView
+        android:id="@+id/tvGameLengthGameSettingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Game length:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMinPointsToWinGameSettingsLabel" />
+
+    <TextView
+        android:id="@+id/tvUseTsumoLossGameSettingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Use tsumo loss:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGameLengthGameSettingsLabel" />
+
+    <TextView
+        android:id="@+id/tvMinPointsToWinGameSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="30000"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWinGameSettingsLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinGameSettingsLabel" />
+
+    <TextView
+        android:id="@+id/tvInitialPointsGameSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25000"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPointsGameSettingsLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvMinPointsToWinGameSettings" />
+
+    <TextView
+        android:id="@+id/tvGameLengthGameSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hanchan"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvGameLengthGameSettingsLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvMinPointsToWinGameSettings" />
+
+    <TextView
+        android:id="@+id/tvUseTsumoLossGameSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvUseTsumoLossGameSettingsLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvMinPointsToWinGameSettings" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,7 +28,6 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
     private static final int FADE_OUT_TIME = 1000;
 
     private Game game;
-    private AlertDialog.Builder gameSettingsDialogBuilder;
     private boolean inEndRoundProcess;
     private EndRoundStep currentStep;
     private Handler beforeFadeOutHandler;
@@ -375,7 +374,6 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             ab.setDisplayHomeAsUpEnabled(true);
 
         game = getIntent().getParcelableExtra(GAME_TO_SHOW);
-        setupGameSettingsDialog();
         inEndRoundProcess = false;
         beforeFadeOutHandler = new Handler();
         afterFadeOutHandler = new Handler();
@@ -432,29 +430,6 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         btnConfirm.setOnClickListener((v) -> continueToNextStep());
     }
 
-    private void setupGameSettingsDialog() {
-        String message = String.format(
-            Locale.getDefault(),
-            "Initial points: %d\nMin. points to win: %d\nGame length: %s",
-            game.getInitialPoints(),
-            game.getMinPointsToWin(),
-            game.getGameLength().toString()
-        );
-
-        if (game.getNumberOfPlayers() == 3) {
-            message = message.concat(String.format(
-                Locale.getDefault(),
-                "\nUse tsumo loss: %s",
-                game.usesTsumoLoss() ? "Yes" : "No"
-            ));
-        }
-
-        gameSettingsDialogBuilder = new AlertDialog.Builder(this);
-        gameSettingsDialogBuilder.setTitle(R.string.game_settings_dialog_title)
-                                 .setMessage(message)
-                                 .setPositiveButton(R.string.close, (dialog, which) -> {});
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -492,7 +467,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.miGameSettings) {
-            gameSettingsDialogBuilder.create().show();
+            openGameSettingsDialog();
             return true;
         }
         else if (item.getItemId() == R.id.miFinishGame) {
@@ -521,6 +496,11 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             cancelEndRoundProcess();
         else
             super.onBackPressed();
+    }
+
+    private void openGameSettingsDialog() {
+        GameSettingsDialog dialog = new GameSettingsDialog(game);
+        dialog.show(getSupportFragmentManager(), "game_settings_dialog");
     }
 
     private void updateInterface(boolean updateSeatWinds) {
