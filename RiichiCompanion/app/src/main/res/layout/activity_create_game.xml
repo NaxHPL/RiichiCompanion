@@ -16,7 +16,9 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/app_bar_create_game"
+        app:navigationIcon="@drawable/ic_close_black_24dp" />
 
     <EditText
         android:id="@+id/etEastPlayer"
@@ -70,7 +72,6 @@
         android:inputType="textCapWords"
         android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/fabRemoveFourthPlayer"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
 
@@ -208,19 +209,6 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
         app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWin" />
 
-    <Button
-        android:id="@+id/btnCreate"
-        android:layout_width="252dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="24dp"
-        android:onClick="createGame"
-        android:text="Create"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbUseTsumoLoss" />
-
     <Spinner
         android:id="@+id/spinGameLength"
         android:layout_width="0dp"
@@ -244,34 +232,26 @@
         android:id="@+id/fabRemoveFourthPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:clickable="true"
         android:onClick="removeFourthPlayer"
-        android:translationY="-2.5dp"
         android:visibility="visible"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="?android:attr/colorBackground"
         app:borderWidth="0dp"
         app:elevation="0dp"
         app:fabSize="mini"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etWestPlayer"
         app:layout_constraintTop_toBottomOf="@+id/etWestPlayer"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <Button
         android:id="@+id/btnAddPlayer"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="121dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
         android:onClick="addFourthPlayer"
-        android:padding="0dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
         android:text="Add Player"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:visibility="invisible"
-        app:icon="@android:drawable/ic_input_add"
-        app:iconPadding="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
 

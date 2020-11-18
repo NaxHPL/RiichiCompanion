@@ -2,6 +2,8 @@ package com.example.riichicompanion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -55,6 +58,22 @@ public class CreateGameActivity extends AppCompatActivity {
         threePlayerGame = false;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_create_game, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.miCreateGame) {
+            createGame();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public void changeInitialPoints(int change) {
         int initialPoints = Integer.parseInt(tvInitialPoints.getText().toString());
         tvInitialPoints.setText(String.format(Locale.getDefault(), "%d", initialPoints + change));
@@ -81,7 +100,7 @@ public class CreateGameActivity extends AppCompatActivity {
         changeMinPointsToWin(1000);
     }
 
-    public void createGame(View view) {
+    public void createGame() {
         Game game = new Game(
             new Player(getEastPlayerName(), getInitialPoints(), Wind.East),
             new Player(getSouthPlayerName(), getInitialPoints(), Wind.South),
