@@ -2,6 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/miNewGame"
+        android:title="@string/new_game"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/miAppSettings"
-        android:title="Settings" />
+        android:title="Settings"
+        app:showAsAction="never" />
 </menu>

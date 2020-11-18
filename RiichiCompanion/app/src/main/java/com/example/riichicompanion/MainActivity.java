@@ -72,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
             openSettings();
             return true;
         }
+        else if (item.getItemId() == R.id.miNewGame) {
+            createNewGame();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), "app_settings_dialog");
     }
 
-    public void createNewGame(View view) {
+    public void createNewGame() {
         if (ongoingGame == null) {
             startCreateGameActivity();
             return;
