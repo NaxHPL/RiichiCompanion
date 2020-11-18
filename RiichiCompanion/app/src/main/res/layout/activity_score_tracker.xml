@@ -59,7 +59,7 @@
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvBottomScore"
-            app:srcCompat="@drawable/east" />
+            app:srcCompat="@drawable/east_black" />
 
         <ImageView
             android:id="@+id/ivRiichiBottom"
@@ -115,7 +115,7 @@
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvTopScore"
-            app:srcCompat="@drawable/west" />
+            app:srcCompat="@drawable/west_black" />
 
         <ImageView
             android:id="@+id/ivRiichiTop"
@@ -174,7 +174,7 @@
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvRightScore"
-            app:srcCompat="@drawable/south" />
+            app:srcCompat="@drawable/south_black" />
 
         <ImageView
             android:id="@+id/ivRiichiRight"
@@ -231,7 +231,7 @@
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvLeftScore"
-            app:srcCompat="@drawable/north" />
+            app:srcCompat="@drawable/north_black" />
 
         <ImageView
             android:id="@+id/ivRiichiLeft"
@@ -377,7 +377,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/east" />
+            app:srcCompat="@drawable/east_black" />
 
         <TextView
             android:id="@+id/tvRoundCount"

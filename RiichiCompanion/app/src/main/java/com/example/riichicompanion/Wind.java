@@ -9,25 +9,25 @@ public enum Wind {
     East {
         @Override
         public Drawable getImage(Context context) {
-            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.east, context.getTheme());
+            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.east_black, context.getTheme());
         }
     },
     South {
         @Override
         public Drawable getImage(Context context) {
-            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.south, context.getTheme());
+            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.south_black, context.getTheme());
         }
     },
     West {
         @Override
         public Drawable getImage(Context context) {
-            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.west, context.getTheme());
+            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.west_black, context.getTheme());
         }
     },
     North {
         @Override
         public Drawable getImage(Context context) {
-            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.north, context.getTheme());
+            return ResourcesCompat.getDrawable(context.getResources(), R.drawable.north_black, context.getTheme());
         }
     };
 
