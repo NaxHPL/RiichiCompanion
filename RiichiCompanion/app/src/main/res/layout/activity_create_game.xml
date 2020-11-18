@@ -79,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
         android:text="Players"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -102,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="Initial points:"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +111,7 @@
 
     <TextView
         android:id="@+id/tvInitialPoints"
-        android:layout_width="76dp"
+        android:layout_width="64dp"
         android:layout_height="24dp"
         android:text="25000"
         android:textAlignment="center"
@@ -146,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:text="Min. points to win:"
+        android:text="Target points:"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInitialPointsLabel" />
@@ -176,7 +177,7 @@
 
     <TextView
         android:id="@+id/tvMinPointsToWin"
-        android:layout_width="76dp"
+        android:layout_width="64dp"
         android:layout_height="24dp"
         android:text="30000"
         android:textAlignment="center"
