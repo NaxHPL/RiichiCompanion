@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_close_black_24dp" />
-                            <entry key="sourceFile" value="E:\Libraries\Desktop\close-black-24dp.svg" />
+                            <entry key="outputName" value="ic_person_remove_black_24dp" />
+                            <entry key="sourceFile" value="E:\Libraries\Desktop\person_remove-black-24dp.svg" />
                           </map>
                         </option>
                       </PersistentState>

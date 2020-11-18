@@ -70,7 +70,6 @@
         android:ems="10"
         android:hint="North"
         android:inputType="textCapWords"
-        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/fabRemoveFourthPlayer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
@@ -234,20 +233,21 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="removeFourthPlayer"
-        android:visibility="visible"
         app:backgroundTint="?android:attr/colorBackground"
         app:borderWidth="0dp"
         app:elevation="0dp"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="@+id/etWestPlayer"
         app:layout_constraintTop_toBottomOf="@+id/etWestPlayer"
-        app:srcCompat="@drawable/ic_close_black_24dp" />
+        app:srcCompat="@drawable/ic_person_remove_black_24dp" />
 
     <Button
         android:id="@+id/btnAddPlayer"
-        android:layout_width="121dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="130dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
+        android:drawableStart="@drawable/ic_person_add_black_24dp"
         android:onClick="addFourthPlayer"
         android:text="Add Player"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
