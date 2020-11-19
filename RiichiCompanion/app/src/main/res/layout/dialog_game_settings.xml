@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Min. points to win:"
+        android:text="Target points:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInitialPointsGameSettingsLabel" />
 
@@ -47,7 +47,7 @@
         android:id="@+id/tvMinPointsToWinGameSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:text="30000"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWinGameSettingsLabel"
         app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinGameSettingsLabel" />
@@ -56,23 +56,26 @@
         android:id="@+id/tvInitialPointsGameSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:text="25000"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPointsGameSettingsLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvMinPointsToWinGameSettings" />
+        app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinGameSettingsLabel" />
 
     <TextView
         android:id="@+id/tvGameLengthGameSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:text="Hanchan"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvGameLengthGameSettingsLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvMinPointsToWinGameSettings" />
+        app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinGameSettingsLabel" />
 
     <TextView
         android:id="@+id/tvUseTsumoLossGameSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:text="No"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvUseTsumoLossGameSettingsLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvMinPointsToWinGameSettings" />
+        app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinGameSettingsLabel" />
 </androidx.constraintlayout.widget.ConstraintLayout>
