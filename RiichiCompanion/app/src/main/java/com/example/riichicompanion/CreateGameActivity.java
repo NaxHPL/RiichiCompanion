@@ -66,7 +66,11 @@ public class CreateGameActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.miCreateGame) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        else if (item.getItemId() == R.id.miCreateGame) {
             createGame();
             return true;
         }
