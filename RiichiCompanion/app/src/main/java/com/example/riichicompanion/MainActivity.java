@@ -80,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+//    @Override
+//    protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
+//        super.onApplyThemeResource(theme, resid, first);
+//
+//        if (ivOngoingGameRoundWind != null)
+//            ivOngoingGameRoundWind.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
+//    }
+
     private void openSettings() {
         AppSettingsDialog dialog = new AppSettingsDialog();
         dialog.show(getSupportFragmentManager(), "app_settings_dialog");
