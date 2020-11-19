@@ -63,14 +63,14 @@
 
         <ImageView
             android:id="@+id/ivRiichiBottom"
-            android:layout_width="17dp"
-            android:layout_height="59dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvBottomScore"
-            app:srcCompat="@drawable/riichi_stick" />
+            app:srcCompat="@drawable/riichi_stick_outlined" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -122,11 +122,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvTopScore"
-            app:srcCompat="@drawable/riichi_stick" />
+            app:srcCompat="@drawable/riichi_stick_outlined" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -178,14 +178,14 @@
 
         <ImageView
             android:id="@+id/ivRiichiRight"
-            android:layout_width="17dp"
-            android:layout_height="59dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvRightScore"
-            app:srcCompat="@drawable/riichi_stick" />
+            app:srcCompat="@drawable/riichi_stick_outlined" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -238,18 +238,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvLeftScore"
-            app:srcCompat="@drawable/riichi_stick" />
+            app:srcCompat="@drawable/riichi_stick_outlined" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clVeryBottom"
         android:layout_width="0dp"
         android:layout_height="82dp"
-        android:background="#282828"
+        android:background="#212121"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
