@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 public class AppSettingsDialog extends AppCompatDialogFragment {
 
     private Switch switchKeepScreenOn;
+    private Spinner spinTheme;
 
     @NonNull
     @Override
@@ -36,9 +38,25 @@ public class AppSettingsDialog extends AppCompatDialogFragment {
     private void initializeViews(View view) {
         switchKeepScreenOn = view.findViewById(R.id.switchKeepScreenOn);
         switchKeepScreenOn.setChecked(PersistentStorage.getKeepScreenOn(view.getContext()));
+
+        spinTheme = view.findViewById(R.id.spinTheme);
+        spinTheme.setSelection(PersistentStorage.getThemeOption(view.getContext()).ordinal());
     }
 
     private void saveSettings(Context context) {
         PersistentStorage.saveKeepScreenOn(context, switchKeepScreenOn.isChecked());
+
+        ThemeOption oldTheme = PersistentStorage.getThemeOption(context);
+        ThemeOption newTheme = ThemeOption.valueOf(spinTheme.getSelectedItem().toString());
+
+        if (newTheme != oldTheme) {
+            PersistentStorage.saveThemeOption(context, newTheme);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Please restart the app to apply the theme change.")
+                   .setPositiveButton("Got it", ((dialog, which) -> {}));
+
+            builder.create().show();
+        }
     }
 }

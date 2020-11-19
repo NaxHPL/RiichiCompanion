@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 public class PersistentStorage {
 
@@ -48,5 +47,18 @@ public class PersistentStorage {
     public static boolean getKeepScreenOn(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.settings_file_name), Context.MODE_PRIVATE);
         return prefs.getBoolean(context.getString(R.string.keep_screen_on_key), true);
+    }
+
+    public static void saveThemeOption(Context context, ThemeOption theme) {
+        context.getSharedPreferences(context.getString(R.string.settings_file_name), Context.MODE_PRIVATE)
+            .edit()
+            .putString(context.getString(R.string.theme_option_key), theme.toString())
+            .apply();
+    }
+
+    public static ThemeOption getThemeOption(Context context) {
+            SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.settings_file_name), Context.MODE_PRIVATE);
+            String strTheme = prefs.getString(context.getString(R.string.theme_option_key), "Auto");
+            return ThemeOption.valueOf(strTheme);
     }
 }

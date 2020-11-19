@@ -365,6 +365,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
         setSupportActionBar(findViewById(R.id.toolbarScoreTrackerActivity));

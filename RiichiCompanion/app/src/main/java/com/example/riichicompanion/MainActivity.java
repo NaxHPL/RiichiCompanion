@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbarMainActivity));
@@ -85,14 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-//        super.onApplyThemeResource(theme, resid, first);
-//
-//        if (ivOngoingGameRoundWind != null)
-//            ivOngoingGameRoundWind.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
-//    }
 
     private void openSettings() {
         AppSettingsDialog dialog = new AppSettingsDialog();

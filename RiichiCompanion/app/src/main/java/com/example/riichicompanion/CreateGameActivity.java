@@ -36,6 +36,7 @@ public class CreateGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
         setSupportActionBar(findViewById(R.id.toolbarCreateGameActivity));

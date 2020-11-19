@@ -13,8 +13,14 @@
     <string name="keep_screen_on_key">com.example.riichicompanion.KEEP_SCREEN_ON</string>
     <string name="app_settings_dialog_title">App Settings</string>
     <string name="save">Save</string>
+    <string name="theme_option_key">com.example.riichicompanion.THEME_KEY</string>
     <string-array name="game_length_types">
         <item>Hanchan</item>
         <item>Tonpuusen</item>
+    </string-array>
+    <string-array name="themes">
+        <item>Auto</item>
+        <item>Light</item>
+        <item>Dark</item>
     </string-array>
 </resources>
