@@ -469,7 +469,11 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.miGameSettings) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        else if (item.getItemId() == R.id.miGameSettings) {
             openGameSettingsDialog();
             return true;
         }
