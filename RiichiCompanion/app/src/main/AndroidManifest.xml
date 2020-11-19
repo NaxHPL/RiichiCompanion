@@ -13,12 +13,12 @@
             android:name=".ScoreTrackerActivity"
             android:label="Game"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CreateGameActivity"
             android:label="Create Game"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:label="Riichi Companion">
