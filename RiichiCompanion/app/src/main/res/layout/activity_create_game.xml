@@ -244,7 +244,7 @@
     <Button
         android:id="@+id/btnAddPlayer"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="130dp"
+        android:layout_width="150dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
         android:drawableStart="@drawable/ic_person_add_black_24dp"
