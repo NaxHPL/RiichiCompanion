@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvOngoingGameDateTime;
     private TextView tvOngoingGameRoundNumber;
     private ImageView ivOngoingGameRoundWind;
+    private View divider1;
 
     private Game ongoingGame;
     private AlertDialog.Builder newGameDialogBuilder;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         tvOngoingGameDateTime = findViewById(R.id.tvOngoingGameDateTime);
         tvOngoingGameRoundNumber = findViewById(R.id.tvOngoingGameRoundNumber);
         ivOngoingGameRoundWind = findViewById(R.id.ivOngoingGameRoundWind);
+        divider1 = findViewById(R.id.divider1);
 
         newGameDialogBuilder = new AlertDialog.Builder(this) {{
             setTitle(R.string.new_game_dialog_title);
@@ -55,9 +57,13 @@ public class MainActivity extends AppCompatActivity {
         if (ongoingGame != null) {
             updateOngoingGameInfo();
             constraintLayoutOngoingGame.setVisibility(View.VISIBLE);
+            divider1.setVisibility(View.VISIBLE);
         }
-        else
+        else {
             constraintLayoutOngoingGame.setVisibility(View.GONE);
+            divider1.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
