@@ -17,6 +17,11 @@ public class AppSettingsDialog extends AppCompatDialogFragment {
 
     private Switch switchKeepScreenOn;
     private Spinner spinTheme;
+    private AppSettingsDialog.AppSettingsDialogListener listener;
+
+    public interface AppSettingsDialogListener {
+        void onSettingsSaved(boolean themeChanged);
+    }
 
     @NonNull
     @Override
@@ -35,6 +40,17 @@ public class AppSettingsDialog extends AppCompatDialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try {
+            listener = (AppSettingsDialog.AppSettingsDialogListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement AppSettingsDialogListener");
+        }
+    }
+
     private void initializeViews(View view) {
         switchKeepScreenOn = view.findViewById(R.id.switchKeepScreenOn);
         switchKeepScreenOn.setChecked(PersistentStorage.getKeepScreenOn(view.getContext()));
@@ -48,15 +64,13 @@ public class AppSettingsDialog extends AppCompatDialogFragment {
 
         ThemeOption oldTheme = PersistentStorage.getThemeOption(context);
         ThemeOption newTheme = ThemeOption.valueOf(spinTheme.getSelectedItem().toString());
+        boolean themeChanged = false;
 
         if (newTheme != oldTheme) {
             PersistentStorage.saveThemeOption(context, newTheme);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Please restart the app to apply the theme change.")
-                   .setPositiveButton("Got it", ((dialog, which) -> {}));
-
-            builder.create().show();
+            themeChanged = true;
         }
+
+        listener.onSettingsSaved(themeChanged);
     }
 }

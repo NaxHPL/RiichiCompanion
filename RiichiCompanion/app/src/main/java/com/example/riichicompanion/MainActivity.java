@@ -2,6 +2,7 @@ package com.example.riichicompanion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AppSettingsDialog.AppSettingsDialogListener {
 
     private ConstraintLayout constraintLayoutOngoingGame;
     private TextView tvOngoingGamePlayers;
@@ -135,5 +136,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
         intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, ongoingGame);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSettingsSaved(boolean themeChanged) {
+        if (themeChanged)
+            (new Handler()).postDelayed(this::recreate, 100);
     }
 }
