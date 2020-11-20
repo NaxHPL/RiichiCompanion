@@ -3,4 +3,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lost_text">#FF0000</color>
     <color name="won_text">#00B400</color>
+    <color name="neutral_text">#969696</color>
 </resources>

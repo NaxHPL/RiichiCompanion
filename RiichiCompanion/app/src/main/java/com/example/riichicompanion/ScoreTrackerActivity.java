@@ -1,10 +1,12 @@
 package com.example.riichicompanion;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -29,7 +31,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     private Game game;
     private boolean inEndRoundProcess;
-    private EndRoundStep currentStep;
+    private EndRoundStep currentEndRoundStep;
     private Handler beforeFadeOutHandler;
     private Handler afterFadeOutHandler;
     private Player playerToApplyHandScore;
@@ -130,7 +132,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         "Who declared riichi?",
         () -> {
             playersDeclaredRiichi.clear();
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             btnContinue.setVisibility(View.VISIBLE);
             setAllPlayersClickable(true);
         },
@@ -145,7 +147,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         "Who won?",
         () -> {
             ronWinnersAndHandScores.clear();
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             setAllPlayersClickable(true);
             getLayoutFromPlayer(loser).setClickable(false);
         },
@@ -158,7 +160,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         () -> {
             loser = null;
             showEndRoundButtons(false);
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             tvMiddleText.setVisibility(View.VISIBLE);
             setAllPlayersClickable(true);
         },
@@ -213,7 +215,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         "Who declared riichi?",
         () -> {
             playersDeclaredRiichi.clear();
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             btnContinue.setVisibility(View.VISIBLE);
             setAllPlayersClickable(true);
         },
@@ -229,7 +231,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         () -> {
             tsumoWinnerAndHandScore = null;
             showEndRoundButtons(false);
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             tvMiddleText.setVisibility(View.VISIBLE);
             setAllPlayersClickable(true);
         },
@@ -281,7 +283,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         "Who declared riichi?",
         () -> {
             playersDeclaredRiichi.clear();
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             setAllPlayersClickable(true);
         },
         this::setPlayerAsDeclaredRiichi,
@@ -296,7 +298,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         () -> {
             playersInTenpai.clear();
             showEndRoundButtons(false);
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             tvMiddleText.setVisibility(View.VISIBLE);
             btnContinue.setVisibility(View.VISIBLE);
             setAllPlayersClickable(true);
@@ -349,7 +351,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         () -> {
             loser = null;
             showEndRoundButtons(false);
-            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentStep.getPromptText()));
+            tvMiddleText.setText(String.format(Locale.getDefault(), "%s", currentEndRoundStep.getPromptText()));
             tvMiddleText.setVisibility(View.VISIBLE);
             setAllPlayersClickable(true);
         },
@@ -363,6 +365,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     //endregion
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(PersistentStorage.getThemeOption(this).getThemeId());
@@ -430,10 +433,16 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         btnContinue.setOnClickListener((v) -> continueToNextStep());
         btnConfirm.setOnClickListener((v) -> continueToNextStep());
 
+        clBottom.setOnTouchListener(this::onPlayerTouched);
+        clRight.setOnTouchListener(this::onPlayerTouched);
+        clTop.setOnTouchListener(this::onPlayerTouched);
+        clLeft.setOnTouchListener(this::onPlayerTouched);
+
         ConstraintLayout clScoreTrackerMain = findViewById(R.id.clScoreTrackerMain);
         clScoreTrackerMain.setKeepScreenOn(PersistentStorage.getKeepScreenOn(this));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onStart() {
         super.onStart();
@@ -441,20 +450,17 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         if (game.getNumberOfPlayers() == 3) {
             clLeft.setVisibility(View.INVISIBLE);
             clLeft.setOnClickListener(null);
+            clLeft.setOnTouchListener(null);
         }
 
         updateInterface(true);
-
-        clBottom.setClickable(false);
-        clRight.setClickable(false);
-        clTop.setClickable(false);
-        clLeft.setClickable(false);
+        setAllPlayersClickable(true);
 
         if (game.isFinished()) {
             showRoundInfo(false);
             showRiichiAndHonba(false);
             btnEndRound.setVisibility(View.INVISIBLE);
-            hidePlayerAuxTextViews();
+            showPlayerAuxTextViews(false);
 
             tvMiddleText.setTextSize(34.0f);
             tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
@@ -553,7 +559,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         afterFadeOutHandler.removeCallbacksAndMessages(null);
 
         btnEndRound.setVisibility(View.INVISIBLE);
-        hidePlayerAuxTextViews();
+        showPlayerAuxTextViews(false);
         showRoundInfo(false);
         showRiichiAndHonba(false);
         showEndRoundButtons(true);
@@ -586,11 +592,15 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         btnChombo.setVisibility(visibility);
     }
 
-    private void hidePlayerAuxTextViews() {
-        tvBottomPlayerAux.setVisibility(View.INVISIBLE);
-        tvRightPlayerAux.setVisibility(View.INVISIBLE);
-        tvTopPlayerAux.setVisibility(View.INVISIBLE);
-        tvLeftPlayerAux.setVisibility(View.INVISIBLE);
+    private void showPlayerAuxTextViews(boolean show) {
+        int visibility = show ? View.VISIBLE : View.INVISIBLE;
+
+        tvBottomPlayerAux.setVisibility(visibility);
+        tvRightPlayerAux.setVisibility(visibility);
+        tvTopPlayerAux.setVisibility(visibility);
+
+        if (game.getNumberOfPlayers() == 4)
+            tvLeftPlayerAux.setVisibility(visibility);
     }
 
     private void hidePlayerRiichiSticks() {
@@ -601,23 +611,23 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
     }
 
     public void startRonProcess(View view) {
-        currentStep = ronStepGetLoser;
-        currentStep.doOnStepStart();
+        currentEndRoundStep = ronStepGetLoser;
+        currentEndRoundStep.doOnStepStart();
     }
 
     public void startTsumoProcess(View view) {
-        currentStep = tsumoStepGetWinner;
-        currentStep.doOnStepStart();
+        currentEndRoundStep = tsumoStepGetWinner;
+        currentEndRoundStep.doOnStepStart();
     }
 
     public void startRyuukyokuProcess(View view) {
-        currentStep = ryuukyokuStepGetTenpai;
-        currentStep.doOnStepStart();
+        currentEndRoundStep = ryuukyokuStepGetTenpai;
+        currentEndRoundStep.doOnStepStart();
     }
 
     public void startChomboProcess(View view) {
-        currentStep = chomboStepGetFailed;
-        currentStep.doOnStepStart();
+        currentEndRoundStep = chomboStepGetFailed;
+        currentEndRoundStep.doOnStepStart();
     }
 
     private void setPlayerAsRonLoser(Player player) {
@@ -692,28 +702,21 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         dialog.show(getSupportFragmentManager(), "hand_score_dialog");
     }
 
-    public void selectBottomPlayer(View view) {
-        if (currentStep != ronStepGetWinners)
-            clBottom.setClickable(false);
-        currentStep.doOnPlayerSelected(game.getBottomPlayer());
-    }
+    public void selectPlayer(View view) {
+        if (!inEndRoundProcess || currentEndRoundStep == null)
+            return;
 
-    public void selectRightPlayer(View view) {
-        if (currentStep != ronStepGetWinners)
-            clRight.setClickable(false);
-        currentStep.doOnPlayerSelected(game.getRightPlayer());
-    }
+        if (currentEndRoundStep != ronStepGetWinners)
+            view.setClickable(false);
 
-    public void selectTopPlayer(View view) {
-        if (currentStep != ronStepGetWinners)
-            clTop.setClickable(false);
-        currentStep.doOnPlayerSelected(game.getTopPlayer());
-    }
-
-    public void selectLeftPlayer(View view) {
-        if (currentStep != ronStepGetWinners)
-            clLeft.setClickable(false);
-        currentStep.doOnPlayerSelected(game.getLeftPlayer());
+        if (view == clBottom)
+            currentEndRoundStep.doOnPlayerSelected(game.getBottomPlayer());
+        else if (view == clRight)
+            currentEndRoundStep.doOnPlayerSelected(game.getRightPlayer());
+        else if (view == clTop)
+            currentEndRoundStep.doOnPlayerSelected(game.getTopPlayer());
+        else if (view == clLeft)
+            currentEndRoundStep.doOnPlayerSelected(game.getLeftPlayer());
     }
 
     private void setAllPlayersClickable(boolean clickable) {
@@ -724,20 +727,22 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
     }
 
     public void continueToNextStep() {
-        currentStep.doOnStepEnd();
-        currentStep = currentStep.getNextStep();
+        currentEndRoundStep.doOnStepEnd();
+        currentEndRoundStep = currentEndRoundStep.getNextStep();
 
-        if (currentStep != null)
-            currentStep.doOnStepStart();
-        else
+        if (currentEndRoundStep != null)
+            currentEndRoundStep.doOnStepStart();
+        else {
+            setAllPlayersClickable(true);
             inEndRoundProcess = false;
+        }
     }
 
     private void cancelEndRoundProcess() {
         tvMiddleText.setVisibility(View.INVISIBLE);
         btnConfirm.setVisibility(View.INVISIBLE);
         btnContinue.setVisibility(View.INVISIBLE);
-        hidePlayerAuxTextViews();
+        showPlayerAuxTextViews(false);
         hidePlayerRiichiSticks();
         showEndRoundButtons(false);
 
@@ -745,6 +750,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         showRiichiAndHonba(true);
         showRoundInfo(true);
 
+        currentEndRoundStep = null;
         inEndRoundProcess = false;
     }
 
@@ -795,13 +801,24 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         return clLeft;
     }
 
+    private Player getPlayerFromLayout(ConstraintLayout cl) {
+        if (cl == clBottom)
+            return game.getBottomPlayer();
+        if (cl == clRight)
+            return game.getRightPlayer();
+        if (cl == clTop)
+            return game.getTopPlayer();
+
+        return game.getLeftPlayer();
+    }
+
     @Override
     public void onHandScoreConfirm(HandScore hs) {
-        if (currentStep == tsumoStepGetWinner) {
+        if (currentEndRoundStep == tsumoStepGetWinner) {
             tsumoWinnerAndHandScore = Pair.create(playerToApplyHandScore, hs);
             continueToNextStep();
         }
-        else if (currentStep == ronStepGetWinners) {
+        else if (currentEndRoundStep == ronStepGetWinners) {
             ronWinnersAndHandScores.add(Pair.create(playerToApplyHandScore, hs));
             btnContinue.setVisibility(View.VISIBLE);
             getLayoutFromPlayer(playerToApplyHandScore).setClickable(false);
@@ -816,7 +833,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     @Override
     public void onHandScoreDismiss() {
-        if (currentStep == tsumoStepGetWinner)
+        if (currentEndRoundStep == tsumoStepGetWinner)
             setAllPlayersClickable(true);
     }
 
@@ -825,7 +842,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         showRiichiAndHonba(false);
         btnEndRound.setVisibility(View.INVISIBLE);
         btnConfirm.setVisibility(View.INVISIBLE);
-        hidePlayerAuxTextViews();
+        showPlayerAuxTextViews(false);
 
         tvMiddleText.setTextSize(34.0f);
         tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
@@ -833,5 +850,57 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
         game.setFinished(true);
         PersistentStorage.saveOngoingGame(this, game);
+    }
+
+    private boolean onPlayerTouched(View view, MotionEvent event) {
+        if (inEndRoundProcess || currentEndRoundStep != null)
+            return false;
+
+        ConstraintLayout cl;
+
+        try {
+            cl = (ConstraintLayout) view;
+        } catch (ClassCastException e) {
+            return false;
+        }
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                showScoreDifferences(getPlayerFromLayout(cl));
+                break;
+            case MotionEvent.ACTION_UP:
+                showPlayerAuxTextViews(false);
+        }
+
+        return false;
+    }
+
+    private void showScoreDifferences(Player player) {
+        beforeFadeOutHandler.removeCallbacksAndMessages(null);
+        afterFadeOutHandler.removeCallbacksAndMessages(null);
+
+        for (Player p : game.getPlayers()) {
+            if (p == player)
+                continue;
+
+            int scoreDiff = p.getScore() - player.getScore();
+            TextView tvAux = getAuxTextView(p);
+
+            if (scoreDiff < 0) {
+                tvAux.setText(String.format(Locale.getDefault(), "%d", scoreDiff));
+                tvAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.lost_text, getTheme()));
+            }
+            else if (scoreDiff > 0) {
+                tvAux.setText(String.format(Locale.getDefault(), "+%d", scoreDiff));
+                tvAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.won_text, getTheme()));
+            }
+            else {
+                tvAux.setText(String.format(Locale.getDefault(), "%d", scoreDiff));
+                tvAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.neutral_text, getTheme()));
+            }
+        }
+
+        showPlayerAuxTextViews(true);
+        getAuxTextView(player).setVisibility(View.INVISIBLE);
     }
 }
