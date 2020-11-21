@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RCToolbar" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/rc_theme_color</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+</resources>
