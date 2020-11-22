@@ -118,7 +118,7 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPointsLabel"
-        app:layout_constraintStart_toEndOf="@+id/btnDecInitialPoints" />
+        app:layout_constraintEnd_toStartOf="@+id/btnIncInitialPoints" />
 
     <Button
         android:id="@+id/btnDecInitialPoints"
@@ -129,18 +129,19 @@
         android:text="—"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
-        app:layout_constraintStart_toStartOf="@+id/btnDecMinPointsToWin" />
+        app:layout_constraintEnd_toStartOf="@+id/tvInitialPoints" />
 
     <Button
         android:id="@+id/btnIncInitialPoints"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:onClick="increaseInitialPointsBy1000"
         android:text="+"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
-        app:layout_constraintStart_toEndOf="@+id/tvInitialPoints" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tvMinPointsToWinLabel"
@@ -184,30 +185,30 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWinLabel"
-        app:layout_constraintStart_toEndOf="@+id/btnDecMinPointsToWin" />
+        app:layout_constraintEnd_toStartOf="@+id/btnIncMinPointsToWin" />
 
     <Button
         android:id="@+id/btnDecMinPointsToWin"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:onClick="decreaseMinPointsToWinBy1000"
         android:text="—"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
-        app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWinLabel" />
+        app:layout_constraintEnd_toStartOf="@+id/tvMinPointsToWin" />
 
     <Button
         android:id="@+id/btnIncMinPointsToWin"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:onClick="increaseMinPointsToWinBy1000"
         android:text="+"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
-        app:layout_constraintStart_toEndOf="@+id/tvMinPointsToWin" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Spinner
         android:id="@+id/spinGameLength"
