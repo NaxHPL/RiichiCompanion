@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
+            android:name=".HandCalculatorActivity"
+            android:label="Hand Calculator" />
+        <activity
             android:name=".ScoreTrackerActivity"
             android:label="Game"
             android:parentActivityName=".MainActivity"

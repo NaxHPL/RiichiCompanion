@@ -121,7 +121,7 @@ public class CreateGameActivity extends AppCompatActivity {
         PersistentStorage.saveOngoingGame(this, game);
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, game);
         startActivity(intent);
 
         finish();

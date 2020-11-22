@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
 
     public void openOngoingGame(View view) {
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, ongoingGame);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, ongoingGame);
         startActivity(intent);
     }
 
