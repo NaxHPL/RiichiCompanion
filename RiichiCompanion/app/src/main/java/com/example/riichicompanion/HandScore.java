@@ -1,8 +1,11 @@
 package com.example.riichicompanion;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Locale;
 
-public class HandScore {
+public class HandScore implements Parcelable {
 
     private final int han;
     private final int fu;
@@ -19,6 +22,40 @@ public class HandScore {
         this.fu = 0;
         this.yakumans = yakumans;
     }
+
+    //region Parcelable Implementation
+
+    protected HandScore(Parcel in) {
+        han = in.readInt();
+        fu = in.readInt();
+        yakumans = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(han);
+        dest.writeInt(fu);
+        dest.writeInt(yakumans);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<HandScore> CREATOR = new Creator<HandScore>() {
+        @Override
+        public HandScore createFromParcel(Parcel in) {
+            return new HandScore(in);
+        }
+
+        @Override
+        public HandScore[] newArray(int size) {
+            return new HandScore[size];
+        }
+    };
+
+    //endregion
 
     public int getHan() {
         return han;
