@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import java.util.Locale;
+
 public class HandCalculatorActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE = 12;
@@ -30,6 +32,34 @@ public class HandCalculatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hand_calculator);
         setSupportActionBar(findViewById(R.id.toolbarHandCalc));
         setExtras(getIntent());
+
+        if (winnerName != null)
+            setTitle(String.format(Locale.getDefault(), "Calculate hand for %s", winnerName));
+    }
+
+    private void setExtras(Intent intent) {
+        winnerName = intent.getStringExtra(WINNER_NAME_EXTRA);
+
+        try {
+            winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
+        }
+        catch (Exception e) {
+            winType = WinType.Unknown;
+        }
+
+        try {
+            prevalentWind = Wind.valueOf(intent.getStringExtra(PREVALENT_WIND_EXTRA));
+        }
+        catch (Exception e) {
+            prevalentWind = Wind.East;
+        }
+
+        try {
+            seatWind = Wind.valueOf(intent.getStringExtra(SEAT_WIND_EXTRA));
+        }
+        catch (Exception e) {
+            seatWind = Wind.East;
+        }
     }
 
     @Override
@@ -41,27 +71,5 @@ public class HandCalculatorActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setExtras(Intent intent) {
-        winnerName = intent.getStringExtra(WINNER_NAME_EXTRA);
-
-        try {
-            winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
-        } catch (IllegalArgumentException e) {
-            winType = WinType.Unknown;
-        }
-
-        try {
-            prevalentWind = Wind.valueOf(intent.getStringExtra(PREVALENT_WIND_EXTRA));
-        } catch (IllegalArgumentException e) {
-            prevalentWind = Wind.East;
-        }
-
-        try {
-            seatWind = Wind.valueOf(intent.getStringExtra(SEAT_WIND_EXTRA));
-        } catch (IllegalArgumentException e) {
-            seatWind = Wind.East;
-        }
     }
 }
