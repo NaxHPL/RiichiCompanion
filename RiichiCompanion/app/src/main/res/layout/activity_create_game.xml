@@ -21,240 +21,254 @@
         app:menu="@menu/app_bar_create_game"
         app:navigationIcon="@drawable/ic_close_black_24dp" />
 
-    <EditText
-        android:id="@+id/etEastPlayer"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="East"
-        android:inputType="textCapWords"
+        android:layout_height="0dp"
+        android:scrollbarStyle="insideOverlay"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlayers" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCreateGameActivity">
 
-    <EditText
-        android:id="@+id/etSouthPlayer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="South"
-        android:inputType="textCapWords"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEastPlayer" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etWestPlayer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="West"
-        android:inputType="textCapWords"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSouthPlayer" />
+            <Button
+                android:id="@+id/btnDecMinPointsToWin"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="decreaseMinPointsToWinBy1000"
+                android:text="—"
+                android:textSize="18sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
+                app:layout_constraintEnd_toStartOf="@+id/tvMinPointsToWin" />
 
-    <EditText
-        android:id="@+id/etNorthPlayer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:ems="10"
-        android:hint="North"
-        android:inputType="textCapWords"
-        app:layout_constraintEnd_toStartOf="@+id/fabRemoveFourthPlayer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
+            <Button
+                android:id="@+id/btnIncMinPointsToWin"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:onClick="increaseMinPointsToWinBy1000"
+                android:text="+"
+                android:textSize="18sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/tvPlayers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="Players"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarCreateGameActivity" />
+            <EditText
+                android:id="@+id/etWestPlayer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:ems="10"
+                android:hint="West"
+                android:inputType="textCapWords"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etSouthPlayer" />
 
-    <TextView
-        android:id="@+id/tvGameSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif"
-        android:text="Game Settings"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNorthPlayer" />
+            <TextView
+                android:id="@+id/tvInitialPointsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="Initial points:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvGameSettings" />
 
-    <TextView
-        android:id="@+id/tvInitialPointsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="Initial points:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGameSettings" />
+            <EditText
+                android:id="@+id/etNorthPlayer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:ems="10"
+                android:hint="North"
+                android:inputType="textCapWords"
+                app:layout_constraintEnd_toStartOf="@+id/fabRemoveFourthPlayer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
 
-    <TextView
-        android:id="@+id/tvInitialPoints"
-        android:layout_width="64dp"
-        android:layout_height="24dp"
-        android:text="25000"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPointsLabel"
-        app:layout_constraintEnd_toStartOf="@+id/btnIncInitialPoints" />
+            <TextView
+                android:id="@+id/tvGameSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif"
+                android:text="Game Settings"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etNorthPlayer" />
 
-    <Button
-        android:id="@+id/btnDecInitialPoints"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="decreaseInitialPointsBy1000"
-        android:text="—"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
-        app:layout_constraintEnd_toStartOf="@+id/tvInitialPoints" />
+            <Button
+                android:id="@+id/btnDecInitialPoints"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="decreaseInitialPointsBy1000"
+                android:text="—"
+                android:textSize="18sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
+                app:layout_constraintEnd_toStartOf="@+id/tvInitialPoints" />
 
-    <Button
-        android:id="@+id/btnIncInitialPoints"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:onClick="increaseInitialPointsBy1000"
-        android:text="+"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <Spinner
+                android:id="@+id/spinGameLength"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:entries="@array/game_length_types"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvGameLength"
+                app:layout_constraintEnd_toEndOf="@+id/btnIncMinPointsToWin"
+                app:layout_constraintStart_toStartOf="@+id/btnDecMinPointsToWin" />
 
-    <TextView
-        android:id="@+id/tvMinPointsToWinLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="Target points:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInitialPointsLabel" />
+            <ToggleButton
+                android:id="@+id/tbUseTsumoLoss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:enabled="false"
+                android:text="ToggleButton"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvTsumoLoss"
+                app:layout_constraintStart_toStartOf="@+id/spinGameLength" />
 
-    <TextView
-        android:id="@+id/tvGameLength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="Game length:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMinPointsToWinLabel" />
+            <EditText
+                android:id="@+id/etSouthPlayer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:ems="10"
+                android:hint="South"
+                android:inputType="textCapWords"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etEastPlayer" />
 
-    <TextView
-        android:id="@+id/tvTsumoLoss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:enabled="false"
-        android:text="Tsumo loss:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvGameLength" />
+            <TextView
+                android:id="@+id/tvGameLength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="Game length:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMinPointsToWinLabel" />
 
-    <TextView
-        android:id="@+id/tvMinPointsToWin"
-        android:layout_width="64dp"
-        android:layout_height="24dp"
-        android:text="30000"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWinLabel"
-        app:layout_constraintEnd_toStartOf="@+id/btnIncMinPointsToWin" />
+            <TextView
+                android:id="@+id/tvMinPointsToWin"
+                android:layout_width="64dp"
+                android:layout_height="24dp"
+                android:text="30000"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWinLabel"
+                app:layout_constraintEnd_toStartOf="@+id/btnIncMinPointsToWin" />
 
-    <Button
-        android:id="@+id/btnDecMinPointsToWin"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="decreaseMinPointsToWinBy1000"
-        android:text="—"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
-        app:layout_constraintEnd_toStartOf="@+id/tvMinPointsToWin" />
+            <Button
+                android:id="@+id/btnIncInitialPoints"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:onClick="increaseInitialPointsBy1000"
+                android:text="+"
+                android:textSize="18sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPoints"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btnIncMinPointsToWin"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:onClick="increaseMinPointsToWinBy1000"
-        android:text="+"
-        android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvMinPointsToWin"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabRemoveFourthPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:clickable="true"
+                android:onClick="removeFourthPlayer"
+                app:backgroundTint="?android:attr/colorBackground"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etWestPlayer"
+                app:srcCompat="@drawable/ic_person_remove_black_24dp" />
 
-    <Spinner
-        android:id="@+id/spinGameLength"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:entries="@array/game_length_types"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvGameLength"
-        app:layout_constraintEnd_toEndOf="@+id/btnIncMinPointsToWin"
-        app:layout_constraintStart_toStartOf="@+id/btnDecMinPointsToWin" />
+            <TextView
+                android:id="@+id/tvInitialPoints"
+                android:layout_width="64dp"
+                android:layout_height="24dp"
+                android:text="25000"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvInitialPointsLabel"
+                app:layout_constraintEnd_toStartOf="@+id/btnIncInitialPoints" />
 
-    <ToggleButton
-        android:id="@+id/tbUseTsumoLoss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:enabled="false"
-        android:text="ToggleButton"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvTsumoLoss"
-        app:layout_constraintStart_toStartOf="@+id/spinGameLength" />
+            <TextView
+                android:id="@+id/tvPlayers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="Players"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRemoveFourthPlayer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:onClick="removeFourthPlayer"
-        app:backgroundTint="?android:attr/colorBackground"
-        app:borderWidth="0dp"
-        app:elevation="0dp"
-        app:fabSize="mini"
-        app:layout_constraintEnd_toEndOf="@+id/etWestPlayer"
-        app:layout_constraintTop_toBottomOf="@+id/etWestPlayer"
-        app:srcCompat="@drawable/ic_person_remove_black_24dp" />
+            <EditText
+                android:id="@+id/etEastPlayer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:ems="10"
+                android:hint="East"
+                android:inputType="textCapWords"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPlayers" />
 
-    <Button
-        android:id="@+id/btnAddPlayer"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="150dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="32dp"
-        android:drawableStart="@drawable/ic_person_add_black_24dp"
-        android:onClick="addFourthPlayer"
-        android:text="Add Player"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
+            <TextView
+                android:id="@+id/tvTsumoLoss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:enabled="false"
+                android:text="Tsumo loss:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvGameLength" />
+
+            <TextView
+                android:id="@+id/tvMinPointsToWinLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="Target points:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvInitialPointsLabel" />
+
+            <Button
+                android:id="@+id/btnAddPlayer"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="32dp"
+                android:drawableStart="@drawable/ic_person_add_black_24dp"
+                android:onClick="addFourthPlayer"
+                android:text="Add Player"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etWestPlayer" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
