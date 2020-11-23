@@ -732,6 +732,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         intent.putExtra(HandCalculatorActivity.WIN_TYPE_EXTRA, winType.name());
         intent.putExtra(HandCalculatorActivity.PREVALENT_WIND_EXTRA, game.getPrevalentWind());
         intent.putExtra(HandCalculatorActivity.SEAT_WIND_EXTRA, playerToApplyHandScore.getSeatWind());
+        intent.putExtra(HandCalculatorActivity.HONBA_EXTRA, game.getHonbaCount());
 
         startActivityForResult(intent, HandCalculatorActivity.REQUEST_CODE);
     }
