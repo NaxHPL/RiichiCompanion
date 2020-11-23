@@ -1,7 +1,7 @@
 package com.example.riichicompanion;
 
 public enum WinType {
-    None,
+    Unknown,
     Ron,
     Tsumo
 }
