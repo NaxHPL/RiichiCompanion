@@ -670,12 +670,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     private void setPlayerAsRonWinner(Player player) {
         playerToApplyHandScore = player;
-        openHandScoreDialog(WinType.Ron);
+        openHandCalculator(WinType.Ron);
     }
 
     private void setPlayerAsTsumoWinner(Player player) {
         playerToApplyHandScore = player;
-        openHandScoreDialog(WinType.Tsumo);
+        openHandCalculator(WinType.Tsumo);
     }
 
     private void setPlayerAsInTenpai(Player player) {
@@ -725,9 +725,14 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         return tvLeftPlayerAux;
     }
 
-    private void openHandScoreDialog(WinType winType) {
+    private void openHandCalculator(WinType winType) {
         Intent intent = new Intent(this, HandCalculatorActivity.class);
+
+        intent.putExtra(HandCalculatorActivity.WINNER_NAME_EXTRA, playerToApplyHandScore.getName());
         intent.putExtra(HandCalculatorActivity.WIN_TYPE_EXTRA, winType.name());
+        intent.putExtra(HandCalculatorActivity.PREVALENT_WIND_EXTRA, game.getPrevalentWind());
+        intent.putExtra(HandCalculatorActivity.SEAT_WIND_EXTRA, playerToApplyHandScore.getSeatWind());
+
         startActivityForResult(intent, HandCalculatorActivity.REQUEST_CODE);
     }
 
