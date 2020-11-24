@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -47,6 +48,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     //region Views
 
+    private Toolbar toolbarScoreTrackerActivity;
     private ConstraintLayout clBottom;
     private ConstraintLayout clRight;
     private ConstraintLayout clTop;
@@ -371,7 +373,9 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
+        int themeId = PersistentStorage.getThemeOption(this).getThemeId();
+        setTheme(themeId);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
         setSupportActionBar(findViewById(R.id.toolbarScoreTrackerActivity));
@@ -390,6 +394,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         //region Views
 
+        toolbarScoreTrackerActivity = findViewById(R.id.toolbarScoreTrackerActivity);
         clBottom = findViewById(R.id.clBottom);
         clRight = findViewById(R.id.clRight);
         clTop = findViewById(R.id.clTop);
@@ -432,6 +437,9 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnConfirm = findViewById(R.id.btnConfirm);
 
         //endregion
+
+        toolbarScoreTrackerActivity.setPopupTheme(themeId);
+        setSupportActionBar(toolbarScoreTrackerActivity);
 
         btnContinue.setOnClickListener((v) -> continueToNextStep());
         btnConfirm.setOnClickListener((v) -> continueToNextStep());

@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,6 +22,7 @@ import java.util.Locale;
 
 public class CreateGameActivity extends AppCompatActivity {
 
+    private Toolbar toolbarCreateGameActivity;
     private TextView tvInitialPoints;
     private TextView tvMinPointsToWin;
     private TextView tvTsumoLoss;
@@ -36,15 +38,17 @@ public class CreateGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
+        int themeId = PersistentStorage.getThemeOption(this).getThemeId();
+        setTheme(themeId);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
-        setSupportActionBar(findViewById(R.id.toolbarCreateGameActivity));
 
         ActionBar ab = getSupportActionBar();
         if (ab != null)
             ab.setDisplayHomeAsUpEnabled(true);
 
+        toolbarCreateGameActivity = findViewById(R.id.toolbarCreateGameActivity);
         tvInitialPoints = findViewById(R.id.tvInitialPoints);
         tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
         tvTsumoLoss = findViewById(R.id.tvTsumoLoss);
@@ -57,6 +61,9 @@ public class CreateGameActivity extends AppCompatActivity {
         fabRemoveFourthPlayer = findViewById(R.id.fabRemoveFourthPlayer);
         btnAddPlayer = findViewById(R.id.btnAddPlayer);
         threePlayerGame = false;
+
+        toolbarCreateGameActivity.setPopupTheme(themeId);
+        setSupportActionBar(toolbarCreateGameActivity);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.Locale;
 
@@ -21,19 +22,35 @@ public class HandCalculatorActivity extends AppCompatActivity {
     public static final String SEAT_WIND_EXTRA = "com.example.riichicompanion.SEAT_WIND_EXTRA";
     public static final String HONBA_EXTRA = "com.example.riichicompanion.HONBA_EXTRA";
 
+    //region Views
+
+    private Toolbar toolbarHandCalc;
     private String winnerName;
     private WinType winType;
     private Wind prevalentWind;
     private Wind seatWind;
     private int honba;
 
+    //endregion
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
+        int themeId = PersistentStorage.getThemeOption(this).getThemeId();
+        setTheme(themeId);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hand_calculator);
         setSupportActionBar(findViewById(R.id.toolbarHandCalc));
         setExtras(getIntent());
+
+        //region Views
+
+        toolbarHandCalc = findViewById(R.id.toolbarHandCalc);
+
+        //endregion
+
+        toolbarHandCalc.setPopupTheme(themeId);
+        setSupportActionBar(toolbarHandCalc);
 
         if (winnerName != null)
             setTitle(String.format(Locale.getDefault(), "Calculate hand for %s", winnerName));
