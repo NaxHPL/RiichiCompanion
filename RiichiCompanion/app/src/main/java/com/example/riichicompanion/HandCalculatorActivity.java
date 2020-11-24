@@ -55,7 +55,7 @@ public class HandCalculatorActivity extends AppCompatActivity {
             winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
         }
         catch (Exception e) {
-            winType = WinType.Unknown;
+            winType = null;
         }
 
         try {
