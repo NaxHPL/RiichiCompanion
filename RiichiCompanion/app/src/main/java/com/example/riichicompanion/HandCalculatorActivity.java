@@ -55,14 +55,6 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
         if (winnerName != null)
             setTitle(String.format(Locale.getDefault(), "Calculate hand for %s", winnerName));
-
-        // Set views if winType != null
-
-        // Set views if prevalentWind != null
-
-        // Set views if seatWind != null
-
-        // Set views if honba == -1
     }
 
     private void setExtras(Intent intent) {

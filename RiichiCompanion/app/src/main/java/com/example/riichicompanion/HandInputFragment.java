@@ -23,7 +23,7 @@ public class HandInputFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.hand_input_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_hand_input, container, false);
     }
 
     @Override
