@@ -48,7 +48,6 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     //region Views
 
-    private Toolbar toolbarScoreTrackerActivity;
     private ConstraintLayout clBottom;
     private ConstraintLayout clRight;
     private ConstraintLayout clTop;
@@ -394,7 +393,6 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         //region Views
 
-        toolbarScoreTrackerActivity = findViewById(R.id.toolbarScoreTrackerActivity);
         clBottom = findViewById(R.id.clBottom);
         clRight = findViewById(R.id.clRight);
         clTop = findViewById(R.id.clTop);
@@ -438,6 +436,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
         //endregion
 
+        Toolbar toolbarScoreTrackerActivity = findViewById(R.id.toolbarScoreTrackerActivity);
         toolbarScoreTrackerActivity.setPopupTheme(themeId);
         setSupportActionBar(toolbarScoreTrackerActivity);
 

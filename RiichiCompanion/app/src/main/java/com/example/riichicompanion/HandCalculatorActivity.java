@@ -24,14 +24,15 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
     //region Views
 
-    private Toolbar toolbarHandCalc;
+
+
+    //endregion
+
     private String winnerName;
     private WinType winType;
     private Wind prevalentWind;
     private Wind seatWind;
     private int honba;
-
-    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +41,15 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hand_calculator);
-        setSupportActionBar(findViewById(R.id.toolbarHandCalc));
         setExtras(getIntent());
 
         //region Views
 
-        toolbarHandCalc = findViewById(R.id.toolbarHandCalc);
+
 
         //endregion
 
+        Toolbar toolbarHandCalc = findViewById(R.id.toolbarHandCalc);
         toolbarHandCalc.setPopupTheme(themeId);
         setSupportActionBar(toolbarHandCalc);
 

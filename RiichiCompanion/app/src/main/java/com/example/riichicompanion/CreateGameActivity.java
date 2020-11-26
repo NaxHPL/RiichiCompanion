@@ -22,7 +22,6 @@ import java.util.Locale;
 
 public class CreateGameActivity extends AppCompatActivity {
 
-    private Toolbar toolbarCreateGameActivity;
     private TextView tvInitialPoints;
     private TextView tvMinPointsToWin;
     private TextView tvTsumoLoss;
@@ -48,7 +47,6 @@ public class CreateGameActivity extends AppCompatActivity {
         if (ab != null)
             ab.setDisplayHomeAsUpEnabled(true);
 
-        toolbarCreateGameActivity = findViewById(R.id.toolbarCreateGameActivity);
         tvInitialPoints = findViewById(R.id.tvInitialPoints);
         tvMinPointsToWin = findViewById(R.id.tvMinPointsToWin);
         tvTsumoLoss = findViewById(R.id.tvTsumoLoss);
@@ -62,6 +60,7 @@ public class CreateGameActivity extends AppCompatActivity {
         btnAddPlayer = findViewById(R.id.btnAddPlayer);
         threePlayerGame = false;
 
+        Toolbar toolbarCreateGameActivity = findViewById(R.id.toolbarCreateGameActivity);
         toolbarCreateGameActivity.setPopupTheme(themeId);
         setSupportActionBar(toolbarCreateGameActivity);
     }

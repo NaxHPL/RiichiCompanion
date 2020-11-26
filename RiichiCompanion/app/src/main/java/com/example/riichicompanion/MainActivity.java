@@ -19,7 +19,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements AppSettingsDialog.AppSettingsDialogListener {
 
-    private Toolbar toolbarMainActivity;
     private ConstraintLayout constraintLayoutOngoingGame;
     private TextView tvOngoingGamePlayers;
     private TextView tvOngoingGameDateTime;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
         constraintLayoutOngoingGame = findViewById(R.id.ConstraintLayout_ongoing_game);
         tvOngoingGamePlayers = findViewById(R.id.tvOngoingGamePlayers);
         tvOngoingGameDateTime = findViewById(R.id.tvOngoingGameDateTime);
@@ -46,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
         ivOngoingGameRoundWind = findViewById(R.id.ivOngoingGameRoundWind);
         divider1 = findViewById(R.id.divider1);
 
+        Toolbar toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
         toolbarMainActivity.setPopupTheme(themeId);
         setSupportActionBar(toolbarMainActivity);
 
