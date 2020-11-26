@@ -11,7 +11,8 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
             android:name=".HandCalculatorActivity"
-            android:label="Hand Calculator" />
+            android:label="Hand Calculator"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ScoreTrackerActivity"
             android:label="Game"
@@ -27,7 +28,6 @@
             android:label="Riichi Companion">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
