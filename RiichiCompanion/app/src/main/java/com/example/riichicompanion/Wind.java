@@ -70,6 +70,12 @@ public enum Wind {
                         return ResourcesCompat.getDrawable(context.getResources(), R.drawable.north_black, context.getTheme());
             }
         }
+    },
+    Unknown {
+        @Override
+        public Drawable getImage(Context context) {
+            return null;
+        }
     };
 
     public abstract Drawable getImage(Context context);
