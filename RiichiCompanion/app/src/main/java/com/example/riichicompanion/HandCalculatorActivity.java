@@ -7,6 +7,10 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Locale;
 
@@ -22,12 +26,6 @@ public class HandCalculatorActivity extends AppCompatActivity {
     public static final String SEAT_WIND_EXTRA = "com.example.riichicompanion.SEAT_WIND_EXTRA";
     public static final String HONBA_EXTRA = "com.example.riichicompanion.HONBA_EXTRA";
 
-    //region Views
-
-
-
-    //endregion
-
     private String winnerName;
     private WinType winType;
     private Wind prevalentWind;
@@ -41,17 +39,10 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hand_calculator);
+
         setExtras(getIntent());
-
-        //region Views
-
-
-
-        //endregion
-
-        Toolbar toolbarHandCalc = findViewById(R.id.toolbarHandCalc);
-        toolbarHandCalc.setPopupTheme(themeId);
-        setSupportActionBar(toolbarHandCalc);
+        setupToolbar(themeId);
+        setupTabs();
 
         if (winnerName != null)
             setTitle(String.format(Locale.getDefault(), "Calculate hand for %s", winnerName));
@@ -59,28 +50,30 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
     private void setExtras(Intent intent) {
         winnerName = intent.getStringExtra(WINNER_NAME_EXTRA);
+        winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
+        prevalentWind = Wind.valueOf(intent.getStringExtra(PREVALENT_WIND_EXTRA));
+        seatWind = Wind.valueOf(intent.getStringExtra(SEAT_WIND_EXTRA));
         honba = intent.getIntExtra(HONBA_EXTRA, -1);
+    }
 
-        try {
-            winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
-        }
-        catch (Exception e) {
-            winType = null;
-        }
+    private void setupToolbar(int themeId) {
+        Toolbar toolbarHandCalc = findViewById(R.id.toolbarHandCalc);
+        toolbarHandCalc.setPopupTheme(themeId);
+        setSupportActionBar(toolbarHandCalc);
+    }
 
-        try {
-            prevalentWind = Wind.valueOf(intent.getStringExtra(PREVALENT_WIND_EXTRA));
-        }
-        catch (Exception e) {
-            prevalentWind = null;
-        }
+    private void setupTabs() {
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(1);
+        viewPager.setAdapter(new HandCalculatorAdapter(this, winType, prevalentWind, seatWind, honba));
 
-        try {
-            seatWind = Wind.valueOf(intent.getStringExtra(SEAT_WIND_EXTRA));
-        }
-        catch (Exception e) {
-            seatWind = null;
-        }
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        new TabLayoutMediator(tabLayout, viewPager, ((tab, position) -> {
+            if (position == 0)
+                tab.setText("Tiles");
+            else
+                tab.setText("Conditions");
+        })).attach();
     }
 
     @Override

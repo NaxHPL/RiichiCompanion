@@ -29,6 +29,7 @@ public class WinConditionsFragment extends Fragment {
 
         Bundle args = new Bundle();
         args.putString(ARG_WIN_TYPE, winType.name());
+        args.putString(ARG_WIN_TYPE, winType.name());
         args.putString(ARG_PREVALENT_WIND, prevalentWind.name());
         args.putString(ARG_SEAT_WIND, seatWind.name());
         args.putInt(ARG_HONBA_COUNT, honbaCount);
@@ -42,36 +43,16 @@ public class WinConditionsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        if (args != null) {
-            try {
-                winType = WinType.valueOf(args.getString(ARG_WIN_TYPE));
-            }
-            catch (Exception e) {
-                winType = null;
-            }
+        winType = WinType.valueOf(args.getString(ARG_WIN_TYPE));
+        prevalentWind = Wind.valueOf(args.getString(ARG_PREVALENT_WIND));
+        seatWind = Wind.valueOf(args.getString(ARG_SEAT_WIND));
+        honbaCount = args.getInt(ARG_HONBA_COUNT, -1);
 
-            try {
-                prevalentWind = Wind.valueOf(args.getString(ARG_PREVALENT_WIND));
-            }
-            catch (Exception e) {
-                prevalentWind = null;
-            }
+        // Set views if winType != WinType.Unknown
 
-            try {
-                seatWind = Wind.valueOf(args.getString(ARG_SEAT_WIND));
-            }
-            catch (Exception e) {
-                seatWind = null;
-            }
+        // Set views if prevalentWind != Win.Unknown
 
-            honbaCount = args.getInt(ARG_HONBA_COUNT, -1);
-        }
-
-        // Set views if winType != null
-
-        // Set views if prevalentWind != null
-
-        // Set views if seatWind != null
+        // Set views if seatWind != Wind.Unknown
 
         // Set views if honbaCount > -1
     }
