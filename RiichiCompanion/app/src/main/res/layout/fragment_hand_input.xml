@@ -67,10 +67,10 @@
                 android:id="@+id/clMan"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clConcealedTiles">
+                app:layout_constraintTop_toBottomOf="@+id/tbPon">
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -587,6 +587,76 @@
                     app:srcCompat="@drawable/white_dragon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ToggleButton
+                android:id="@+id/tbChii"
+                android:layout_width="76dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Chii"
+                android:textOff="Chii"
+                android:textOn="Chii"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/tbPon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clConcealedTiles" />
+
+            <ToggleButton
+                android:id="@+id/tbPon"
+                android:layout_width="76dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Pon"
+                android:textOff="Pon"
+                android:textOn="Pon"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/tbKan"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tbChii"
+                app:layout_constraintTop_toBottomOf="@+id/clConcealedTiles" />
+
+            <ToggleButton
+                android:id="@+id/tbKan"
+                android:layout_width="76dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Kan"
+                android:textOff="Kan"
+                android:textOn="Kan"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/tbClosedKan"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tbPon"
+                app:layout_constraintTop_toBottomOf="@+id/clConcealedTiles" />
+
+            <ToggleButton
+                android:id="@+id/tbClosedKan"
+                android:layout_width="110dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Closed Kan"
+                android:textOff="Closed Kan"
+                android:textOn="Closed Kan"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tbKan"
+                app:layout_constraintTop_toBottomOf="@+id/clConcealedTiles" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
