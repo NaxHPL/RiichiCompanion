@@ -41,4 +41,146 @@
         app:layout_constraintStart_toEndOf="@+id/tbRon"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ToggleButton
+        android:id="@+id/tbPrevWindEast"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/east_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbPrevWindSouth"
+        app:layout_constraintEnd_toStartOf="@+id/tbPrevWindSouth" />
+
+    <ToggleButton
+        android:id="@+id/tbPrevWindSouth"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/south_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbPrevWindWest"
+        app:layout_constraintEnd_toStartOf="@+id/tbPrevWindWest" />
+
+    <ToggleButton
+        android:id="@+id/tbPrevWindWest"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/west_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbPrevWindNorth"
+        app:layout_constraintEnd_toStartOf="@+id/tbPrevWindNorth" />
+
+    <ToggleButton
+        android:id="@+id/tbPrevWindNorth"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/north_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbTsumo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Prevalent wind:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbPrevWindEast"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tbSeatWindEast"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/east_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbSeatWindSouth"
+        app:layout_constraintEnd_toStartOf="@+id/tbSeatWindSouth" />
+
+    <ToggleButton
+        android:id="@+id/tbSeatWindSouth"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/south_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbSeatWindWest"
+        app:layout_constraintEnd_toStartOf="@+id/tbSeatWindWest" />
+
+    <ToggleButton
+        android:id="@+id/tbSeatWindWest"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/west_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbSeatWindNorth"
+        app:layout_constraintEnd_toStartOf="@+id/tbSeatWindNorth" />
+
+    <ToggleButton
+        android:id="@+id/tbSeatWindNorth"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rc_toggle_button_bg"
+        android:drawableStart="@drawable/north_small"
+        android:drawableTint="#000000"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="6dp"
+        android:textOff=" "
+        android:textOn=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbPrevWindNorth" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Seat wind:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tbSeatWindEast"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
