@@ -231,6 +231,74 @@
                 app:layout_constraintStart_toEndOf="@+id/tbRiichi"
                 app:layout_constraintTop_toBottomOf="@+id/tbSeatWindNorth" />
 
+            <ToggleButton
+                android:id="@+id/tbRinshan"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Rinshan Kaihou"
+                android:textOff="Rinshan Kaihou"
+                android:textOn="Rinshan Kaihou"
+                app:layout_constraintEnd_toStartOf="@+id/tbChankan"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbRiichi" />
+
+            <ToggleButton
+                android:id="@+id/tbChankan"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Chankan"
+                android:textOff="Chankan"
+                android:textOn="Chankan"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tbRinshan"
+                app:layout_constraintTop_toBottomOf="@+id/tbDoubleRiichi" />
+
+            <ToggleButton
+                android:id="@+id/tbIppatsu"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Ippatsu"
+                android:textOff="Ippatsu"
+                android:textOn="Ippatsu"
+                app:layout_constraintEnd_toStartOf="@+id/tbHouteiHaitei"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbRinshan" />
+
+            <ToggleButton
+                android:id="@+id/tbHouteiHaitei"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rc_toggle_button_bg"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="Houtei / Haitei"
+                android:textOff="Houtei / Haitei"
+                android:textOn="Houtei / Haitei"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tbIppatsu"
+                app:layout_constraintTop_toBottomOf="@+id/tbChankan" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
