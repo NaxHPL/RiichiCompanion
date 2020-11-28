@@ -1,12 +1,21 @@
 package com.example.riichicompanion;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import java.util.Locale;
 
 public class WinConditionsFragment extends Fragment {
 
@@ -14,6 +23,33 @@ public class WinConditionsFragment extends Fragment {
     private static final String ARG_PREVALENT_WIND = "ARG_PREVALENT_WIND";
     private static final String ARG_SEAT_WIND = "ARG_SEAT_WIND";
     private static final String ARG_HONBA_COUNT = "ARG_HONBA_COUNT";
+
+    //region Views
+
+    ToggleButton tbRon;
+    ToggleButton tbTsumo;
+    ToggleButton tbPrevWindEast;
+    ToggleButton tbPrevWindSouth;
+    ToggleButton tbPrevWindWest;
+    ToggleButton tbPrevWindNorth;
+    ToggleButton tbSeatWindEast;
+    ToggleButton tbSeatWindSouth;
+    ToggleButton tbSeatWindWest;
+    ToggleButton tbSeatWindNorth;
+    ToggleButton tbRiichi;
+    ToggleButton tbDoubleRiichi;
+    ToggleButton tbRinshan;
+    ToggleButton tbChankan;
+    ToggleButton tbIppatsu;
+    ToggleButton tbHouteiHaitei;
+    Button btnDecreaseDora;
+    Button btnIncreaseDora;
+    Button btnDecreaseHonba;
+    Button btnIncreaseHonba;
+    TextView tvDora;
+    TextView tvHonba;
+
+    //endregion
 
     private WinType winType;
     private Wind prevalentWind;
@@ -41,24 +77,89 @@ public class WinConditionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setArguments();
+    }
 
+    private void setArguments() {
         Bundle args = getArguments();
         winType = WinType.valueOf(args.getString(ARG_WIN_TYPE));
         prevalentWind = Wind.valueOf(args.getString(ARG_PREVALENT_WIND));
         seatWind = Wind.valueOf(args.getString(ARG_SEAT_WIND));
         honbaCount = args.getInt(ARG_HONBA_COUNT, -1);
-
-        // Set views if winType != WinType.Unknown
-
-        // Set views if prevalentWind != Win.Unknown
-
-        // Set views if seatWind != Wind.Unknown
-
-        // Set views if honbaCount > -1
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_win_conditions, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //region Views
+
+        tbRon = view.findViewById(R.id.tbRon);
+        tbTsumo = view.findViewById(R.id.tbTsumo);
+        tbPrevWindEast = view.findViewById(R.id.tbPrevWindEast);
+        tbPrevWindSouth = view.findViewById(R.id.tbPrevWindSouth);
+        tbPrevWindWest = view.findViewById(R.id.tbPrevWindWest);
+        tbPrevWindNorth = view.findViewById(R.id.tbPrevWindNorth);
+        tbSeatWindEast = view.findViewById(R.id.tbSeatWindEast);
+        tbSeatWindSouth = view.findViewById(R.id.tbSeatWindSouth);
+        tbSeatWindWest = view.findViewById(R.id.tbSeatWindWest);
+        tbSeatWindNorth = view.findViewById(R.id.tbSeatWindNorth);
+        tbRiichi = view.findViewById(R.id.tbRiichi);
+        tbDoubleRiichi = view.findViewById(R.id.tbDoubleRiichi);
+        tbRinshan = view.findViewById(R.id.tbRinshan);
+        tbChankan = view.findViewById(R.id.tbChankan);
+        tbIppatsu = view.findViewById(R.id.tbIppatsu);
+        tbHouteiHaitei = view.findViewById(R.id.tbHouteiHaitei);
+        btnDecreaseDora = view.findViewById(R.id.btnDecreaseDora);
+        btnIncreaseDora = view.findViewById(R.id.btnIncreaseDora);
+        btnDecreaseHonba = view.findViewById(R.id.btnDecreaseHonba);
+        btnIncreaseHonba = view.findViewById(R.id.btnIncreaseHonba);
+        tvDora = view.findViewById(R.id.tvDora);
+        tvHonba = view.findViewById(R.id.tvHonba);
+
+        //endregion
+
+        if (winType != WinType.Unknown) {
+            tbRon.setChecked(winType == WinType.Ron);
+            tbTsumo.setChecked(winType == WinType.Tsumo);
+
+            tbRon.setEnabled(false);
+            tbTsumo.setEnabled(false);
+        }
+
+        if (prevalentWind != Wind.Unknown) {
+            tbPrevWindEast.setChecked(prevalentWind == Wind.East);
+            tbPrevWindSouth.setChecked(prevalentWind == Wind.South);
+            tbPrevWindWest.setChecked(prevalentWind == Wind.West);
+            tbPrevWindNorth.setChecked(prevalentWind == Wind.North);
+
+            tbPrevWindEast.setEnabled(false);
+            tbPrevWindSouth.setEnabled(false);
+            tbPrevWindWest.setEnabled(false);
+            tbPrevWindNorth.setEnabled(false);
+        }
+
+        if (seatWind != Wind.Unknown) {
+            tbSeatWindEast.setChecked(seatWind == Wind.East);
+            tbSeatWindSouth.setChecked(seatWind == Wind.South);
+            tbSeatWindWest.setChecked(seatWind == Wind.West);
+            tbSeatWindNorth.setChecked(seatWind == Wind.North);
+
+            tbSeatWindEast.setEnabled(false);
+            tbSeatWindSouth.setEnabled(false);
+            tbSeatWindWest.setEnabled(false);
+            tbSeatWindNorth.setEnabled(false);
+        }
+
+        if (honbaCount > -1) {
+            tvHonba.setText(String.format(Locale.getDefault(), "%d", honbaCount));
+            btnDecreaseHonba.setEnabled(false);
+            btnIncreaseHonba.setEnabled(false);
+        }
     }
 }
