@@ -74,10 +74,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton2"
@@ -89,10 +89,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton2"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton3"
@@ -104,10 +104,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton3"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton4"
@@ -118,10 +118,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton4"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton5"
@@ -132,10 +132,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton5"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton6"
@@ -146,10 +146,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton6"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton7"
@@ -160,10 +160,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton7"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton8"
@@ -174,10 +174,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton8"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton9"
@@ -188,10 +188,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton9"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -212,10 +212,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton10"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton11"
@@ -227,10 +227,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton11"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton12"
@@ -242,10 +242,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton12"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton13"
@@ -256,10 +256,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton13"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton14"
@@ -270,10 +270,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton14"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton15"
@@ -284,10 +284,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton15"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton16"
@@ -298,10 +298,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton16"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton17"
@@ -312,10 +312,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton17"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton18"
@@ -326,10 +326,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton18"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -351,10 +351,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton19"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton20"
@@ -366,10 +366,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton20"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton21"
@@ -381,10 +381,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton21"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton22"
@@ -395,10 +395,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton22"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton23"
@@ -409,10 +409,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton23"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton24"
@@ -423,10 +423,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton24"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton25"
@@ -437,10 +437,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton25"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton26"
@@ -451,10 +451,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton26"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton27"
@@ -465,10 +465,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton27"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -489,10 +489,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton37"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton39"
@@ -504,10 +504,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton39"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton40"
@@ -518,10 +518,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton40"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton41"
@@ -532,10 +532,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton41"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton42"
@@ -546,10 +546,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton42"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton43"
@@ -560,10 +560,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton43"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton44"
@@ -574,10 +574,10 @@
 
                 <ImageButton
                     android:id="@+id/imageButton44"
+                    style="@style/SelectableItemBackground_Light"
                     android:layout_width="38dp"
                     android:layout_height="50dp"
                     android:background="#00000000"
-                    android:foreground="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
