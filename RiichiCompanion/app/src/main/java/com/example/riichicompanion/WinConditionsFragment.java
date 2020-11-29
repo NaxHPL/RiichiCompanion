@@ -1,11 +1,14 @@
 package com.example.riichicompanion;
 
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -124,6 +127,8 @@ public class WinConditionsFragment extends Fragment {
 
         //endregion
 
+        setWindColours(PersistentStorage.getThemeOption(getActivity()));
+
         if (winType != WinType.Unknown) {
             tbRon.setChecked(winType == WinType.Ron);
             tbTsumo.setChecked(winType == WinType.Tsumo);
@@ -138,10 +143,10 @@ public class WinConditionsFragment extends Fragment {
             tbPrevWindWest.setChecked(prevalentWind == Wind.West);
             tbPrevWindNorth.setChecked(prevalentWind == Wind.North);
 
-            tbPrevWindEast.setEnabled(false);
-            tbPrevWindSouth.setEnabled(false);
-            tbPrevWindWest.setEnabled(false);
-            tbPrevWindNorth.setEnabled(false);
+            setWindToggleButtonEnabled(tbPrevWindEast, false);
+            setWindToggleButtonEnabled(tbPrevWindSouth, false);
+            setWindToggleButtonEnabled(tbPrevWindWest, false);
+            setWindToggleButtonEnabled(tbPrevWindNorth, false);
         }
 
         if (seatWind != Wind.Unknown) {
@@ -150,10 +155,10 @@ public class WinConditionsFragment extends Fragment {
             tbSeatWindWest.setChecked(seatWind == Wind.West);
             tbSeatWindNorth.setChecked(seatWind == Wind.North);
 
-            tbSeatWindEast.setEnabled(false);
-            tbSeatWindSouth.setEnabled(false);
-            tbSeatWindWest.setEnabled(false);
-            tbSeatWindNorth.setEnabled(false);
+            setWindToggleButtonEnabled(tbSeatWindEast, false);
+            setWindToggleButtonEnabled(tbSeatWindSouth, false);
+            setWindToggleButtonEnabled(tbSeatWindWest, false);
+            setWindToggleButtonEnabled(tbSeatWindNorth, false);
         }
 
         if (honbaCount > -1) {
@@ -161,5 +166,31 @@ public class WinConditionsFragment extends Fragment {
             btnDecreaseHonba.setEnabled(false);
             btnIncreaseHonba.setEnabled(false);
         }
+    }
+
+    private void setWindColours(ThemeOption theme) {
+        boolean nightModeOn = (getActivity().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        ColorStateList color;
+
+        if (theme == ThemeOption.Dark || (theme == ThemeOption.Auto && nightModeOn))
+            color = ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
+        else
+            color = ColorStateList.valueOf(Color.parseColor("#000000"));
+
+        TextViewCompat.setCompoundDrawableTintList(tbPrevWindEast, color);
+        TextViewCompat.setCompoundDrawableTintList(tbPrevWindSouth, color);
+        TextViewCompat.setCompoundDrawableTintList(tbPrevWindWest, color);
+        TextViewCompat.setCompoundDrawableTintList(tbPrevWindNorth, color);
+
+        TextViewCompat.setCompoundDrawableTintList(tbSeatWindEast, color);
+        TextViewCompat.setCompoundDrawableTintList(tbSeatWindSouth, color);
+        TextViewCompat.setCompoundDrawableTintList(tbSeatWindWest, color);
+        TextViewCompat.setCompoundDrawableTintList(tbSeatWindNorth, color);
+    }
+
+    private void setWindToggleButtonEnabled(ToggleButton tb, boolean enabled) {
+        ColorStateList color = TextViewCompat.getCompoundDrawableTintList(tb).withAlpha(enabled ? 255 : 127);
+        TextViewCompat.setCompoundDrawableTintList(tb, color);
+        tb.setEnabled(enabled);
     }
 }
