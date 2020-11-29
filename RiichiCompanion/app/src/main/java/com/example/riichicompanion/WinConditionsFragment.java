@@ -141,10 +141,12 @@ public class WinConditionsFragment extends Fragment {
         }
 
         if (prevalentWind != Wind.Unknown) {
-            tbPrevWindEast.setChecked(prevalentWind == Wind.East);
-            tbPrevWindSouth.setChecked(prevalentWind == Wind.South);
-            tbPrevWindWest.setChecked(prevalentWind == Wind.West);
-            tbPrevWindNorth.setChecked(prevalentWind == Wind.North);
+            switch (prevalentWind) {
+                case East: tbPrevWindEast.setChecked(true); break;
+                case South: tbPrevWindSouth.setChecked(true); break;
+                case West: tbPrevWindWest.setChecked(true); break;
+                case North: tbPrevWindNorth.setChecked(true); break;
+            }
 
             disableWindToggleButton(tbPrevWindEast);
             disableWindToggleButton(tbPrevWindSouth);
@@ -153,10 +155,12 @@ public class WinConditionsFragment extends Fragment {
         }
 
         if (seatWind != Wind.Unknown) {
-            tbSeatWindEast.setChecked(seatWind == Wind.East);
-            tbSeatWindSouth.setChecked(seatWind == Wind.South);
-            tbSeatWindWest.setChecked(seatWind == Wind.West);
-            tbSeatWindNorth.setChecked(seatWind == Wind.North);
+            switch (seatWind) {
+                case East: tbSeatWindEast.setChecked(true); break;
+                case South: tbSeatWindSouth.setChecked(true); break;
+                case West: tbSeatWindWest.setChecked(true); break;
+                case North: tbSeatWindNorth.setChecked(true); break;
+            }
 
             disableWindToggleButton(tbSeatWindEast);
             disableWindToggleButton(tbSeatWindSouth);
