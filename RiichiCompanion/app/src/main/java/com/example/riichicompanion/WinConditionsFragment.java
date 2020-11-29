@@ -203,12 +203,24 @@ public class WinConditionsFragment extends Fragment {
 
     private void setButtonListeners() {
         tbRon.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
+            if (isChecked) {
                 tbTsumo.setChecked(false);
+
+                CharSequence text = String.format(Locale.getDefault(), "%s", "Houtei");
+                tbHouteiHaitei.setTextOn(text);
+                tbHouteiHaitei.setTextOff(text);
+                tbHouteiHaitei.setText(text);
+            }
         });
         tbTsumo.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
+            if (isChecked) {
                 tbRon.setChecked(false);
+
+                CharSequence text = String.format(Locale.getDefault(), "%s", "Haitei");
+                tbHouteiHaitei.setTextOn(text);
+                tbHouteiHaitei.setTextOff(text);
+                tbHouteiHaitei.setText(text);
+            }
         });
 
         ToggleButton[] prevWindButtons = new ToggleButton[] {tbPrevWindEast, tbPrevWindSouth, tbPrevWindWest, tbPrevWindNorth};
@@ -235,6 +247,47 @@ public class WinConditionsFragment extends Fragment {
             tb.setOnCheckedChangeListener(occListenerPrevWind);
         for (ToggleButton tb : seatWindButtons)
             tb.setOnCheckedChangeListener(occListenerSeatWind);
+
+        tbRiichi.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                tbDoubleRiichi.setChecked(false);
+                tbIppatsu.setEnabled(true);
+            }
+            else if (!tbDoubleRiichi.isChecked()) {
+                tbIppatsu.setEnabled(false);
+                tbIppatsu.setChecked(false);
+            }
+        });
+
+        tbDoubleRiichi.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                tbRiichi.setChecked(false);
+                tbIppatsu.setEnabled(true);
+            }
+            else if (!tbRiichi.isChecked()) {
+                tbIppatsu.setEnabled(false);
+                tbIppatsu.setChecked(false);
+            }
+        });
+
+        tbRinshan.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                tbIppatsu.setChecked(false);
+                tbIppatsu.setEnabled(false);
+            }
+            else if (tbRiichi.isChecked() || tbDoubleRiichi.isChecked())
+                tbIppatsu.setEnabled(true);
+        });
+
+        tbChankan.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                tbRinshan.setChecked(false);
+                tbRinshan.setEnabled(false);
+            }
+            else {
+                // TODO: Enable tbRinshan if hand contains a kantsu
+            }
+        });
 
         btnDecreaseDora.setOnClickListener(v -> changeDoraBy(-1));
         btnIncreaseDora.setOnClickListener(v -> changeDoraBy(1));
