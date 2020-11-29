@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -127,11 +128,13 @@ public class WinConditionsFragment extends Fragment {
         //endregion
 
         setWindColours(PersistentStorage.getThemeOption(getActivity()));
-        setButtonOnClickListeners();
+        setButtonListeners();
 
         if (winType != WinType.Unknown) {
-            tbRon.setChecked(winType == WinType.Ron);
-            tbTsumo.setChecked(winType == WinType.Tsumo);
+            if (winType == WinType.Ron)
+                tbRon.setChecked(true);
+            else
+                tbTsumo.setChecked(true);
 
             tbRon.setEnabled(false);
             tbTsumo.setEnabled(false);
@@ -143,10 +146,10 @@ public class WinConditionsFragment extends Fragment {
             tbPrevWindWest.setChecked(prevalentWind == Wind.West);
             tbPrevWindNorth.setChecked(prevalentWind == Wind.North);
 
-            setWindToggleButtonEnabled(tbPrevWindEast, false);
-            setWindToggleButtonEnabled(tbPrevWindSouth, false);
-            setWindToggleButtonEnabled(tbPrevWindWest, false);
-            setWindToggleButtonEnabled(tbPrevWindNorth, false);
+            disableWindToggleButton(tbPrevWindEast);
+            disableWindToggleButton(tbPrevWindSouth);
+            disableWindToggleButton(tbPrevWindWest);
+            disableWindToggleButton(tbPrevWindNorth);
         }
 
         if (seatWind != Wind.Unknown) {
@@ -155,10 +158,10 @@ public class WinConditionsFragment extends Fragment {
             tbSeatWindWest.setChecked(seatWind == Wind.West);
             tbSeatWindNorth.setChecked(seatWind == Wind.North);
 
-            setWindToggleButtonEnabled(tbSeatWindEast, false);
-            setWindToggleButtonEnabled(tbSeatWindSouth, false);
-            setWindToggleButtonEnabled(tbSeatWindWest, false);
-            setWindToggleButtonEnabled(tbSeatWindNorth, false);
+            disableWindToggleButton(tbSeatWindEast);
+            disableWindToggleButton(tbSeatWindSouth);
+            disableWindToggleButton(tbSeatWindWest);
+            disableWindToggleButton(tbSeatWindNorth);
         }
 
         if (honbaCount > -1) {
@@ -188,13 +191,47 @@ public class WinConditionsFragment extends Fragment {
         TextViewCompat.setCompoundDrawableTintList(tbSeatWindNorth, color);
     }
 
-    private void setWindToggleButtonEnabled(ToggleButton tb, boolean enabled) {
-        ColorStateList color = TextViewCompat.getCompoundDrawableTintList(tb).withAlpha(enabled ? 255 : 127);
+    private void disableWindToggleButton(ToggleButton tb) {
+        ColorStateList color = TextViewCompat.getCompoundDrawableTintList(tb).withAlpha(127);
         TextViewCompat.setCompoundDrawableTintList(tb, color);
-        tb.setEnabled(enabled);
+        tb.setEnabled(false);
     }
 
-    private void setButtonOnClickListeners() {
+    private void setButtonListeners() {
+        tbRon.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                tbTsumo.setChecked(false);
+        });
+        tbTsumo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                tbRon.setChecked(false);
+        });
+
+        ToggleButton[] prevWindButtons = new ToggleButton[] {tbPrevWindEast, tbPrevWindSouth, tbPrevWindWest, tbPrevWindNorth};
+        ToggleButton[] seatWindButtons = new ToggleButton[] {tbSeatWindEast, tbSeatWindSouth, tbSeatWindWest, tbSeatWindNorth};
+
+        CompoundButton.OnCheckedChangeListener occListenerPrevWind = (buttonView, isChecked) -> {
+            for (ToggleButton tb : prevWindButtons ) {
+                if (tb != buttonView && isChecked)
+                    tb.setChecked(false);
+                if (tb == buttonView)
+                    tb.setClickable(!isChecked);
+            }
+        };
+        CompoundButton.OnCheckedChangeListener occListenerSeatWind = (buttonView, isChecked) -> {
+            for (ToggleButton tb : seatWindButtons ) {
+                if (tb != buttonView && isChecked)
+                    tb.setChecked(false);
+                if (tb == buttonView)
+                    tb.setClickable(!isChecked);
+            }
+        };
+
+        for (ToggleButton tb : prevWindButtons)
+            tb.setOnCheckedChangeListener(occListenerPrevWind);
+        for (ToggleButton tb : seatWindButtons)
+            tb.setOnCheckedChangeListener(occListenerSeatWind);
+
         btnDecreaseDora.setOnClickListener(v -> changeDoraBy(-1));
         btnIncreaseDora.setOnClickListener(v -> changeDoraBy(1));
         btnDecreaseHonba.setOnClickListener(v -> changeHonbaBy(-1));
