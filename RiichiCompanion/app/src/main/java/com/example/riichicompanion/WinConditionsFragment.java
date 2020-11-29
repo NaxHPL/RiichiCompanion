@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 
@@ -128,6 +127,7 @@ public class WinConditionsFragment extends Fragment {
         //endregion
 
         setWindColours(PersistentStorage.getThemeOption(getActivity()));
+        setButtonOnClickListeners();
 
         if (winType != WinType.Unknown) {
             tbRon.setChecked(winType == WinType.Ron);
@@ -192,5 +192,22 @@ public class WinConditionsFragment extends Fragment {
         ColorStateList color = TextViewCompat.getCompoundDrawableTintList(tb).withAlpha(enabled ? 255 : 127);
         TextViewCompat.setCompoundDrawableTintList(tb, color);
         tb.setEnabled(enabled);
+    }
+
+    private void setButtonOnClickListeners() {
+        btnDecreaseDora.setOnClickListener(v -> changeDoraBy(-1));
+        btnIncreaseDora.setOnClickListener(v -> changeDoraBy(1));
+        btnDecreaseHonba.setOnClickListener(v -> changeHonbaBy(-1));
+        btnIncreaseHonba.setOnClickListener(v -> changeHonbaBy(1));
+    }
+
+    private void changeDoraBy(int amount) {
+        int dora = Integer.parseInt(tvDora.getText().toString()) + amount;
+        tvDora.setText(String.format(Locale.getDefault(), "%d", Math.max(0, dora)));
+    }
+
+    private void changeHonbaBy(int amount) {
+        int honba = Integer.parseInt(tvHonba.getText().toString()) + amount;
+        tvHonba.setText(String.format(Locale.getDefault(), "%d", Math.max(0, honba)));
     }
 }
