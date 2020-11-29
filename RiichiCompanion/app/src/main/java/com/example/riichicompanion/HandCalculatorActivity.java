@@ -79,11 +79,18 @@ public class HandCalculatorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            setResult(RESULT_CODE_CANCELLED);
-            finish();
+            onBackPressed();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CODE_CANCELLED);
+        finish();
+
+        super.onBackPressed();
     }
 }
