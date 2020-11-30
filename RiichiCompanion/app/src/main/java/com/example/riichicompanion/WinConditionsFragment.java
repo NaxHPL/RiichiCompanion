@@ -249,44 +249,13 @@ public class WinConditionsFragment extends Fragment {
             tb.setOnCheckedChangeListener(occListenerSeatWind);
 
         tbRiichi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
+            if (isChecked)
                 tbDoubleRiichi.setChecked(false);
-                tbIppatsu.setEnabled(true);
-            }
-            else if (!tbDoubleRiichi.isChecked()) {
-                tbIppatsu.setEnabled(false);
-                tbIppatsu.setChecked(false);
-            }
         });
 
         tbDoubleRiichi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
+            if (isChecked)
                 tbRiichi.setChecked(false);
-                tbIppatsu.setEnabled(true);
-            }
-            else if (!tbRiichi.isChecked()) {
-                tbIppatsu.setEnabled(false);
-                tbIppatsu.setChecked(false);
-            }
-        });
-
-        tbRinshan.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                tbIppatsu.setChecked(false);
-                tbIppatsu.setEnabled(false);
-            }
-            else if (tbRiichi.isChecked() || tbDoubleRiichi.isChecked())
-                tbIppatsu.setEnabled(true);
-        });
-
-        tbChankan.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                tbRinshan.setChecked(false);
-                tbRinshan.setEnabled(false);
-            }
-            else {
-                // TODO: Enable tbRinshan if hand contains a kantsu
-            }
         });
 
         btnDecreaseDora.setOnClickListener(v -> changeDoraBy(-1));
