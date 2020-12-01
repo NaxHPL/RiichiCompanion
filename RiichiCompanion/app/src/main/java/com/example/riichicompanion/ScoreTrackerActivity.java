@@ -2,6 +2,7 @@ package com.example.riichicompanion;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -372,8 +373,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int themeId = PersistentStorage.getThemeOption(this).getThemeId();
-        setTheme(themeId);
+        ThemeOption theme = PersistentStorage.getThemeOption(this);
+        setTheme(theme.getThemeId());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
@@ -437,8 +438,10 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         //endregion
 
         Toolbar toolbarScoreTrackerActivity = findViewById(R.id.toolbarScoreTrackerActivity);
-        toolbarScoreTrackerActivity.setPopupTheme(themeId);
+        toolbarScoreTrackerActivity.setPopupTheme(theme.getThemeId());
         setSupportActionBar(toolbarScoreTrackerActivity);
+
+        setScoreTextColours(theme);
 
         btnContinue.setOnClickListener((v) -> continueToNextStep());
         btnConfirm.setOnClickListener((v) -> continueToNextStep());
@@ -470,6 +473,21 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
             tvMiddleText.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setScoreTextColours(ThemeOption theme) {
+        boolean nightModeOn = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+
+        int color;
+        if (theme == ThemeOption.Dark || (theme == ThemeOption.Auto && nightModeOn))
+            color = getResources().getColor(R.color.white, getTheme());
+        else
+            color = getResources().getColor(R.color.black, getTheme());
+
+        tvBottomScore.setTextColor(color);
+        tvRightScore.setTextColor(color);
+        tvTopScore.setTextColor(color);
+        tvLeftScore.setTextColor(color);
     }
 
     @Override
