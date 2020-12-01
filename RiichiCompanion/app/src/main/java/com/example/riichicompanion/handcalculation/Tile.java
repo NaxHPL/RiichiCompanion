@@ -1,6 +1,8 @@
-package com.example.riichicompanion;
+package com.example.riichicompanion.handcalculation;
 
 import androidx.annotation.IntRange;
+
+import com.example.riichicompanion.Wind;
 
 public class Tile {
 
