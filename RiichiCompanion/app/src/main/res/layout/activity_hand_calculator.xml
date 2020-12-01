@@ -27,8 +27,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarHandCalc"
-        app:tabIndicatorColor="#7AFF81"
+        app:tabIndicatorColor="#FFFFFF"
         app:tabTextColor="#FFFFFF" />
+
+    <View
+        android:id="@+id/divider6"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -38,7 +47,9 @@
         app:layout_constraintBottom_toTopOf="@+id/btnCalculate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/divider6">
+
+    </androidx.viewpager2.widget.ViewPager2>
 
     <Button
         android:id="@+id/btnCalculate"
