@@ -196,7 +196,7 @@ public class WinConditionsFragment extends Fragment {
     }
 
     private void disableWindToggleButton(ToggleButton tb) {
-        ColorStateList color = TextViewCompat.getCompoundDrawableTintList(tb).withAlpha(127);
+        ColorStateList color = TextViewCompat.getCompoundDrawableTintList(tb).withAlpha(85);
         TextViewCompat.setCompoundDrawableTintList(tb, color);
         tb.setEnabled(false);
     }
