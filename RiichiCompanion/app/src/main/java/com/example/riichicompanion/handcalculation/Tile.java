@@ -96,7 +96,7 @@ public class Tile {
 
             return -1;
         }
-        if (isWind()) {
+        else if (isWind()) {
             if (other.isWind()) {
                 int thisOrd = wind.ordinal();
                 int otherOrd = other.getWind().ordinal();
@@ -109,7 +109,7 @@ public class Tile {
 
             return other.isSuited() ? 1 : -1;
         }
-        if (isDragon()) {
+        else {
             if (other.isDragon()) {
                 int thisOrd = dragon.ordinal();
                 int otherOrd = other.getDragon().ordinal();
