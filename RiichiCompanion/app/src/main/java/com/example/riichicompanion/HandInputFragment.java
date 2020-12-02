@@ -17,8 +17,6 @@ import com.example.riichicompanion.handcalculation.Tile;
 
 public class HandInputFragment extends Fragment {
 
-    private HandInputViewModel mViewModel;
-
     //region Views
 
     TableRow trConcealed1;
@@ -63,6 +61,9 @@ public class HandInputFragment extends Fragment {
     ImageButton ibWhite;
 
     //endregion
+
+    private HandInputViewModel mViewModel;
+    private Tile winTile;
 
     public static HandInputFragment newInstance() {
         return new HandInputFragment();
@@ -293,10 +294,57 @@ public class HandInputFragment extends Fragment {
     }
 
     private void addConcealedTile(ImageButton tileButtonClicked) {
-        ImageButton btn = (ImageButton) getLayoutInflater().inflate(R.layout.view_tile_button, trConcealed1, false);
-        btn.setImageResource((int)tileButtonClicked.getTag(R.id.tile_image_id));
-        btn.setTag(R.id.tile_object, tileButtonClicked.getTag(R.id.tile_object));
+        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        Tile tile = (Tile) tileButtonClicked.getTag(R.id.tile_object);
 
-        trConcealed1.addView(btn);
+        ImageButton btn = (ImageButton) getLayoutInflater().inflate(R.layout.view_tile_button, trConcealed1, false);
+        btn.setImageResource(drawableId);
+        btn.setTag(R.id.tile_object, tile);
+
+        if (trConcealed1.getChildCount() == 0) {
+            trConcealed1.addView(btn);
+            return;
+        }
+
+        Tile otherTile;
+
+        for (int i = 0; i < trConcealed1.getChildCount(); i++) {
+            otherTile = (Tile) trConcealed1.getChildAt(i).getTag(R.id.tile_object);
+
+            if (tile.compareTo(otherTile) < 0) {
+                trConcealed1.addView(btn, i);
+
+                if (trConcealed1.getChildCount() > 9) {
+                    View lastViewInRow1 = trConcealed1.getChildAt(trConcealed1.getChildCount() - 1);
+                    trConcealed1.removeView(lastViewInRow1);
+                    trConcealed2.addView(lastViewInRow1, 0);
+                }
+
+                return;
+            }
+        }
+
+        if (trConcealed1.getChildCount() < 9) {
+            trConcealed1.addView(btn);
+            return;
+        }
+
+        // If we reach this point, the tile must be added to the second row
+
+        if (trConcealed2.getChildCount() == 0) {
+            trConcealed2.addView(btn);
+            return;
+        }
+
+        for (int i = 0; i < trConcealed2.getChildCount(); i++) {
+            otherTile = (Tile) trConcealed2.getChildAt(i).getTag(R.id.tile_object);
+
+            if (tile.compareTo(otherTile) < 0) {
+                trConcealed2.addView(btn, i);
+                return;
+            }
+        }
+
+        trConcealed2.addView(btn);
     }
 }
