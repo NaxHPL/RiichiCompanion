@@ -35,6 +35,22 @@ public class Tile {
         this.dragon = dragon;
     }
 
+    public Suit getSuit() {
+        return suit;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public Dragon getDragon() {
+        return dragon;
+    }
+
     public boolean isSuited() {
         return suit != null;
     }
@@ -57,5 +73,54 @@ public class Tile {
 
     public boolean isSimple() {
         return isSuited() && !isTerminal();
+    }
+
+    public int compareTo(Tile other) {
+        if (other == null)
+            return 1;
+
+        if (isSuited()) {
+            if (other.isSuited()) {
+                int thisOrd = suit.ordinal();
+                int otherOrd = other.getSuit().ordinal();
+
+                if (thisOrd == otherOrd) {
+                    if (rank == other.getRank())
+                        return 0;
+
+                    return rank < other.getRank() ? -1 : 1;
+                }
+
+                return thisOrd < otherOrd ? -1 : 1;
+            }
+
+            return -1;
+        }
+        if (isWind()) {
+            if (other.isWind()) {
+                int thisOrd = wind.ordinal();
+                int otherOrd = other.getWind().ordinal();
+
+                if (thisOrd == otherOrd)
+                    return 0;
+
+                return thisOrd < otherOrd ? -1 : 1;
+            }
+
+            return other.isSuited() ? 1 : -1;
+        }
+        if (isDragon()) {
+            if (other.isDragon()) {
+                int thisOrd = dragon.ordinal();
+                int otherOrd = other.getDragon().ordinal();
+
+                if (thisOrd == otherOrd)
+                    return 0;
+
+                return thisOrd < otherOrd ? -1 : 1;
+            }
+
+            return 1;
+        }
     }
 }
