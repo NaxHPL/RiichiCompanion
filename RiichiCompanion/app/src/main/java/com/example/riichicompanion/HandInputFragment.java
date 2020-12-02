@@ -1,5 +1,7 @@
 package com.example.riichicompanion;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +65,7 @@ public class HandInputFragment extends Fragment {
     //endregion
 
     private HandInputViewModel mViewModel;
-    private Tile winTile;
+    private ImageButton winTileButton;
 
     public static HandInputFragment newInstance() {
         return new HandInputFragment();
@@ -300,6 +302,8 @@ public class HandInputFragment extends Fragment {
         ImageButton btn = (ImageButton) getLayoutInflater().inflate(R.layout.view_tile_button, trConcealed1, false);
         btn.setImageResource(drawableId);
         btn.setTag(R.id.tile_object, tile);
+        btn.setOnClickListener(this::removeFromConcealed);
+        setAsWinTileButton(btn);
 
         if (trConcealed1.getChildCount() == 0) {
             trConcealed1.addView(btn);
@@ -346,5 +350,40 @@ public class HandInputFragment extends Fragment {
         }
 
         trConcealed2.addView(btn);
+    }
+
+    private void setAsWinTileButton(ImageButton ib) {
+        ib.setImageTintList(ColorStateList.valueOf(Color.parseColor("#B9F6CA")));
+
+        if (winTileButton != null)
+            winTileButton.setImageTintList(null);
+
+        winTileButton = ib;
+    }
+
+    private void removeFromConcealed(View viewToRemove) {
+        for (int i = 0; i < trConcealed1.getChildCount(); i++) {
+            if (trConcealed1.getChildAt(i) == viewToRemove) {
+                trConcealed1.removeViewAt(i);
+
+                if (trConcealed2.getChildCount() > 0) {
+                    View view = trConcealed2.getChildAt(0);
+                    trConcealed2.removeViewAt(0);
+                    trConcealed1.addView(view);
+                }
+            }
+        }
+
+        for (int i = 0; i < trConcealed2.getChildCount(); i++) {
+            if (trConcealed2.getChildAt(i) == viewToRemove)
+                trConcealed2.removeViewAt(i);
+        }
+
+        if (viewToRemove == winTileButton) {
+            if (trConcealed1.getChildCount() > 0)
+                setAsWinTileButton((ImageButton) trConcealed1.getChildAt(0));
+            else
+                winTileButton = null;
+        }
     }
 }
