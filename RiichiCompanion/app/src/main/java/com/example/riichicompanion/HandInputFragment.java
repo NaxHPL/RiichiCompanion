@@ -21,10 +21,47 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.riichicompanion.handcalculation.Tile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HandInputFragment extends Fragment {
 
     private static final int MELD_MARGIN = 24;
+    private static final HashMap<String, Integer> tileDrawableIds = new HashMap<String, Integer>() {{
+        put("1m", R.drawable._1m);
+        put("2m", R.drawable._2m);
+        put("3m", R.drawable._3m);
+        put("4m", R.drawable._4m);
+        put("5m", R.drawable._5m);
+        put("6m", R.drawable._6m);
+        put("7m", R.drawable._7m);
+        put("8m", R.drawable._8m);
+        put("9m", R.drawable._9m);
+        put("1p", R.drawable._1p);
+        put("2p", R.drawable._2p);
+        put("3p", R.drawable._3p);
+        put("4p", R.drawable._4p);
+        put("5p", R.drawable._5p);
+        put("6p", R.drawable._6p);
+        put("7p", R.drawable._7p);
+        put("8p", R.drawable._8p);
+        put("9p", R.drawable._9p);
+        put("1s", R.drawable._1s);
+        put("2s", R.drawable._2s);
+        put("3s", R.drawable._3s);
+        put("4s", R.drawable._4s);
+        put("5s", R.drawable._5s);
+        put("6s", R.drawable._6s);
+        put("7s", R.drawable._7s);
+        put("8s", R.drawable._8s);
+        put("9s", R.drawable._9s);
+        put("E", R.drawable.east_tile);
+        put("S", R.drawable.south_tile);
+        put("W", R.drawable.west_tile);
+        put("N", R.drawable.north_tile);
+        put("g", R.drawable.green_dragon);
+        put("r", R.drawable.red_dragon);
+        put("w", R.drawable.white_dragon);
+    }};
 
     //region Views
 
@@ -149,73 +186,39 @@ public class HandInputFragment extends Fragment {
     }
 
     private void setImageButtonTags() {
-        ib1m.setTag(R.id.tile_image_id, R.drawable._1m);
         ib1m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 1));
-        ib2m.setTag(R.id.tile_image_id, R.drawable._2m);
         ib2m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 2));
-        ib3m.setTag(R.id.tile_image_id, R.drawable._3m);
         ib3m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 3));
-        ib4m.setTag(R.id.tile_image_id, R.drawable._4m);
         ib4m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 4));
-        ib5m.setTag(R.id.tile_image_id, R.drawable._5m);
         ib5m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 5));
-        ib6m.setTag(R.id.tile_image_id, R.drawable._6m);
         ib6m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 6));
-        ib7m.setTag(R.id.tile_image_id, R.drawable._7m);
         ib7m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 7));
-        ib8m.setTag(R.id.tile_image_id, R.drawable._8m);
         ib8m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 8));
-        ib9m.setTag(R.id.tile_image_id, R.drawable._9m);
         ib9m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 9));
-        ib1p.setTag(R.id.tile_image_id, R.drawable._1p);
         ib1p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 1));
-        ib2p.setTag(R.id.tile_image_id, R.drawable._2p);
         ib2p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 2));
-        ib3p.setTag(R.id.tile_image_id, R.drawable._3p);
         ib3p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 3));
-        ib4p.setTag(R.id.tile_image_id, R.drawable._4p);
         ib4p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 4));
-        ib5p.setTag(R.id.tile_image_id, R.drawable._5p);
         ib5p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 5));
-        ib6p.setTag(R.id.tile_image_id, R.drawable._6p);
         ib6p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 6));
-        ib7p.setTag(R.id.tile_image_id, R.drawable._7p);
         ib7p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 7));
-        ib8p.setTag(R.id.tile_image_id, R.drawable._8p);
         ib8p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 8));
-        ib9p.setTag(R.id.tile_image_id, R.drawable._9p);
         ib9p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 9));
-        ib1s.setTag(R.id.tile_image_id, R.drawable._1s);
         ib1s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 1));
-        ib2s.setTag(R.id.tile_image_id, R.drawable._2s);
         ib2s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 2));
-        ib3s.setTag(R.id.tile_image_id, R.drawable._3s);
         ib3s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 3));
-        ib4s.setTag(R.id.tile_image_id, R.drawable._4s);
         ib4s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 4));
-        ib5s.setTag(R.id.tile_image_id, R.drawable._5s);
         ib5s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 5));
-        ib6s.setTag(R.id.tile_image_id, R.drawable._6s);
         ib6s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 6));
-        ib7s.setTag(R.id.tile_image_id, R.drawable._7s);
         ib7s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 7));
-        ib8s.setTag(R.id.tile_image_id, R.drawable._8s);
         ib8s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 8));
-        ib9s.setTag(R.id.tile_image_id, R.drawable._9s);
         ib9s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 9));
-        ibEast.setTag(R.id.tile_image_id, R.drawable.east_tile);
         ibEast.setTag(R.id.tile_object, new Tile(Wind.East));
-        ibSouth.setTag(R.id.tile_image_id, R.drawable.south_tile);
         ibSouth.setTag(R.id.tile_object, new Tile(Wind.South));
-        ibWest.setTag(R.id.tile_image_id, R.drawable.west_tile);
         ibWest.setTag(R.id.tile_object, new Tile(Wind.West));
-        ibNorth.setTag(R.id.tile_image_id, R.drawable.north_tile);
         ibNorth.setTag(R.id.tile_object, new Tile(Wind.North));
-        ibGreen.setTag(R.id.tile_image_id, R.drawable.green_dragon);
         ibGreen.setTag(R.id.tile_object, new Tile(Tile.Dragon.Green));
-        ibRed.setTag(R.id.tile_image_id, R.drawable.red_dragon);
         ibRed.setTag(R.id.tile_object, new Tile(Tile.Dragon.Red));
-        ibWhite.setTag(R.id.tile_image_id, R.drawable.white_dragon);
         ibWhite.setTag(R.id.tile_object, new Tile(Tile.Dragon.White));
     }
 
@@ -304,11 +307,39 @@ public class HandInputFragment extends Fragment {
     }
 
     private void addChii(ImageButton tileButtonClicked) {
+        ArrayList<Tile> chiiTiles = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getChii();
 
+        if (chiiTiles == null)
+            return;
+
+        ConstraintLayout chiiLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.chii_and_pon_cl, clExposedTiles, false);
+        chiiLayout.setId(View.generateViewId());
+
+        for (int i = 0; i < chiiLayout.getChildCount(); i++) {
+            ImageView iv;
+
+            try {
+                iv = (ImageView) chiiLayout.getChildAt(i);
+            } catch (Exception e) { continue; }
+
+            Integer drawableId = tileDrawableIds.get(chiiTiles.get(i).getStringRep());
+
+            if (drawableId == null)
+                continue;
+
+            iv.setImageResource(drawableId);
+        }
+
+        addMeldConstraintLayout(chiiLayout);
     }
 
     private void addPon(ImageButton tileButtonClicked) {
-        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        String tileString = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getStringRep();
+        Integer drawableId = tileDrawableIds.get(tileString);
+
+        if (drawableId == null)
+            return;
+
         ConstraintLayout ponLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.chii_and_pon_cl, clExposedTiles, false);
         ponLayout.setId(View.generateViewId());
 
@@ -325,7 +356,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void addOpenKan(ImageButton tileButtonClicked) {
-        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        String tileString = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getStringRep();
+        Integer drawableId = tileDrawableIds.get(tileString);
+
+        if (drawableId == null)
+            return;
+
         ConstraintLayout openKanLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.open_kan_cl, clExposedTiles, false);
         openKanLayout.setId(View.generateViewId());
 
@@ -342,7 +378,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void addClosedKan(ImageButton tileButtonClicked) {
-        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        String tileString = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getStringRep();
+        Integer drawableId = tileDrawableIds.get(tileString);
+
+        if (drawableId == null)
+            return;
+
         ConstraintLayout closedKanLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.closed_kan_cl, clExposedTiles, false);
         closedKanLayout.setId(View.generateViewId());
 
@@ -392,8 +433,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void addConcealedTile(ImageButton tileButtonClicked) {
-        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
         Tile tile = (Tile) tileButtonClicked.getTag(R.id.tile_object);
+        String tileString = tile.getStringRep();
+        Integer drawableId = tileDrawableIds.get(tileString);
+
+        if (drawableId == null)
+            return;
 
         ImageButton btn = (ImageButton) getLayoutInflater().inflate(R.layout.view_tile_button, trConcealed1, false);
         btn.setImageResource(drawableId);
