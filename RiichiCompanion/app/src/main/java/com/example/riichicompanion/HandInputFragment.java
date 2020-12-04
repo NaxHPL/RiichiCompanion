@@ -7,20 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.riichicompanion.handcalculation.Tile;
 
+import java.util.ArrayList;
+
 public class HandInputFragment extends Fragment {
+
+    private static final int MELD_MARGIN = 24;
 
     //region Views
 
+    ConstraintLayout clExposedTiles;
     TableRow trConcealed1;
     TableRow trConcealed2;
     ToggleButton tbChii;
@@ -65,6 +73,7 @@ public class HandInputFragment extends Fragment {
     //endregion
 
     private HandInputViewModel mViewModel;
+    private ArrayList<ConstraintLayout> meldCls;
     private ImageButton winTileButton;
 
     public static HandInputFragment newInstance() {
@@ -89,6 +98,7 @@ public class HandInputFragment extends Fragment {
 
         //region Views
 
+        clExposedTiles = view.findViewById(R.id.clExposedTiles);
         trConcealed1 = view.findViewById(R.id.trConcealed1);
         trConcealed2 = view.findViewById(R.id.trConcealed2);
         tbChii = view.findViewById(R.id.tbChii);
@@ -134,6 +144,8 @@ public class HandInputFragment extends Fragment {
 
         setImageButtonTags();
         setButtonListeners();
+
+        meldCls = new ArrayList<>();
     }
 
     private void setImageButtonTags() {
@@ -279,20 +291,104 @@ public class HandInputFragment extends Fragment {
             ib = (ImageButton) view;
         } catch (Exception e) { return; }
 
-        if (tbChii.isChecked()) {
-
-        }
-        else if (tbPon.isChecked()) {
-
-        }
-        else if (tbKan.isChecked()) {
-
-        }
-        else if (tbClosedKan.isChecked()) {
-
-        }
+        if (tbChii.isChecked())
+            addChii(ib);
+        else if (tbPon.isChecked())
+            addPon(ib);
+        else if (tbKan.isChecked())
+            addOpenKan(ib);
+        else if (tbClosedKan.isChecked())
+            addClosedKan(ib);
         else
             addConcealedTile(ib);
+    }
+
+    private void addChii(ImageButton tileButtonClicked) {
+
+    }
+
+    private void addPon(ImageButton tileButtonClicked) {
+        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        ConstraintLayout ponLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.chii_and_pon_cl, clExposedTiles, false);
+        ponLayout.setId(View.generateViewId());
+
+        for (int i = 0; i < ponLayout.getChildCount(); i++) {
+            ImageView iv;
+            try {
+                iv = (ImageView) ponLayout.getChildAt(i);
+            } catch (Exception e) { continue; }
+
+            iv.setImageResource(drawableId);
+        }
+
+        addMeldConstraintLayout(ponLayout);
+    }
+
+    private void addOpenKan(ImageButton tileButtonClicked) {
+        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        ConstraintLayout openKanLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.open_kan_cl, clExposedTiles, false);
+        openKanLayout.setId(View.generateViewId());
+
+        for (int i = 0; i < openKanLayout.getChildCount(); i++) {
+            ImageView iv;
+            try {
+                iv = (ImageView) openKanLayout.getChildAt(i);
+            } catch (Exception e) { continue; }
+
+            iv.setImageResource(drawableId);
+        }
+
+        addMeldConstraintLayout(openKanLayout);
+    }
+
+    private void addClosedKan(ImageButton tileButtonClicked) {
+        int drawableId = (int) tileButtonClicked.getTag(R.id.tile_image_id);
+        ConstraintLayout closedKanLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.closed_kan_cl, clExposedTiles, false);
+        closedKanLayout.setId(View.generateViewId());
+
+        for (int i = 1; i < closedKanLayout.getChildCount() - 1; i++) {
+            ImageView iv;
+            try {
+                iv = (ImageView) closedKanLayout.getChildAt(i);
+            } catch (Exception e) { continue; }
+
+            iv.setImageResource(drawableId);
+        }
+
+        addMeldConstraintLayout(closedKanLayout);
+    }
+
+    private void addMeldConstraintLayout(ConstraintLayout cl) {
+        clExposedTiles.addView(cl);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(clExposedTiles);
+
+        switch (meldCls.size()) {
+            case 0:
+                constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, MELD_MARGIN);
+                break;
+            case 1:
+                constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.TOP, 0);
+                break;
+            case 2:
+                constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, MELD_MARGIN);
+                break;
+            case 3:
+                constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(2).getId(), ConstraintSet.END, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(2).getId(), ConstraintSet.TOP, 0);
+                break;
+        }
+
+        constraintSet.applyTo(clExposedTiles);
+        meldCls.add(cl);
+    }
+
+    private void removeMeld(View clClicked) {
+
     }
 
     private void addConcealedTile(ImageButton tileButtonClicked) {
