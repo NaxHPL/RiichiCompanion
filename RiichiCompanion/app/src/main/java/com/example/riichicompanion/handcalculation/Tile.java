@@ -4,6 +4,9 @@ import androidx.annotation.IntRange;
 
 import com.example.riichicompanion.Wind;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class Tile {
 
     public enum Suit { Man, Pin, Sou }
@@ -13,12 +16,20 @@ public class Tile {
     private final int rank;
     private final Wind wind;
     private final Dragon dragon;
+    private final String stringRep;
 
     public Tile(Suit suit, @IntRange(from = 1, to = 9) int rank) {
         this.suit = suit;
         this.rank = rank;
         this.wind = null;
         this.dragon = null;
+
+        if (suit == Suit.Man)
+            stringRep = String.format(Locale.getDefault(), "%dm", rank);
+        else if (suit == Suit.Pin)
+            stringRep = String.format(Locale.getDefault(), "%dp", rank);
+        else
+            stringRep = String.format(Locale.getDefault(), "%ds", rank);
     }
 
     public Tile(Wind wind) {
@@ -26,6 +37,15 @@ public class Tile {
         this.rank = 0;
         this.wind = wind;
         this.dragon = null;
+
+        if (wind == Wind.East)
+            stringRep = "E";
+        else if (wind == Wind.South)
+            stringRep = "S";
+        else if (wind == Wind.West)
+            stringRep = "W";
+        else
+            stringRep = "N";
     }
 
     public Tile(Dragon dragon) {
@@ -33,6 +53,13 @@ public class Tile {
         this.rank = 0;
         this.wind = null;
         this.dragon = dragon;
+
+        if (dragon == Dragon.Green)
+            stringRep = "g";
+        else if (dragon == Dragon.Red)
+            stringRep = "r";
+        else
+            stringRep = "w";
     }
 
     public Suit getSuit() {
@@ -49,6 +76,10 @@ public class Tile {
 
     public Dragon getDragon() {
         return dragon;
+    }
+
+    public String getStringRep() {
+        return stringRep;
     }
 
     public boolean isSuited() {
@@ -122,5 +153,18 @@ public class Tile {
 
             return 1;
         }
+    }
+
+    public ArrayList<Tile> getChii() {
+        if (!isSuited() || rank == 8 || rank == 9)
+            return null;
+
+        ArrayList<Tile> list = new ArrayList<>();
+
+        list.add(this);
+        list.add(new Tile(suit, rank + 1));
+        list.add(new Tile(suit, rank + 2));
+
+        return list;
     }
 }
