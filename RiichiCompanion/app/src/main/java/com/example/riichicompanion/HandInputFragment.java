@@ -109,7 +109,8 @@ public class HandInputFragment extends Fragment {
 
     //endregion
 
-    private HandInputViewModel mViewModel;
+    private ImageButton[] tileButtons;
+    private HandInputViewModel viewModel;
     private ArrayList<ConstraintLayout> meldCls;
     private ImageButton winTileButton;
 
@@ -125,7 +126,7 @@ public class HandInputFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(HandInputViewModel.class);
+        viewModel = new ViewModelProvider(this).get(HandInputViewModel.class);
         // TODO: Use the ViewModel
     }
 
@@ -179,10 +180,16 @@ public class HandInputFragment extends Fragment {
 
         //endregion
 
+        meldCls = new ArrayList<>();
+        tileButtons = new ImageButton[] {
+            ib1m, ib2m, ib3m, ib4m, ib5m, ib6m, ib7m, ib8m, ib9m,
+            ib1p, ib2p, ib3p, ib4p, ib5p, ib6p, ib7p, ib8p, ib9p,
+            ib1s, ib2s, ib3s, ib4s, ib5s, ib6s, ib7s, ib8s, ib9s,
+            ibEast, ibSouth, ibWest, ibNorth, ibGreen, ibRed, ibWhite
+        };
+
         setImageButtonTags();
         setButtonListeners();
-
-        meldCls = new ArrayList<>();
     }
 
     private void setImageButtonTags() {
@@ -252,40 +259,8 @@ public class HandInputFragment extends Fragment {
             }
         });
 
-        ib1m.setOnClickListener(this::onTileButtonClicked);
-        ib2m.setOnClickListener(this::onTileButtonClicked);
-        ib3m.setOnClickListener(this::onTileButtonClicked);
-        ib4m.setOnClickListener(this::onTileButtonClicked);
-        ib5m.setOnClickListener(this::onTileButtonClicked);
-        ib6m.setOnClickListener(this::onTileButtonClicked);
-        ib7m.setOnClickListener(this::onTileButtonClicked);
-        ib8m.setOnClickListener(this::onTileButtonClicked);
-        ib9m.setOnClickListener(this::onTileButtonClicked);
-        ib1p.setOnClickListener(this::onTileButtonClicked);
-        ib2p.setOnClickListener(this::onTileButtonClicked);
-        ib3p.setOnClickListener(this::onTileButtonClicked);
-        ib4p.setOnClickListener(this::onTileButtonClicked);
-        ib5p.setOnClickListener(this::onTileButtonClicked);
-        ib6p.setOnClickListener(this::onTileButtonClicked);
-        ib7p.setOnClickListener(this::onTileButtonClicked);
-        ib8p.setOnClickListener(this::onTileButtonClicked);
-        ib9p.setOnClickListener(this::onTileButtonClicked);
-        ib1s.setOnClickListener(this::onTileButtonClicked);
-        ib2s.setOnClickListener(this::onTileButtonClicked);
-        ib3s.setOnClickListener(this::onTileButtonClicked);
-        ib4s.setOnClickListener(this::onTileButtonClicked);
-        ib5s.setOnClickListener(this::onTileButtonClicked);
-        ib6s.setOnClickListener(this::onTileButtonClicked);
-        ib7s.setOnClickListener(this::onTileButtonClicked);
-        ib8s.setOnClickListener(this::onTileButtonClicked);
-        ib9s.setOnClickListener(this::onTileButtonClicked);
-        ibEast.setOnClickListener(this::onTileButtonClicked);
-        ibSouth.setOnClickListener(this::onTileButtonClicked);
-        ibWest.setOnClickListener(this::onTileButtonClicked);
-        ibNorth.setOnClickListener(this::onTileButtonClicked);
-        ibGreen.setOnClickListener(this::onTileButtonClicked);
-        ibRed.setOnClickListener(this::onTileButtonClicked);
-        ibWhite.setOnClickListener(this::onTileButtonClicked);
+        for (ImageButton ib : tileButtons)
+            ib.setOnClickListener(this::onTileButtonClicked);
     }
 
     private void onTileButtonClicked(View view) {
@@ -401,35 +376,59 @@ public class HandInputFragment extends Fragment {
 
     private void addMeldConstraintLayout(ConstraintLayout cl) {
         clExposedTiles.addView(cl);
+        meldCls.add(cl);
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(clExposedTiles);
 
         switch (meldCls.size()) {
-            case 0:
+            case 1:
                 constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
                 constraintSet.connect(cl.getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, MELD_MARGIN);
                 break;
-            case 1:
+            case 2:
                 constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, MELD_MARGIN);
                 constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.TOP, 0);
                 break;
-            case 2:
+            case 3:
                 constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
                 constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, MELD_MARGIN);
                 break;
-            case 3:
+            case 4:
                 constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(2).getId(), ConstraintSet.END, MELD_MARGIN);
                 constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(2).getId(), ConstraintSet.TOP, 0);
                 break;
         }
 
         constraintSet.applyTo(clExposedTiles);
-        meldCls.add(cl);
+        cl.setOnClickListener(this::removeMeld);
     }
 
     private void removeMeld(View clClicked) {
+        clExposedTiles.removeView(clClicked);
+        meldCls.remove(clClicked);
 
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(clExposedTiles);
+
+        for (int i = 1; i <= meldCls.size(); i++) {
+            switch (i) {
+                case 1:
+                    constraintSet.connect(meldCls.get(0).getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
+                    constraintSet.connect(meldCls.get(0).getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, MELD_MARGIN);
+                    break;
+                case 2:
+                    constraintSet.connect(meldCls.get(1).getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, MELD_MARGIN);
+                    constraintSet.connect(meldCls.get(1).getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.TOP, 0);
+                    break;
+                case 3:
+                    constraintSet.connect(meldCls.get(2).getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
+                    constraintSet.connect(meldCls.get(2).getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, MELD_MARGIN);
+                    break;
+            }
+        }
+
+        constraintSet.applyTo(clExposedTiles);
     }
 
     private void addConcealedTile(ImageButton tileButtonClicked) {
