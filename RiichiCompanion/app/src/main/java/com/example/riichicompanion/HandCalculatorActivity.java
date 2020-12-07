@@ -3,10 +3,12 @@ package com.example.riichicompanion;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -26,11 +28,13 @@ public class HandCalculatorActivity extends AppCompatActivity {
     public static final String SEAT_WIND_EXTRA = "com.example.riichicompanion.SEAT_WIND_EXTRA";
     public static final String HONBA_EXTRA = "com.example.riichicompanion.HONBA_EXTRA";
 
+    private HandInputViewModel viewModel;
     private String winnerName;
     private WinType winType;
     private Wind prevalentWind;
     private Wind seatWind;
     private int honba;
+    private Button btnCalculate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,20 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hand_calculator);
+
+        btnCalculate = findViewById(R.id.btnCalculate);
+
+        viewModel = new ViewModelProvider(this).get(HandInputViewModel.class);
+        viewModel.getHand().observe(this, hand -> {
+            if (hand.isValid()) {
+                btnCalculate.setText(String.format(Locale.getDefault(), "%s", "Calculate"));
+                btnCalculate.setEnabled(true);
+            }
+            else {
+                btnCalculate.setText(String.format(Locale.getDefault(), "%s", "Invalid Hand"));
+                btnCalculate.setEnabled(false);
+            }
+        });
 
         setExtras(getIntent());
         setupToolbar(themeId);

@@ -18,6 +18,10 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.riichicompanion.handcalculation.Dragon;
+import com.example.riichicompanion.handcalculation.Hand;
+import com.example.riichicompanion.handcalculation.Meld;
+import com.example.riichicompanion.handcalculation.Suit;
 import com.example.riichicompanion.handcalculation.Tile;
 
 import java.util.ArrayList;
@@ -113,6 +117,7 @@ public class HandInputFragment extends Fragment {
     private HandInputViewModel viewModel;
     private ArrayList<ConstraintLayout> meldCls;
     private ImageButton winTileButton;
+    private Hand hand;
 
     public static HandInputFragment newInstance() {
         return new HandInputFragment();
@@ -126,8 +131,7 @@ public class HandInputFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(HandInputViewModel.class);
-        // TODO: Use the ViewModel
+        viewModel = new ViewModelProvider(requireActivity()).get(HandInputViewModel.class);
     }
 
     @Override
@@ -180,6 +184,7 @@ public class HandInputFragment extends Fragment {
 
         //endregion
 
+        hand = new Hand();
         meldCls = new ArrayList<>();
         tileButtons = new ImageButton[] {
             ib1m, ib2m, ib3m, ib4m, ib5m, ib6m, ib7m, ib8m, ib9m,
@@ -193,40 +198,40 @@ public class HandInputFragment extends Fragment {
     }
 
     private void setImageButtonTags() {
-        ib1m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 1));
-        ib2m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 2));
-        ib3m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 3));
-        ib4m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 4));
-        ib5m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 5));
-        ib6m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 6));
-        ib7m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 7));
-        ib8m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 8));
-        ib9m.setTag(R.id.tile_object, new Tile(Tile.Suit.Man, 9));
-        ib1p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 1));
-        ib2p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 2));
-        ib3p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 3));
-        ib4p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 4));
-        ib5p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 5));
-        ib6p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 6));
-        ib7p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 7));
-        ib8p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 8));
-        ib9p.setTag(R.id.tile_object, new Tile(Tile.Suit.Pin, 9));
-        ib1s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 1));
-        ib2s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 2));
-        ib3s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 3));
-        ib4s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 4));
-        ib5s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 5));
-        ib6s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 6));
-        ib7s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 7));
-        ib8s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 8));
-        ib9s.setTag(R.id.tile_object, new Tile(Tile.Suit.Sou, 9));
+        ib1m.setTag(R.id.tile_object, new Tile(Suit.Man, 1));
+        ib2m.setTag(R.id.tile_object, new Tile(Suit.Man, 2));
+        ib3m.setTag(R.id.tile_object, new Tile(Suit.Man, 3));
+        ib4m.setTag(R.id.tile_object, new Tile(Suit.Man, 4));
+        ib5m.setTag(R.id.tile_object, new Tile(Suit.Man, 5));
+        ib6m.setTag(R.id.tile_object, new Tile(Suit.Man, 6));
+        ib7m.setTag(R.id.tile_object, new Tile(Suit.Man, 7));
+        ib8m.setTag(R.id.tile_object, new Tile(Suit.Man, 8));
+        ib9m.setTag(R.id.tile_object, new Tile(Suit.Man, 9));
+        ib1p.setTag(R.id.tile_object, new Tile(Suit.Pin, 1));
+        ib2p.setTag(R.id.tile_object, new Tile(Suit.Pin, 2));
+        ib3p.setTag(R.id.tile_object, new Tile(Suit.Pin, 3));
+        ib4p.setTag(R.id.tile_object, new Tile(Suit.Pin, 4));
+        ib5p.setTag(R.id.tile_object, new Tile(Suit.Pin, 5));
+        ib6p.setTag(R.id.tile_object, new Tile(Suit.Pin, 6));
+        ib7p.setTag(R.id.tile_object, new Tile(Suit.Pin, 7));
+        ib8p.setTag(R.id.tile_object, new Tile(Suit.Pin, 8));
+        ib9p.setTag(R.id.tile_object, new Tile(Suit.Pin, 9));
+        ib1s.setTag(R.id.tile_object, new Tile(Suit.Sou, 1));
+        ib2s.setTag(R.id.tile_object, new Tile(Suit.Sou, 2));
+        ib3s.setTag(R.id.tile_object, new Tile(Suit.Sou, 3));
+        ib4s.setTag(R.id.tile_object, new Tile(Suit.Sou, 4));
+        ib5s.setTag(R.id.tile_object, new Tile(Suit.Sou, 5));
+        ib6s.setTag(R.id.tile_object, new Tile(Suit.Sou, 6));
+        ib7s.setTag(R.id.tile_object, new Tile(Suit.Sou, 7));
+        ib8s.setTag(R.id.tile_object, new Tile(Suit.Sou, 8));
+        ib9s.setTag(R.id.tile_object, new Tile(Suit.Sou, 9));
         ibEast.setTag(R.id.tile_object, new Tile(Wind.East));
         ibSouth.setTag(R.id.tile_object, new Tile(Wind.South));
         ibWest.setTag(R.id.tile_object, new Tile(Wind.West));
         ibNorth.setTag(R.id.tile_object, new Tile(Wind.North));
-        ibGreen.setTag(R.id.tile_object, new Tile(Tile.Dragon.Green));
-        ibRed.setTag(R.id.tile_object, new Tile(Tile.Dragon.Red));
-        ibWhite.setTag(R.id.tile_object, new Tile(Tile.Dragon.White));
+        ibGreen.setTag(R.id.tile_object, new Tile(Dragon.Green));
+        ibRed.setTag(R.id.tile_object, new Tile(Dragon.Red));
+        ibWhite.setTag(R.id.tile_object, new Tile(Dragon.White));
     }
 
     private void setButtonListeners() {
@@ -282,13 +287,16 @@ public class HandInputFragment extends Fragment {
     }
 
     private void addChii(ImageButton tileButtonClicked) {
-        ArrayList<Tile> chiiTiles = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getChii();
+        Meld chiiMeld = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getChii();
 
-        if (chiiTiles == null)
+        if (chiiMeld == null)
             return;
 
         ConstraintLayout chiiLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.chii_and_pon_cl, clExposedTiles, false);
         chiiLayout.setId(View.generateViewId());
+        chiiLayout.setTag(R.id.meld_object, chiiMeld);
+
+        Tile[] chiiTiles = chiiMeld.getTiles();
 
         for (int i = 0; i < chiiLayout.getChildCount(); i++) {
             ImageView iv;
@@ -297,7 +305,7 @@ public class HandInputFragment extends Fragment {
                 iv = (ImageView) chiiLayout.getChildAt(i);
             } catch (Exception e) { continue; }
 
-            Integer drawableId = tileDrawableIds.get(chiiTiles.get(i).getStringRep());
+            Integer drawableId = tileDrawableIds.get(chiiTiles[i].getStringRep());
 
             if (drawableId == null)
                 continue;
@@ -306,17 +314,21 @@ public class HandInputFragment extends Fragment {
         }
 
         addMeldConstraintLayout(chiiLayout);
+        hand.addMeld(chiiMeld);
+        viewModel.setHand(hand);
     }
 
     private void addPon(ImageButton tileButtonClicked) {
-        String tileString = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getStringRep();
-        Integer drawableId = tileDrawableIds.get(tileString);
+        Tile tile = (Tile) tileButtonClicked.getTag(R.id.tile_object);
+        Meld ponMeld = tile.getPon();
+        Integer drawableId = tileDrawableIds.get(tile.getStringRep());
 
         if (drawableId == null)
             return;
 
         ConstraintLayout ponLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.chii_and_pon_cl, clExposedTiles, false);
         ponLayout.setId(View.generateViewId());
+        ponLayout.setTag(R.id.meld_object, ponMeld);
 
         for (int i = 0; i < ponLayout.getChildCount(); i++) {
             ImageView iv;
@@ -328,17 +340,21 @@ public class HandInputFragment extends Fragment {
         }
 
         addMeldConstraintLayout(ponLayout);
+        hand.addMeld(ponMeld);
+        viewModel.setHand(hand);
     }
 
     private void addOpenKan(ImageButton tileButtonClicked) {
-        String tileString = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getStringRep();
-        Integer drawableId = tileDrawableIds.get(tileString);
+        Tile tile = (Tile) tileButtonClicked.getTag(R.id.tile_object);
+        Meld kanMeld = tile.getKan();
+        Integer drawableId = tileDrawableIds.get(tile.getStringRep());
 
         if (drawableId == null)
             return;
 
         ConstraintLayout openKanLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.open_kan_cl, clExposedTiles, false);
         openKanLayout.setId(View.generateViewId());
+        openKanLayout.setTag(R.id.meld_object, kanMeld);
 
         for (int i = 0; i < openKanLayout.getChildCount(); i++) {
             ImageView iv;
@@ -350,17 +366,21 @@ public class HandInputFragment extends Fragment {
         }
 
         addMeldConstraintLayout(openKanLayout);
+        hand.addMeld(kanMeld);
+        viewModel.setHand(hand);
     }
 
     private void addClosedKan(ImageButton tileButtonClicked) {
-        String tileString = ((Tile) tileButtonClicked.getTag(R.id.tile_object)).getStringRep();
-        Integer drawableId = tileDrawableIds.get(tileString);
+        Tile tile = (Tile) tileButtonClicked.getTag(R.id.tile_object);
+        Meld closedKanMeld = tile.getClosedKan();
+        Integer drawableId = tileDrawableIds.get(tile.getStringRep());
 
         if (drawableId == null)
             return;
 
         ConstraintLayout closedKanLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.closed_kan_cl, clExposedTiles, false);
         closedKanLayout.setId(View.generateViewId());
+        closedKanLayout.setTag(R.id.meld_object, closedKanMeld);
 
         for (int i = 1; i < closedKanLayout.getChildCount() - 1; i++) {
             ImageView iv;
@@ -372,6 +392,8 @@ public class HandInputFragment extends Fragment {
         }
 
         addMeldConstraintLayout(closedKanLayout);
+        hand.addMeld(closedKanMeld);
+        viewModel.setHand(hand);
     }
 
     private void addMeldConstraintLayout(ConstraintLayout cl) {
@@ -429,12 +451,14 @@ public class HandInputFragment extends Fragment {
         }
 
         constraintSet.applyTo(clExposedTiles);
+
+        hand.removeMeld((Meld)clClicked.getTag(R.id.meld_object));
+        viewModel.setHand(hand);
     }
 
     private void addConcealedTile(ImageButton tileButtonClicked) {
         Tile tile = (Tile) tileButtonClicked.getTag(R.id.tile_object);
-        String tileString = tile.getStringRep();
-        Integer drawableId = tileDrawableIds.get(tileString);
+        Integer drawableId = tileDrawableIds.get(tile.getStringRep());
 
         if (drawableId == null)
             return;
@@ -443,6 +467,12 @@ public class HandInputFragment extends Fragment {
         btn.setImageResource(drawableId);
         btn.setTag(R.id.tile_object, tile);
         btn.setOnClickListener(this::removeFromConcealed);
+
+        hand.setWinTile(tile);
+        if (winTileButton != null)
+            hand.addConcealedTile((Tile)winTileButton.getTag(R.id.tile_object));
+        viewModel.setHand(hand);
+
         setAsWinTileButton(btn);
 
         if (trConcealed1.getChildCount() == 0) {
@@ -520,10 +550,29 @@ public class HandInputFragment extends Fragment {
         }
 
         if (viewToRemove == winTileButton) {
-            if (trConcealed1.getChildCount() > 0)
-                setAsWinTileButton((ImageButton) trConcealed1.getChildAt(0));
-            else
+            if (trConcealed1.getChildCount() > 0) {
+                ImageButton ibToSetAsWinTile;
+
+                if (trConcealed2.getChildCount() > 0)
+                    ibToSetAsWinTile = (ImageButton) trConcealed2.getChildAt(trConcealed2.getChildCount() - 1);
+                else
+                    ibToSetAsWinTile = (ImageButton) trConcealed1.getChildAt(trConcealed1.getChildCount() - 1);
+
+                Tile newWinTile = (Tile)ibToSetAsWinTile.getTag(R.id.tile_object);
+
+                hand.removeConcealedTile(newWinTile);
+                hand.setWinTile(newWinTile);
+
+                setAsWinTileButton(ibToSetAsWinTile);
+            }
+            else {
                 winTileButton = null;
+                hand.setWinTile(null);
+            }
         }
+        else
+            hand.removeConcealedTile((Tile)viewToRemove.getTag(R.id.tile_object));
+
+        viewModel.setHand(hand);
     }
 }

@@ -9,9 +9,6 @@ import java.util.Locale;
 
 public class Tile {
 
-    public enum Suit { Man, Pin, Sou }
-    public enum Dragon { Green, Red, White }
-
     private final Suit suit;
     private final int rank;
     private final Wind wind;
@@ -155,16 +152,31 @@ public class Tile {
         }
     }
 
-    public ArrayList<Tile> getChii() {
+    public Meld getChii() {
         if (!isSuited() || rank == 8 || rank == 9)
             return null;
 
-        ArrayList<Tile> list = new ArrayList<>();
+        Tile[] tiles = new Tile[] {
+            this,
+            new Tile(suit, rank + 1),
+            new Tile(suit, rank + 2)
+        };
 
-        list.add(this);
-        list.add(new Tile(suit, rank + 1));
-        list.add(new Tile(suit, rank + 2));
+        return new Meld(MeldType.Chii, tiles);
+    }
 
-        return list;
+    public Meld getPon() {
+        Tile[] tiles = new Tile[] {this, this, this};
+        return new Meld(MeldType.Pon, tiles);
+    }
+
+    public Meld getKan() {
+        Tile[] tiles = new Tile[] {this, this, this, this};
+        return new Meld(MeldType.Kan, tiles);
+    }
+
+    public Meld getClosedKan() {
+        Tile[] tiles = new Tile[] {this, this, this, this};
+        return new Meld(MeldType.ClosedKan, tiles);
     }
 }
