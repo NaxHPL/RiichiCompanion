@@ -240,28 +240,44 @@ public class HandInputFragment extends Fragment {
                 tbPon.setChecked(false);
                 tbKan.setChecked(false);
                 tbClosedKan.setChecked(false);
+
+                enableValidChiiTiles();
             }
+            else if (!tbPon.isChecked() && !tbKan.isChecked() && !tbClosedKan.isChecked())
+                enableValidConcealedTiles();
         });
         tbPon.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 tbChii.setChecked(false);
                 tbKan.setChecked(false);
                 tbClosedKan.setChecked(false);
+
+                enableValidPonTiles();
             }
+            else if (!tbChii.isChecked() && !tbKan.isChecked() && !tbClosedKan.isChecked())
+                enableValidConcealedTiles();
         });
         tbKan.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 tbChii.setChecked(false);
                 tbPon.setChecked(false);
                 tbClosedKan.setChecked(false);
+
+                enableValidKanTiles();
             }
+            else if (!tbChii.isChecked() && !tbPon.isChecked() && !tbClosedKan.isChecked())
+                enableValidConcealedTiles();
         });
         tbClosedKan.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 tbChii.setChecked(false);
                 tbPon.setChecked(false);
                 tbKan.setChecked(false);
+
+                enableValidKanTiles();
             }
+            else if (!tbChii.isChecked() && !tbPon.isChecked() && !tbKan.isChecked())
+                enableValidConcealedTiles();
         });
 
         for (ImageButton ib : tileButtons)
@@ -274,16 +290,73 @@ public class HandInputFragment extends Fragment {
             ib = (ImageButton) view;
         } catch (Exception e) { return; }
 
-        if (tbChii.isChecked())
+        if (tbChii.isChecked()) {
             addChii(ib);
-        else if (tbPon.isChecked())
+            enableValidChiiTiles();
+        }
+        else if (tbPon.isChecked()) {
             addPon(ib);
-        else if (tbKan.isChecked())
+            enableValidPonTiles();
+        }
+        else if (tbKan.isChecked()) {
             addOpenKan(ib);
-        else if (tbClosedKan.isChecked())
+            enableValidKanTiles();
+        }
+        else if (tbClosedKan.isChecked()) {
             addClosedKan(ib);
-        else
+            enableValidKanTiles();
+        }
+        else {
             addConcealedTile(ib);
+            enableValidConcealedTiles();
+        }
+    }
+
+    private void enableValidChiiTiles() {
+        Tile tile;
+        Meld chiiMeld;
+        for (ImageButton ib : tileButtons) {
+            tile = (Tile) ib.getTag(R.id.tile_object);
+            chiiMeld = tile.getChii();
+
+            if (chiiMeld == null) {
+                setImageButtonEnabled(ib, false);
+                continue;
+            }
+
+            boolean isValidChii = true;
+
+            for (Tile t : chiiMeld.getTiles()) {
+                if (hand.getTileCount(t.getStringRep()) >= 4)
+                    isValidChii = false;
+            }
+
+            setImageButtonEnabled(ib, isValidChii);
+        }
+    }
+
+    private void enableValidPonTiles() {
+        Tile tile;
+        for (ImageButton ib : tileButtons) {
+            tile = (Tile) ib.getTag(R.id.tile_object);
+            setImageButtonEnabled(ib, hand.getTileCount(tile.getStringRep()) <= 1);
+        }
+    }
+
+    private void enableValidKanTiles() {
+        Tile tile;
+        for (ImageButton ib : tileButtons) {
+            tile = (Tile) ib.getTag(R.id.tile_object);
+            setImageButtonEnabled(ib, hand.getTileCount(tile.getStringRep()) == 0);
+        }
+    }
+
+    private void enableValidConcealedTiles() {
+        Tile tile;
+        for (ImageButton ib : tileButtons) {
+            tile = (Tile) ib.getTag(R.id.tile_object);
+            setImageButtonEnabled(ib, hand.getTileCount(tile.getStringRep()) <= 3);
+        }
     }
 
     private void addChii(ImageButton tileButtonClicked) {
@@ -454,6 +527,15 @@ public class HandInputFragment extends Fragment {
 
         hand.removeMeld((Meld)clClicked.getTag(R.id.meld_object));
         viewModel.setHand(hand);
+
+        if (tbChii.isChecked())
+            enableValidChiiTiles();
+        else if (tbPon.isChecked())
+            enableValidPonTiles();
+        else if (tbKan.isChecked() || tbClosedKan.isChecked())
+            enableValidKanTiles();
+        else
+            enableValidConcealedTiles();
     }
 
     private void addConcealedTile(ImageButton tileButtonClicked) {
@@ -574,5 +656,19 @@ public class HandInputFragment extends Fragment {
             hand.removeConcealedTile((Tile)viewToRemove.getTag(R.id.tile_object));
 
         viewModel.setHand(hand);
+
+        if (tbChii.isChecked())
+            enableValidChiiTiles();
+        else if (tbPon.isChecked())
+            enableValidPonTiles();
+        else if (tbKan.isChecked() || tbClosedKan.isChecked())
+            enableValidKanTiles();
+        else
+            enableValidConcealedTiles();
+    }
+
+    private void setImageButtonEnabled(ImageButton ib, boolean enabled) {
+        ib.setEnabled(enabled);
+        ib.setAlpha(enabled ? 1.0f : 0.5f);
     }
 }
