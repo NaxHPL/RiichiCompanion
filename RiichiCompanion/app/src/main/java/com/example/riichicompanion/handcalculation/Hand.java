@@ -67,8 +67,8 @@ public class Hand {
             incrementTileCount(winTile.getStringRep());
     }
 
-    public int getTileCount(String tileStr) {
-        Integer count =  mapTileCounts.get(tileStr);
+    public int getTileCount(String stringRep) {
+        Integer count =  mapTileCounts.get(stringRep);
         return count == null ? 0 : count;
     }
 

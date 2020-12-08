@@ -313,6 +313,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void enableValidChiiTiles() {
+        if (hand.getTotalTileCount() >= 12) {
+            for (ImageButton ib : tileButtons)
+                setImageButtonEnabled(ib, false);
+            return;
+        }
+
         Tile tile;
         Meld chiiMeld;
         for (ImageButton ib : tileButtons) {
@@ -336,6 +342,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void enableValidPonTiles() {
+        if (hand.getTotalTileCount() >= 12) {
+            for (ImageButton ib : tileButtons)
+                setImageButtonEnabled(ib, false);
+            return;
+        }
+
         Tile tile;
         for (ImageButton ib : tileButtons) {
             tile = (Tile) ib.getTag(R.id.tile_object);
@@ -344,6 +356,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void enableValidKanTiles() {
+        if (hand.getTotalTileCount() >= 12) {
+            for (ImageButton ib : tileButtons)
+                setImageButtonEnabled(ib, false);
+            return;
+        }
+
         Tile tile;
         for (ImageButton ib : tileButtons) {
             tile = (Tile) ib.getTag(R.id.tile_object);
@@ -352,6 +370,12 @@ public class HandInputFragment extends Fragment {
     }
 
     private void enableValidConcealedTiles() {
+        if (hand.getTotalTileCount() >= 14) {
+            for (ImageButton ib : tileButtons)
+                setImageButtonEnabled(ib, false);
+            return;
+        }
+
         Tile tile;
         for (ImageButton ib : tileButtons) {
             tile = (Tile) ib.getTag(R.id.tile_object);
