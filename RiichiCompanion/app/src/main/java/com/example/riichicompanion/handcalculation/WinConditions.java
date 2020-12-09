@@ -4,17 +4,17 @@ import com.example.riichicompanion.Wind;
 
 public class WinConditions {
 
-    private Wind seatWind;
-    private Wind prevWind;
-    private int dora;
-    private int honba;
-    private boolean isTsumo;
-    private boolean isRiichi;
-    private boolean isDoubleRiichi;
-    private boolean isIppatsu;
-    private boolean isRinshan;
-    private boolean isChankan;
-    private boolean isHaiteiOrHoutei;
+    private final Wind seatWind;
+    private final Wind prevWind;
+    private final int dora;
+    private final int honba;
+    private final boolean isTsumo;
+    private final boolean isRiichi;
+    private final boolean isDoubleRiichi;
+    private final boolean isIppatsu;
+    private final boolean isRinshan;
+    private final boolean isChankan;
+    private final boolean isHaiteiOrHoutei;
 
     public WinConditions(Wind seatWind, Wind prevWind, int dora, int honba, boolean isTsumo,
                          boolean isRiichi, boolean isDoubleRiichi, boolean isIppatsu,

@@ -18,6 +18,8 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.riichicompanion.handcalculation.WinConditions;
+
 import java.util.Locale;
 
 public class WinConditionsFragment extends Fragment {
@@ -272,5 +274,43 @@ public class WinConditionsFragment extends Fragment {
     private void changeHonbaBy(int amount) {
         int honba = Integer.parseInt(tvHonba.getText().toString()) + amount;
         tvHonba.setText(String.format(Locale.getDefault(), "%d", Math.max(0, honba)));
+    }
+
+    public WinConditions getWinConditions() {
+        return new WinConditions(
+            getSelectedSeatWind(),
+            getSelectedPrevalentWind(),
+            Integer.parseInt(tvDora.getText().toString()),
+            Integer.parseInt(tvHonba.getText().toString()),
+            tbTsumo.isChecked(),
+            tbRiichi.isChecked(),
+            tbDoubleRiichi.isChecked(),
+            tbIppatsu.isChecked(),
+            tbRinshan.isChecked(),
+            tbChankan.isChecked(),
+            tbHouteiHaitei.isChecked()
+        );
+    }
+
+    private Wind getSelectedPrevalentWind() {
+        if (tbPrevWindEast.isChecked())
+            return Wind.East;
+        if (tbPrevWindSouth.isChecked())
+            return Wind.South;
+        if (tbPrevWindWest.isChecked())
+            return Wind.West;
+        else
+            return Wind.North;
+    }
+
+    private Wind getSelectedSeatWind() {
+        if (tbSeatWindEast.isChecked())
+            return Wind.East;
+        if (tbSeatWindSouth.isChecked())
+            return Wind.South;
+        if (tbSeatWindWest.isChecked())
+            return Wind.West;
+        else
+            return Wind.North;
     }
 }

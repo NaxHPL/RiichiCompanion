@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.riichicompanion.handcalculation.Hand;
+import com.example.riichicompanion.handcalculation.WinConditions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -29,6 +31,7 @@ public class HandCalculatorActivity extends AppCompatActivity {
     public static final String HONBA_EXTRA = "com.example.riichicompanion.HONBA_EXTRA";
 
     private HandInputViewModel viewModel;
+    private HandCalculatorAdapter adapter;
     private String winnerName;
     private WinType winType;
     private Wind prevalentWind;
@@ -45,6 +48,7 @@ public class HandCalculatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hand_calculator);
 
         btnCalculate = findViewById(R.id.btnCalculate);
+        btnCalculate.setOnClickListener(v -> calculateHand());
 
         viewModel = new ViewModelProvider(this).get(HandInputViewModel.class);
         viewModel.getHand().observe(this, hand -> {
@@ -83,15 +87,16 @@ public class HandCalculatorActivity extends AppCompatActivity {
     private void setupTabs() {
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(1);
-        viewPager.setAdapter(new HandCalculatorAdapter(this, winType, prevalentWind, seatWind, honba));
+        adapter = new HandCalculatorAdapter(this, winType, prevalentWind, seatWind, honba);
+        viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
-        new TabLayoutMediator(tabLayout, viewPager, ((tab, position) -> {
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (position == 0)
                 tab.setText("Tiles");
             else
                 tab.setText("Conditions");
-        })).attach();
+        }).attach();
     }
 
     @Override
@@ -110,5 +115,12 @@ public class HandCalculatorActivity extends AppCompatActivity {
         finish();
 
         super.onBackPressed();
+    }
+
+    private void calculateHand() {
+        WinConditions winConditions = adapter.getWinConditionsFragment().getWinConditions();
+        Hand hand = viewModel.getHand().getValue();
+
+        
     }
 }

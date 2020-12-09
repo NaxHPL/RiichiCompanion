@@ -11,9 +11,10 @@ public class HandCalculatorAdapter extends FragmentStateAdapter {
     private final Wind prevalentWind;
     private final Wind seatWind;
     private final int honbaCount;
+    private WinConditionsFragment winConditionsFragment;
 
-    public HandCalculatorAdapter(@NonNull FragmentActivity fragmentActivity,
-                                 WinType winType, Wind prevalentWind, Wind seatWind, int honbaCount) {
+    public HandCalculatorAdapter(@NonNull FragmentActivity fragmentActivity, WinType winType,
+                                 Wind prevalentWind, Wind seatWind, int honbaCount) {
         super(fragmentActivity);
 
         this.winType = winType;
@@ -27,12 +28,18 @@ public class HandCalculatorAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         if (position == 0)
             return HandInputFragment.newInstance();
-        else
-            return WinConditionsFragment.newInstance(winType, prevalentWind, seatWind, honbaCount);
+        else {
+            winConditionsFragment = WinConditionsFragment.newInstance(winType, prevalentWind, seatWind, honbaCount);
+            return winConditionsFragment;
+        }
     }
 
     @Override
     public int getItemCount() {
         return 2;
+    }
+
+    public WinConditionsFragment getWinConditionsFragment() {
+        return winConditionsFragment;
     }
 }
