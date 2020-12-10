@@ -4,10 +4,47 @@ import androidx.annotation.IntRange;
 
 import com.example.riichicompanion.Wind;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Tile {
+
+    public final static HashMap<String, Integer> tileIndices = new HashMap<String, Integer>() {{
+        put("1m", 0);
+        put("2m", 1);
+        put("3m", 2);
+        put("4m", 3);
+        put("5m", 4);
+        put("6m", 5);
+        put("7m", 6);
+        put("8m", 7);
+        put("9m", 8);
+        put("1p", 9);
+        put("2p", 10);
+        put("3p", 11);
+        put("4p", 12);
+        put("5p", 13);
+        put("6p", 14);
+        put("7p", 15);
+        put("8p", 16);
+        put("9p", 17);
+        put("1s", 18);
+        put("2s", 19);
+        put("3s", 20);
+        put("4s", 21);
+        put("5s", 22);
+        put("6s", 23);
+        put("7s", 24);
+        put("8s", 25);
+        put("9s", 26);
+        put("E", 27);
+        put("S", 28);
+        put("W", 29);
+        put("N", 30);
+        put("g", 31);
+        put("r", 32);
+        put("w", 33);
+    }};
 
     private final Suit suit;
     private final int rank;

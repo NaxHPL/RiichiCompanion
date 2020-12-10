@@ -3,17 +3,16 @@ package com.example.riichicompanion.handcalculation;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Hand {
 
-    private final HashMap<String, Integer> mapTileCounts;
+    private final int[] tileCounts;
     private final ArrayList<Tile> concealedTiles;
     private final ArrayList<Meld> melds;
     private Tile winTile;
 
     public Hand() {
-        this.mapTileCounts = new HashMap<>();
+        this.tileCounts = new int[34];
         this.concealedTiles = new ArrayList<>();
         this.melds = new ArrayList<>();
         winTile = null;
@@ -68,35 +67,19 @@ public class Hand {
     }
 
     public int getTileCount(String stringRep) {
-        Integer count =  mapTileCounts.get(stringRep);
-        return count == null ? 0 : count;
+        return tileCounts[Tile.tileIndices.get(stringRep)];
     }
 
     public int getTotalTileCount() {
         return concealedTiles.size() + (melds.size() * 3) + (winTile == null ? 0 : 1);
     }
 
-    public boolean isValid() {
-        if (getTotalTileCount() != 14)
-            return false;
-
-        // TODO: Check more things...
-
-        return true;
-    }
-
     private void incrementTileCount(String key) {
-        if (!mapTileCounts.containsKey(key))
-            mapTileCounts.put(key, 0);
-
-        mapTileCounts.put(key, mapTileCounts.get(key) + 1);
+        tileCounts[Tile.tileIndices.get(key)]++;
     }
 
     private void decrementTileCount(String key) {
-        if (!mapTileCounts.containsKey(key))
-            return;
-
-        mapTileCounts.put(key, Math.max(mapTileCounts.get(key) - 1, 0));
+        tileCounts[Tile.tileIndices.get(key)]--;
     }
 
     @NonNull
@@ -119,4 +102,56 @@ public class Hand {
 
         return str;
     }
+
+    public boolean isValid() {
+        if (getTotalTileCount() != 14)
+            return false;
+
+        return hasValidSetsAndPair()/* || hasSevenPairs() || hasThirteenOrphans()*/;
+    }
+
+    private boolean hasValidSetsAndPair() {
+        int[] counts = tileCounts.clone();
+
+        for (Meld meld : melds) {
+            MeldType type = meld.getMeldType();
+            if (type == MeldType.Kan || type == MeldType.ClosedKan)
+                counts[Tile.tileIndices.get(meld.getTiles()[0].getStringRep())]--;
+        }
+
+        int setsFound = 0;
+        boolean pairFound = false;
+
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] >= 3) {
+                counts[i] -= 3;
+                setsFound++;
+            }
+            if ((i >= 0 && i <= 6) || (i >= 9 && i <= 15) || (i >= 18 && i <= 24)) {
+                int minOfChii = Math.min(counts[i], Math.min(counts[i+1], counts[i+2]));
+                counts[i] -= minOfChii;
+                counts[i+1] -= minOfChii;
+                counts[i+2] -= minOfChii;
+                setsFound += minOfChii;
+            }
+            if (counts[i] == 2)
+                pairFound = true;
+        }
+
+        return setsFound == 4 && pairFound;
+    }
+
+//    private boolean hasSevenPairs() {
+//        if (melds.size() > 0)
+//            return false;
+//
+//
+//    }
+//
+//    private boolean hasThirteenOrphans() {
+//        if (melds.size() > 0)
+//            return false;
+//
+//
+//    }
 }
