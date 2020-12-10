@@ -28,7 +28,6 @@ public class HandCalculatorActivity extends AppCompatActivity {
     public static final String WIN_TYPE_EXTRA = "com.example.riichicompanion.WIN_TYPE_EXTRA";
     public static final String PREVALENT_WIND_EXTRA = "com.example.riichicompanion.PREVALENT_WIND_EXTRA";
     public static final String SEAT_WIND_EXTRA = "com.example.riichicompanion.SEAT_WIND_EXTRA";
-    public static final String HONBA_EXTRA = "com.example.riichicompanion.HONBA_EXTRA";
 
     private HandInputViewModel viewModel;
     private HandCalculatorAdapter adapter;
@@ -36,7 +35,6 @@ public class HandCalculatorActivity extends AppCompatActivity {
     private WinType winType;
     private Wind prevalentWind;
     private Wind seatWind;
-    private int honba;
     private Button btnCalculate;
 
     @Override
@@ -75,7 +73,6 @@ public class HandCalculatorActivity extends AppCompatActivity {
         winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
         prevalentWind = Wind.valueOf(intent.getStringExtra(PREVALENT_WIND_EXTRA));
         seatWind = Wind.valueOf(intent.getStringExtra(SEAT_WIND_EXTRA));
-        honba = intent.getIntExtra(HONBA_EXTRA, -1);
     }
 
     private void setupToolbar(int themeId) {
@@ -87,7 +84,7 @@ public class HandCalculatorActivity extends AppCompatActivity {
     private void setupTabs() {
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(1);
-        adapter = new HandCalculatorAdapter(this, winType, prevalentWind, seatWind, honba);
+        adapter = new HandCalculatorAdapter(this, winType, prevalentWind, seatWind);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);

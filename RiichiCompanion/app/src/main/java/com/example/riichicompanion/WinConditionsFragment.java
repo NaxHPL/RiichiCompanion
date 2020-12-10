@@ -27,7 +27,6 @@ public class WinConditionsFragment extends Fragment {
     private static final String ARG_WIN_TYPE = "ARG_WIN_TYPE";
     private static final String ARG_PREVALENT_WIND = "ARG_PREVALENT_WIND";
     private static final String ARG_SEAT_WIND = "ARG_SEAT_WIND";
-    private static final String ARG_HONBA_COUNT = "ARG_HONBA_COUNT";
 
     //region Views
 
@@ -49,23 +48,19 @@ public class WinConditionsFragment extends Fragment {
     ToggleButton tbHouteiHaitei;
     Button btnDecreaseDora;
     Button btnIncreaseDora;
-    Button btnDecreaseHonba;
-    Button btnIncreaseHonba;
     TextView tvDora;
-    TextView tvHonba;
 
     //endregion
 
     private WinType winType;
     private Wind prevalentWind;
     private Wind seatWind;
-    private int honbaCount;
 
     public WinConditionsFragment() {
         // Required empty public constructor
     }
 
-    public static WinConditionsFragment newInstance(WinType winType, Wind prevalentWind, Wind seatWind, int honbaCount) {
+    public static WinConditionsFragment newInstance(WinType winType, Wind prevalentWind, Wind seatWind) {
         WinConditionsFragment fragment = new WinConditionsFragment();
 
         Bundle args = new Bundle();
@@ -73,7 +68,6 @@ public class WinConditionsFragment extends Fragment {
         args.putString(ARG_WIN_TYPE, winType.name());
         args.putString(ARG_PREVALENT_WIND, prevalentWind.name());
         args.putString(ARG_SEAT_WIND, seatWind.name());
-        args.putInt(ARG_HONBA_COUNT, honbaCount);
         fragment.setArguments(args);
 
         return fragment;
@@ -90,7 +84,6 @@ public class WinConditionsFragment extends Fragment {
         winType = WinType.valueOf(args.getString(ARG_WIN_TYPE));
         prevalentWind = Wind.valueOf(args.getString(ARG_PREVALENT_WIND));
         seatWind = Wind.valueOf(args.getString(ARG_SEAT_WIND));
-        honbaCount = args.getInt(ARG_HONBA_COUNT, -1);
     }
 
     @Override
@@ -122,10 +115,7 @@ public class WinConditionsFragment extends Fragment {
         tbHouteiHaitei = view.findViewById(R.id.tbHouteiHaitei);
         btnDecreaseDora = view.findViewById(R.id.btnDecreaseDora);
         btnIncreaseDora = view.findViewById(R.id.btnIncreaseDora);
-        btnDecreaseHonba = view.findViewById(R.id.btnDecreaseHonba);
-        btnIncreaseHonba = view.findViewById(R.id.btnIncreaseHonba);
         tvDora = view.findViewById(R.id.tvDora);
-        tvHonba = view.findViewById(R.id.tvHonba);
 
         //endregion
 
@@ -168,12 +158,6 @@ public class WinConditionsFragment extends Fragment {
             disableWindToggleButton(tbSeatWindSouth);
             disableWindToggleButton(tbSeatWindWest);
             disableWindToggleButton(tbSeatWindNorth);
-        }
-
-        if (honbaCount > -1) {
-            tvHonba.setText(String.format(Locale.getDefault(), "%d", honbaCount));
-            btnDecreaseHonba.setEnabled(false);
-            btnIncreaseHonba.setEnabled(false);
         }
     }
 
@@ -262,8 +246,6 @@ public class WinConditionsFragment extends Fragment {
 
         btnDecreaseDora.setOnClickListener(v -> changeDoraBy(-1));
         btnIncreaseDora.setOnClickListener(v -> changeDoraBy(1));
-        btnDecreaseHonba.setOnClickListener(v -> changeHonbaBy(-1));
-        btnIncreaseHonba.setOnClickListener(v -> changeHonbaBy(1));
     }
 
     private void changeDoraBy(int amount) {
@@ -271,17 +253,11 @@ public class WinConditionsFragment extends Fragment {
         tvDora.setText(String.format(Locale.getDefault(), "%d", Math.max(0, dora)));
     }
 
-    private void changeHonbaBy(int amount) {
-        int honba = Integer.parseInt(tvHonba.getText().toString()) + amount;
-        tvHonba.setText(String.format(Locale.getDefault(), "%d", Math.max(0, honba)));
-    }
-
     public WinConditions getWinConditions() {
         return new WinConditions(
             getSelectedSeatWind(),
             getSelectedPrevalentWind(),
             Integer.parseInt(tvDora.getText().toString()),
-            Integer.parseInt(tvHonba.getText().toString()),
             tbTsumo.isChecked(),
             tbRiichi.isChecked(),
             tbDoubleRiichi.isChecked(),

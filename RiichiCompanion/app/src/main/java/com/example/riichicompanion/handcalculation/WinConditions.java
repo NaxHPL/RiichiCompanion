@@ -7,7 +7,6 @@ public class WinConditions {
     private final Wind seatWind;
     private final Wind prevWind;
     private final int dora;
-    private final int honba;
     private final boolean isTsumo;
     private final boolean isRiichi;
     private final boolean isDoubleRiichi;
@@ -16,13 +15,11 @@ public class WinConditions {
     private final boolean isChankan;
     private final boolean isHaiteiOrHoutei;
 
-    public WinConditions(Wind seatWind, Wind prevWind, int dora, int honba, boolean isTsumo,
-                         boolean isRiichi, boolean isDoubleRiichi, boolean isIppatsu,
-                         boolean isRinshan, boolean isChankan, boolean isHaiteiOrHoutei) {
+    public WinConditions(Wind seatWind, Wind prevWind, int dora, boolean isTsumo, boolean isRiichi, boolean isDoubleRiichi,
+                         boolean isIppatsu, boolean isRinshan, boolean isChankan, boolean isHaiteiOrHoutei) {
         this.seatWind = seatWind;
         this.prevWind = prevWind;
         this.dora = dora;
-        this.honba = honba;
         this.isTsumo = isTsumo;
         this.isRiichi = isRiichi;
         this.isDoubleRiichi = isDoubleRiichi;
@@ -42,10 +39,6 @@ public class WinConditions {
 
     public int getDora() {
         return dora;
-    }
-
-    public int getHonba() {
-        return honba;
     }
 
     public boolean isTsumo() {
