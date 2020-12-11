@@ -115,42 +115,50 @@ public class Hand {
     }
 
     private boolean hasValidSetsAndPair() {
-        int[] counts = tileCounts.clone();
+        int[] countsWithoutExtraKanTile = tileCounts.clone();
 
         for (Meld meld : melds) {
             MeldType type = meld.getMeldType();
             if (type == MeldType.Kan || type == MeldType.ClosedKan)
-                counts[Tile.tileIndices.get(meld.getTiles()[0].getStringRep())]--;
+                countsWithoutExtraKanTile[Tile.tileIndices.get(meld.getTiles()[0].getStringRep())]--;
         }
 
-        int setsFound = 0;
-        boolean hasFoundPair = false;
+        ArrayList<Integer> possiblePairIndices = new ArrayList<>();
 
-        // TODO: Fix algorithm: it does not find a valid hand if 3 identical tiles
-        //       are used for a pair and first tile of a chii.
-
-        for (int i = 0; i < counts.length; i++) {
-            if (counts[i] == 0)
-                continue;
-
-            if (counts[i] >= 3) {
-                counts[i] -= 3;
-                setsFound++;
-            }
-
-            if ((i >= 0 && i <= 6) || (i >= 9 && i <= 15) || (i >= 18 && i <= 24)) {
-                int minOfChii = Math.min(counts[i], Math.min(counts[i+1], counts[i+2]));
-                counts[i] -= minOfChii;
-                counts[i+1] -= minOfChii;
-                counts[i+2] -= minOfChii;
-                setsFound += minOfChii;
-            }
-
-            if (counts[i] == 2)
-                hasFoundPair = true;
+        for (int i = 0; i < countsWithoutExtraKanTile.length; i++) {
+            if (countsWithoutExtraKanTile[i] >= 2)
+                possiblePairIndices.add(i);
         }
 
-        return setsFound == 4 && hasFoundPair;
+        for (Integer index : possiblePairIndices) {
+            int[] counts = countsWithoutExtraKanTile.clone();
+            int setsFound = 0;
+
+            counts[index] -= 2;
+
+            for (int i = 0; i < counts.length; i++) {
+                if (counts[i] == 0)
+                    continue;
+
+                if (counts[i] >= 3) {
+                    counts[i] -= 3;
+                    setsFound++;
+                }
+
+                if ((i >= 0 && i <= 6) || (i >= 9 && i <= 15) || (i >= 18 && i <= 24)) {
+                    int minOfChii = Math.min(counts[i], Math.min(counts[i+1], counts[i+2]));
+                    counts[i] -= minOfChii;
+                    counts[i+1] -= minOfChii;
+                    counts[i+2] -= minOfChii;
+                    setsFound += minOfChii;
+                }
+            }
+
+            if (setsFound == 4)
+                return true;
+        }
+
+        return false;
     }
 
     private boolean hasSevenPairs() {
