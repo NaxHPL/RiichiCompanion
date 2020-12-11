@@ -82,6 +82,10 @@ public class Hand {
         tileCounts[Tile.tileIndices.get(key)]--;
     }
 
+    public boolean isOpen() {
+        return melds.size() > 0;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -107,7 +111,7 @@ public class Hand {
         if (getTotalTileCount() != 14)
             return false;
 
-        return hasValidSetsAndPair()/* || hasSevenPairs() || hasThirteenOrphans()*/;
+        return hasValidSetsAndPair() || hasSevenPairs() || hasThirteenOrphans();
     }
 
     private boolean hasValidSetsAndPair() {
@@ -120,13 +124,20 @@ public class Hand {
         }
 
         int setsFound = 0;
-        boolean pairFound = false;
+        boolean hasFoundPair = false;
+
+        // TODO: Fix algorithm: it does not find a valid hand if 3 identical tiles
+        //       are used for a pair and first tile of a chii.
 
         for (int i = 0; i < counts.length; i++) {
+            if (counts[i] == 0)
+                continue;
+
             if (counts[i] >= 3) {
                 counts[i] -= 3;
                 setsFound++;
             }
+
             if ((i >= 0 && i <= 6) || (i >= 9 && i <= 15) || (i >= 18 && i <= 24)) {
                 int minOfChii = Math.min(counts[i], Math.min(counts[i+1], counts[i+2]));
                 counts[i] -= minOfChii;
@@ -134,24 +145,47 @@ public class Hand {
                 counts[i+2] -= minOfChii;
                 setsFound += minOfChii;
             }
+
             if (counts[i] == 2)
-                pairFound = true;
+                hasFoundPair = true;
         }
 
-        return setsFound == 4 && pairFound;
+        return setsFound == 4 && hasFoundPair;
     }
 
-//    private boolean hasSevenPairs() {
-//        if (melds.size() > 0)
-//            return false;
-//
-//
-//    }
-//
-//    private boolean hasThirteenOrphans() {
-//        if (melds.size() > 0)
-//            return false;
-//
-//
-//    }
+    private boolean hasSevenPairs() {
+        if (isOpen())
+            return false;
+
+        int[] counts = tileCounts.clone();
+        int pairsFound = 0;
+
+        for (int i = 0; i < counts.length; i++) {
+            while (counts[i] >= 2) {
+                counts[i] -= 2;
+                pairsFound++;
+            }
+        }
+
+        return pairsFound == 7;
+    }
+
+    private boolean hasThirteenOrphans() {
+        if (isOpen())
+            return false;
+
+        return tileCounts[0] > 0 &&
+            tileCounts[8] > 0 &&
+            tileCounts[9] > 0 &&
+            tileCounts[17] > 0 &&
+            tileCounts[18] > 0 &&
+            tileCounts[26] > 0 &&
+            tileCounts[27] > 0 &&
+            tileCounts[28] > 0 &&
+            tileCounts[29] > 0 &&
+            tileCounts[30] > 0 &&
+            tileCounts[31] > 0 &&
+            tileCounts[32] > 0 &&
+            tileCounts[33] > 0;
+    }
 }
