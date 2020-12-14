@@ -6,9 +6,9 @@ import com.example.riichicompanion.handcalculation.WinConditions;
 
 import java.util.ArrayList;
 
-public class KokushiMusou implements Yaku {
+public class Suuankou implements Yaku {
 
-    private boolean junsei = false;
+    private boolean tanki = false;
 
     @Override
     public boolean isConditionMet(Hand hand, WinConditions conditions) {
@@ -16,33 +16,30 @@ public class KokushiMusou implements Yaku {
             return false;
 
         int[] tileCounts = hand.getTileCountsClone();
-        boolean hasThirteenOrphans =
-            tileCounts[0] > 0 &&
-            tileCounts[8] > 0 &&
-            tileCounts[9] > 0 &&
-            tileCounts[17] > 0 &&
-            tileCounts[18] > 0 &&
-            tileCounts[26] > 0 &&
-            tileCounts[27] > 0 &&
-            tileCounts[28] > 0 &&
-            tileCounts[29] > 0 &&
-            tileCounts[30] > 0 &&
-            tileCounts[31] > 0 &&
-            tileCounts[32] > 0 &&
-            tileCounts[33] > 0;
+        int tripletsFound = 0;
 
-        if (!hasThirteenOrphans)
+        for (int count : tileCounts) {
+            if (count >= 3)
+                tripletsFound++;
+        }
+
+        if (tripletsFound != 4)
             return false;
 
         int winTileCount = tileCounts[Tile.tileIndices.get(hand.getWinTile().getStringRep())];
-        junsei = winTileCount == 2;
 
-        return true;
+        if (winTileCount == 2) {
+            tanki = true;
+            return true;
+        }
+
+        tanki = false;
+        return conditions.isTsumo();
     }
 
     @Override
     public int getYakumans() {
-        return junsei ? 2 : 1;
+        return tanki ? 2: 1;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class KokushiMusou implements Yaku {
 
     @Override
     public String getDisplayName() {
-        return junsei ? "Junsei kokushi musou" : "kokushi musou";
+        return tanki ? "Suuankou tanki" : "Suuankou";
     }
 
     @Override

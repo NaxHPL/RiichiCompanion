@@ -66,7 +66,7 @@ public class Hand {
             incrementTileCount(winTile.getStringRep());
     }
 
-    public int[] getTileCounts() {
+    public int[] getTileCountsClone() {
         return tileCounts.clone();
     }
 
