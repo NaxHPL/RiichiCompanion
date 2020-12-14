@@ -66,6 +66,10 @@ public class Hand {
             incrementTileCount(winTile.getStringRep());
     }
 
+    public int[] getTileCounts() {
+        return tileCounts.clone();
+    }
+
     public int getTileCount(String stringRep) {
         return tileCounts[Tile.tileIndices.get(stringRep)];
     }
@@ -83,14 +87,12 @@ public class Hand {
     }
 
     public boolean isOpen() {
-        int numOpenMelds = 0;
-
         for (Meld meld : melds) {
             if (meld.getMeldType() != MeldType.ClosedKan)
-                numOpenMelds++;
+                return true;
         }
 
-        return numOpenMelds > 0;
+        return false;
     }
 
     @NonNull
