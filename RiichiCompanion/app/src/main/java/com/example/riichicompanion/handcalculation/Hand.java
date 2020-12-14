@@ -83,7 +83,14 @@ public class Hand {
     }
 
     public boolean isOpen() {
-        return melds.size() > 0;
+        int numOpenMelds = 0;
+
+        for (Meld meld : melds) {
+            if (meld.getMeldType() != MeldType.ClosedKan)
+                numOpenMelds++;
+        }
+
+        return numOpenMelds > 0;
     }
 
     @NonNull
