@@ -8,8 +8,7 @@ import java.util.ArrayList;
 public interface Yaku {
     boolean isConditionMet(Hand hand, WinConditions conditions);
     int getYakumans();
-    int getClosedHan();
-    int getOpenHan();
+    int getHan();
     String getDisplayName();
     ArrayList<Class<? extends Yaku>> getInvalidYaku();
 }

@@ -25,12 +25,7 @@ public class Tsuuiisou implements Yaku {
     }
 
     @Override
-    public int getClosedHan() {
-        return 0;
-    }
-
-    @Override
-    public int getOpenHan() {
+    public int getHan() {
         return 0;
     }
 
