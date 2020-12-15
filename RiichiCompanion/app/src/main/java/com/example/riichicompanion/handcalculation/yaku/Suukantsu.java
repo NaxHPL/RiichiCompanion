@@ -19,7 +19,7 @@ public class Suukantsu implements Yaku {
         int kanCount = 0;
 
         for (Meld meld : hand.getMelds()) {
-            if (meld.getMeldType() != MeldType.Kan || meld.getMeldType() != MeldType.ClosedKan)
+            if (meld.getMeldType() != MeldType.Kan && meld.getMeldType() != MeldType.ClosedKan)
                 return false;
 
             kanCount++;
