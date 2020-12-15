@@ -27,19 +27,17 @@ public class Suuankou implements Yaku {
             return false;
 
         int winTileCount = tileCounts[Tile.tileIndices.get(hand.getWinTile().getStringRep())];
-
         if (winTileCount == 2) {
             tanki = true;
             return true;
         }
 
-        tanki = false;
         return conditions.isTsumo();
     }
 
     @Override
     public int getYakumans() {
-        return tanki ? 2: 1;
+        return tanki ? 2 : 1;
     }
 
     @Override

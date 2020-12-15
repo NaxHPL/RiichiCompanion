@@ -174,17 +174,12 @@ public class Hand {
         if (isOpen())
             return false;
 
-        int[] counts = tileCounts.clone();
-        int pairsFound = 0;
-
-        for (int i = 0; i < counts.length; i++) {
-            while (counts[i] >= 2) {
-                counts[i] -= 2;
-                pairsFound++;
-            }
+        for (int tileCount : tileCounts) {
+            if (tileCount > 0 && tileCount != 2)
+                return false;
         }
 
-        return pairsFound == 7;
+        return true;
     }
 
     private boolean hasThirteenOrphans() {
