@@ -7,6 +7,16 @@ import java.util.ArrayList;
 
 public class Ryuuiisou implements Yaku {
 
+    private static final ArrayList<Class<? extends Yaku>> invalidYaku = new ArrayList<Class<? extends Yaku>>() {{
+        add(KokushiMusou.class);
+        add(Daisangen.class);
+        add(Shousuushii.class);
+        add(Daisuushii.class);
+        add(Tsuuiisou.class);
+        add(Chinroutou.class);
+        add(ChuurenPoutou.class);
+    }};
+
     @Override
     public boolean isConditionMet(Hand hand, WinConditions conditions) {
         int[] tileCounts = hand.getTileCountsClone();
@@ -38,6 +48,6 @@ public class Ryuuiisou implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return invalidYaku;
     }
 }
