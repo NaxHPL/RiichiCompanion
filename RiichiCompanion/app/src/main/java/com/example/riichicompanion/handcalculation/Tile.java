@@ -141,52 +141,13 @@ public class Tile {
     }
 
     public int compareTo(Tile other) {
-        if (other == null)
-            return 1;
+        Integer thisIdx = tileIndices.get(stringRep);
+        Integer otherIdx = tileIndices.get(other.getStringRep());
 
-        if (isSuited()) {
-            if (other.isSuited()) {
-                int thisOrd = suit.ordinal();
-                int otherOrd = other.getSuit().ordinal();
+        if (thisIdx == null || otherIdx == null)
+            return 0;
 
-                if (thisOrd == otherOrd) {
-                    if (rank == other.getRank())
-                        return 0;
-
-                    return rank < other.getRank() ? -1 : 1;
-                }
-
-                return thisOrd < otherOrd ? -1 : 1;
-            }
-
-            return -1;
-        }
-        else if (isWind()) {
-            if (other.isWind()) {
-                int thisOrd = wind.ordinal();
-                int otherOrd = other.getWind().ordinal();
-
-                if (thisOrd == otherOrd)
-                    return 0;
-
-                return thisOrd < otherOrd ? -1 : 1;
-            }
-
-            return other.isSuited() ? 1 : -1;
-        }
-        else {
-            if (other.isDragon()) {
-                int thisOrd = dragon.ordinal();
-                int otherOrd = other.getDragon().ordinal();
-
-                if (thisOrd == otherOrd)
-                    return 0;
-
-                return thisOrd < otherOrd ? -1 : 1;
-            }
-
-            return 1;
-        }
+        return thisIdx.compareTo(otherIdx);
     }
 
     public Meld getChii() {

@@ -52,7 +52,7 @@ public class HandCalculatorActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(HandInputViewModel.class);
         viewModel.getHand().observe(this, hand -> {
-            if (hand.isValid()) {
+            if (hand.isComplete()) {
                 btnCalculate.setText(String.format(Locale.getDefault(), "%s", "Calculate"));
                 btnCalculate.setEnabled(true);
             }

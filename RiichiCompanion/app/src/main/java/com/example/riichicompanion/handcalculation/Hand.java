@@ -116,7 +116,7 @@ public class Hand {
         return str;
     }
 
-    public boolean isValid() {
+    public boolean isComplete() {
         if (getTotalTileCount() != 14)
             return false;
 
