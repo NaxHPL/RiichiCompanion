@@ -177,4 +177,23 @@ public class Tile {
         Tile[] tiles = new Tile[] {this, this, this, this};
         return new Meld(MeldType.ClosedKan, tiles);
     }
+
+    public boolean isSameAs(Tile other) {
+        return stringRep.equals(other.getStringRep());
+    }
+
+    public static void sortTiles(Tile[] tiles) {
+        // Insertion sort
+        for (int i = 1; i < tiles.length; i++) {
+            Tile t = tiles[i];
+            int j = i - 1;
+            
+            while (j >= 0 && tiles[j].compareTo(t) > 0) {
+                tiles[j + 1] = tiles[j];
+                j--;
+            }
+
+            tiles[j + 1] = t;
+        }
+    }
 }
