@@ -3,6 +3,8 @@ package com.example.riichicompanion.handcalculation;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Hand {
 
@@ -10,6 +12,8 @@ public class Hand {
     private final ArrayList<Tile> concealedTiles;
     private final ArrayList<Meld> melds;
     private Tile winTile;
+
+    private HandArrangement workingArrangement;
 
     public Hand() {
         this.tileCounts = new int[34];
@@ -71,7 +75,8 @@ public class Hand {
     }
 
     public int getTileCount(String stringRep) {
-        return tileCounts[Tile.tileIndices.get(stringRep)];
+        Integer idx = Tile.tileIndices.get(stringRep);
+        return idx == null ? 0 : tileCounts[idx];
     }
 
     public int getTotalTileCount() {
@@ -79,11 +84,15 @@ public class Hand {
     }
 
     private void incrementTileCount(String key) {
-        tileCounts[Tile.tileIndices.get(key)]++;
+        Integer idx = Tile.tileIndices.get(key);
+        if (idx != null)
+            tileCounts[idx]++;
     }
 
     private void decrementTileCount(String key) {
-        tileCounts[Tile.tileIndices.get(key)]--;
+        Integer idx = Tile.tileIndices.get(key);
+        if (idx != null)
+            tileCounts[idx]--;
     }
 
     public boolean isOpen() {
@@ -128,8 +137,11 @@ public class Hand {
 
         for (Meld meld : melds) {
             MeldType type = meld.getMeldType();
-            if (type == MeldType.Kan || type == MeldType.ClosedKan)
-                countsWithoutExtraKanTile[Tile.tileIndices.get(meld.getTiles()[0].getStringRep())]--;
+            if (type == MeldType.Kan || type == MeldType.ClosedKan) {
+                Integer idx = Tile.tileIndices.get(meld.getTiles()[0].getStringRep());
+                if (idx != null)
+                    countsWithoutExtraKanTile[idx]--;
+            }
         }
 
         ArrayList<Integer> possiblePairIndices = new ArrayList<>();
@@ -154,7 +166,7 @@ public class Hand {
                     setsFound++;
                 }
 
-                if ((i >= 0 && i <= 6) || (i >= 9 && i <= 15) || (i >= 18 && i <= 24)) {
+                if (i <= 6 || i >= 9 && i <= 15 || i >= 18 && i <= 24) {
                     int minOfChii = Math.min(counts[i], Math.min(counts[i+1], counts[i+2]));
                     counts[i] -= minOfChii;
                     counts[i+1] -= minOfChii;
@@ -199,5 +211,166 @@ public class Hand {
             tileCounts[31] > 0 &&
             tileCounts[32] > 0 &&
             tileCounts[33] > 0;
+    }
+
+    public ArrayList<HandArrangement> getAllArrangements() {
+        ArrayList<HandArrangement> arrangements = new ArrayList<>();
+
+        Tile[] tiles = new Tile[concealedTiles.size() + 1];
+        concealedTiles.toArray(tiles);
+        tiles[tiles.length - 1] = winTile;
+        Tile.sortTiles(tiles);
+
+        if (hasSevenPairs())
+            arrangements.add(getSevenPairsArrangement(tiles));
+
+        // Find possible pairs.
+        // When a pair is found: find arrangements of tiles without the pair, then
+        // add the pair set to each arrangement found.
+        for (int i = 0; i < tiles.length; i++) {
+            if (i + 1 >= tiles.length)
+                break;
+
+            Tile curTile = tiles[i];
+            Tile nextTile = tiles[i + 1];
+
+            if (!curTile.isSameAs(nextTile))
+                continue;
+
+            ArrayList<Tile> pair = new ArrayList<>(2);
+            pair.add(curTile);
+            pair.add(nextTile);
+
+            ArrayList<Tile> tilesWithoutPair = new ArrayList<>(Arrays.asList(tiles));
+            tilesWithoutPair.remove(curTile);
+            tilesWithoutPair.remove(nextTile);
+
+            ArrayList<HandArrangement> arrangementsWithoutPair = getArrangements(tilesWithoutPair);
+
+            for (HandArrangement arrangement : arrangementsWithoutPair)
+                arrangement.addSet(pair);
+
+            arrangements.addAll(arrangementsWithoutPair);
+            i++;
+        }
+
+        // Add fixed sets (melds) to arrangements (kans as 3 of a kind)
+        for (HandArrangement arrangement : arrangements) {
+            for (Meld meld : melds) {
+                Tile[] meldTiles = meld.getTiles();
+                arrangement.addSet(new ArrayList<Tile>() {{
+                    add(meldTiles[0]);
+                    add(meldTiles[1]);
+                    add(meldTiles[2]);
+                }});
+            }
+        }
+
+        return arrangements;
+    }
+
+    private HandArrangement getSevenPairsArrangement(Tile[] tiles) {
+        HandArrangement arrangement = new HandArrangement();
+
+        for (int i = 0; i < tiles.length; i += 2) {
+            Tile t1 = tiles[i];
+            Tile t2 = tiles[i + 1];
+            arrangement.addSet(new ArrayList<Tile>(2) {{ add(t1); add(t2); }});
+        }
+
+        return arrangement;
+    }
+
+    private ArrayList<HandArrangement> getArrangements(ArrayList<Tile> remaining) {
+        workingArrangement = new HandArrangement();
+        return getArrangements(new ArrayList<>(), remaining);
+    }
+
+    private ArrayList<HandArrangement> getArrangements(ArrayList<HandArrangement> acc, ArrayList<Tile> remaining) {
+        if (remaining.isEmpty()) {
+            acc.add(workingArrangement);
+            workingArrangement = new HandArrangement();
+            return acc;
+        }
+
+        ArrayList<ArrayList<Tile>> initialSets = getInitialSets(remaining);
+
+        if (initialSets.isEmpty()) {
+            // There are tiles remaining, but can't make a set. The working arrangement is not
+            // added to the accumulator because it caused an incomplete hand.
+            return acc;
+        }
+
+        for (ArrayList<Tile> set : initialSets) {
+            workingArrangement.addSet(set);
+
+            ArrayList<Tile> rest = new ArrayList<>(remaining);
+            for (Tile t : set)
+                rest.remove(t);
+
+            getArrangements(acc, rest);
+        }
+
+        return acc;
+    }
+
+    private ArrayList<ArrayList<Tile>> getInitialSets(List<Tile> tiles) {
+        ArrayList<ArrayList<Tile>> sets = new ArrayList<>();
+        ArrayList<Tile> initChii = getInitialChii(tiles);
+        ArrayList<Tile> initPon = getInitialPon(tiles);
+
+        if (initChii != null)
+            sets.add(initChii);
+        if (initPon != null)
+            sets.add(initPon);
+
+        return sets;
+    }
+
+    private ArrayList<Tile> getInitialChii(List<Tile> tiles) {
+        if (tiles.size() < 3)
+            return null;
+
+        ArrayList<Tile> sequence = new ArrayList<Tile>(3) {{ add(tiles.get(0)); }};
+        int curIdx = 0;
+        int nextIdx = 1;
+
+        while (nextIdx < tiles.size()) {
+            // Advance past duplicates
+            while (tiles.get(curIdx).isSameAs(tiles.get(nextIdx))) {
+                curIdx++;
+                nextIdx++;
+                if (nextIdx >= tiles.size())
+                    return null;
+            }
+
+            if (tiles.get(nextIdx).isSameAs(tiles.get(curIdx).nextInSuit())) {
+                sequence.add(tiles.get(nextIdx));
+
+                if (sequence.size() == 3)
+                    return sequence;
+
+                curIdx = nextIdx;
+                nextIdx++;
+            }
+            else
+                return null;
+        }
+
+        return null;
+    }
+
+    private ArrayList<Tile> getInitialPon(List<Tile> tiles) {
+        if (tiles.size() < 3)
+            return null;
+
+        Tile t1 = tiles.get(0);
+        Tile t2 = tiles.get(1);
+        Tile t3 = tiles.get(2);
+
+        if (t1.isSameAs(t2) && t2.isSameAs(t3))
+            return new ArrayList<Tile>(3) {{ add(t1); add(t2); add(t3); }};
+
+        return null;
     }
 }

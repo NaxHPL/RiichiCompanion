@@ -5,6 +5,7 @@ import androidx.annotation.IntRange;
 import com.example.riichicompanion.Wind;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Tile {
@@ -179,7 +180,14 @@ public class Tile {
     }
 
     public boolean isSameAs(Tile other) {
-        return stringRep.equals(other.getStringRep());
+        return other != null && stringRep.equals(other.getStringRep());
+    }
+
+    public Tile nextInSuit() {
+        if (!isSuited() || rank == 9)
+            return null;
+
+        return new Tile(suit, rank + 1);
     }
 
     public static void sortTiles(Tile[] tiles) {
