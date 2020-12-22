@@ -258,7 +258,7 @@ public class Hand {
         for (HandArrangement arrangement : arrangements) {
             for (Meld meld : melds) {
                 Tile[] meldTiles = meld.getTiles();
-                arrangement.addSet(new ArrayList<Tile>() {{
+                arrangement.addSet(new ArrayList<Tile>(3) {{
                     add(meldTiles[0]);
                     add(meldTiles[1]);
                     add(meldTiles[2]);

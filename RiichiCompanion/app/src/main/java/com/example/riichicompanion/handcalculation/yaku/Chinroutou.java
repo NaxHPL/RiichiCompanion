@@ -1,24 +1,15 @@
 package com.example.riichicompanion.handcalculation.yaku;
 
 import com.example.riichicompanion.handcalculation.Hand;
+import com.example.riichicompanion.handcalculation.HandArrangement;
 import com.example.riichicompanion.handcalculation.WinConditions;
 
 import java.util.ArrayList;
 
 public class Chinroutou implements Yaku {
 
-    private static final ArrayList<Class<? extends Yaku>> invalidYaku = new ArrayList<Class<? extends Yaku>>() {{
-        add(KokushiMusou.class);
-        add(Daisangen.class);
-        add(Shousuushii.class);
-        add(Daisuushii.class);
-        add(Tsuuiisou.class);
-        add(Ryuuiisou.class);
-        add(ChuurenPoutou.class);
-    }};
-
     @Override
-    public boolean isConditionMet(Hand hand, WinConditions conditions) {
+    public boolean isConditionMet(Hand hand, HandArrangement arrangement, WinConditions conditions) {
         int[] tileCounts = hand.getTileCountsClone();
 
         for (int i = 0; i < tileCounts.length; i++) {
@@ -48,6 +39,14 @@ public class Chinroutou implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return invalidYaku;
+        return new ArrayList<Class<? extends Yaku>>(7) {{
+            add(KokushiMusou.class);
+            add(Daisangen.class);
+            add(Shousuushii.class);
+            add(Daisuushii.class);
+            add(Tsuuiisou.class);
+            add(Ryuuiisou.class);
+            add(ChuurenPoutou.class);
+        }};
     }
 }

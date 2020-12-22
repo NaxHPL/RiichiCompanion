@@ -1,6 +1,7 @@
 package com.example.riichicompanion.handcalculation.yaku;
 
 import com.example.riichicompanion.handcalculation.Hand;
+import com.example.riichicompanion.handcalculation.HandArrangement;
 import com.example.riichicompanion.handcalculation.Suit;
 import com.example.riichicompanion.handcalculation.Tile;
 import com.example.riichicompanion.handcalculation.WinConditions;
@@ -9,22 +10,10 @@ import java.util.ArrayList;
 
 public class ChuurenPoutou implements Yaku {
 
-    private static final ArrayList<Class<? extends Yaku>> invalidYaku = new ArrayList<Class<? extends Yaku>>() {{
-        add(KokushiMusou.class);
-        add(Daisangen.class);
-        add(Suuankou.class);
-        add(Shousuushii.class);
-        add(Daisuushii.class);
-        add(Tsuuiisou.class);
-        add(Ryuuiisou.class);
-        add(Chinroutou.class);
-        add(Suukantsu.class);
-    }};
-
     private boolean junsei = false;
 
     @Override
-    public boolean isConditionMet(Hand hand, WinConditions conditions) {
+    public boolean isConditionMet(Hand hand, HandArrangement arrangement, WinConditions conditions) {
         if (hand.isOpen())
             return false;
 
@@ -79,6 +68,16 @@ public class ChuurenPoutou implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return invalidYaku;
+        return new ArrayList<Class<? extends Yaku>>(9) {{
+            add(KokushiMusou.class);
+            add(Daisangen.class);
+            add(Suuankou.class);
+            add(Shousuushii.class);
+            add(Daisuushii.class);
+            add(Tsuuiisou.class);
+            add(Ryuuiisou.class);
+            add(Chinroutou.class);
+            add(Suukantsu.class);
+        }};
     }
 }

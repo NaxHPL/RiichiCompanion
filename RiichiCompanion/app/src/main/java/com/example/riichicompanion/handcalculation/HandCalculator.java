@@ -56,7 +56,7 @@ public class HandCalculator {
             if (invalidYaku.contains(yaku.getClass()))
                 continue;
 
-            if (yaku.isConditionMet(hand, conditions)) {
+            if (yaku.isConditionMet(hand, null, conditions)) {
                 yakumanCount += yaku.getYakumans();
                 invalidYaku.addAll(yaku.getInvalidYaku());
                 yakuFound.add(yaku);
