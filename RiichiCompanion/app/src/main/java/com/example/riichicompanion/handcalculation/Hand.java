@@ -248,7 +248,7 @@ public class Hand {
             ArrayList<HandArrangement> arrangementsWithoutPair = getArrangements(tilesWithoutPair);
 
             for (HandArrangement arrangement : arrangementsWithoutPair)
-                arrangement.addSet(pair);
+                arrangement.addSet(pair, SetType.Pair);
 
             arrangements.addAll(arrangementsWithoutPair);
             i++;
@@ -258,11 +258,16 @@ public class Hand {
         for (HandArrangement arrangement : arrangements) {
             for (Meld meld : melds) {
                 Tile[] meldTiles = meld.getTiles();
-                arrangement.addSet(new ArrayList<Tile>(3) {{
-                    add(meldTiles[0]);
-                    add(meldTiles[1]);
-                    add(meldTiles[2]);
-                }});
+                SetType setType = meld.getMeldType() == MeldType.Chii ? SetType.Chii : SetType.Pon;
+
+                arrangement.addSet(
+                    new ArrayList<Tile>(3) {{
+                        add(meldTiles[0]);
+                        add(meldTiles[1]);
+                        add(meldTiles[2]);
+                    }},
+                    setType
+                );
             }
         }
 
@@ -275,7 +280,10 @@ public class Hand {
         for (int i = 0; i < tiles.length; i += 2) {
             Tile t1 = tiles[i];
             Tile t2 = tiles[i + 1];
-            arrangement.addSet(new ArrayList<Tile>(2) {{ add(t1); add(t2); }});
+            arrangement.addSet(
+                new ArrayList<Tile>(2) {{ add(t1); add(t2); }},
+                SetType.Pair
+            );
         }
 
         return arrangement;
@@ -302,7 +310,7 @@ public class Hand {
         }
 
         for (ArrayList<Tile> set : initialSets) {
-            workingArrangement.addSet(set);
+            workingArrangement.addSet(set, Tile.getSetType(set));
 
             ArrayList<Tile> rest = new ArrayList<>(remaining);
             for (Tile t : set)

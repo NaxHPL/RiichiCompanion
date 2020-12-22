@@ -4,6 +4,7 @@ import androidx.annotation.IntRange;
 
 import com.example.riichicompanion.Wind;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -203,5 +204,44 @@ public class Tile {
 
             tiles[j + 1] = t;
         }
+    }
+
+    public static SetType getSetType(ArrayList<Tile> set) {
+        if (Tile.isPair(set))
+            return SetType.Pair;
+        if (Tile.isPon(set))
+            return SetType.Pon;
+
+        return SetType.Chii;
+    }
+
+    private static boolean isPair(ArrayList<Tile> set) {
+        if (set.size() != 2)
+            return false;
+
+        return set.get(0).isSameAs(set.get(1));
+    }
+
+    private static boolean isPon(ArrayList<Tile> set) {
+        if (set.size() != 3)
+            return false;
+
+        return set.get(0).isSameAs(set.get(1)) && set.get(1).isSameAs(set.get(2));
+    }
+
+    private static boolean isChii(ArrayList<Tile> set) {
+        if (set.size() != 3)
+            return false;
+
+        Tile t0 = set.get(0);
+        Tile t1 = t0.nextInSuit();
+        if (t1 == null)
+            return false;
+
+        Tile t2 = t1.nextInSuit();
+        if (t2 == null)
+            return false;
+
+        return set.get(1).isSameAs(t1) && set.get(2).isSameAs(t2);
     }
 }
