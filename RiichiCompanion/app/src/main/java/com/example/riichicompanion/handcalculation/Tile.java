@@ -211,25 +211,27 @@ public class Tile {
             return SetType.Pair;
         if (Tile.isPon(set))
             return SetType.Pon;
+        if (Tile.isChii(set))
+            return SetType.Chii;
 
-        return SetType.Chii;
+        return null;
     }
 
-    private static boolean isPair(ArrayList<Tile> set) {
+    public static boolean isPair(ArrayList<Tile> set) {
         if (set.size() != 2)
             return false;
 
         return set.get(0).isSameAs(set.get(1));
     }
 
-    private static boolean isPon(ArrayList<Tile> set) {
+    public static boolean isPon(ArrayList<Tile> set) {
         if (set.size() != 3)
             return false;
 
         return set.get(0).isSameAs(set.get(1)) && set.get(1).isSameAs(set.get(2));
     }
 
-    private static boolean isChii(ArrayList<Tile> set) {
+    public static boolean isChii(ArrayList<Tile> set) {
         if (set.size() != 3)
             return false;
 
