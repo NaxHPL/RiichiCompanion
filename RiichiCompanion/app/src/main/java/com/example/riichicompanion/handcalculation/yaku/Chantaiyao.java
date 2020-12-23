@@ -1,8 +1,10 @@
 package com.example.riichicompanion.handcalculation.yaku;
 
+import com.example.riichicompanion.handcalculation.GroupType;
 import com.example.riichicompanion.handcalculation.Hand;
 import com.example.riichicompanion.handcalculation.HandArrangement;
 import com.example.riichicompanion.handcalculation.Tile;
+import com.example.riichicompanion.handcalculation.TileGroup;
 import com.example.riichicompanion.handcalculation.WinConditions;
 
 import java.util.ArrayList;
@@ -13,10 +15,10 @@ public class Chantaiyao implements Yaku {
 
     @Override
     public boolean isConditionMet(Hand hand, HandArrangement arrangement, WinConditions conditions) {
-        for (ArrayList<Tile> set : arrangement.getSets()) {
-            Tile firstTile = set.get(0);
+        for (TileGroup group : arrangement.getGroups()) {
+            Tile firstTile = group.getTiles().get(0);
 
-            if (Tile.isChii(set) && (firstTile.getRank() != 1 && firstTile.getRank() != 7))
+            if (group.getGroupType() == GroupType.Chii && (firstTile.getRank() != 1 && firstTile.getRank() != 7))
                 return false;
             else if (firstTile.isSimple())
                 return false;

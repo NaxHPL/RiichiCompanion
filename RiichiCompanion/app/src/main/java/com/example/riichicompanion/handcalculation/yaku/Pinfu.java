@@ -4,6 +4,7 @@ import com.example.riichicompanion.Wind;
 import com.example.riichicompanion.handcalculation.Hand;
 import com.example.riichicompanion.handcalculation.HandArrangement;
 import com.example.riichicompanion.handcalculation.Tile;
+import com.example.riichicompanion.handcalculation.TileGroup;
 import com.example.riichicompanion.handcalculation.WinConditions;
 
 import java.util.ArrayList;
@@ -32,18 +33,20 @@ public class Pinfu implements Yaku {
             return false;
 
         Tile winTile = hand.getWinTile();
-        for (ArrayList<Tile> set : arrangement.getSets()) {
-            if (set.size() != 3)
+        for (TileGroup group : arrangement.getGroups()) {
+            ArrayList<Tile> tiles = group.getTiles();
+
+            if (tiles.size() != 3)
                 continue;
 
             // Check for edge wait
-            if (set.get(0).getRank() == 1 && set.get(2).isSameAs(winTile))
+            if (tiles.get(0).getRank() == 1 && tiles.get(2).isSameAs(winTile))
                 continue;
-            if (set.get(2).getRank() == 9 && set.get(0).isSameAs(winTile))
+            if (tiles.get(2).getRank() == 9 && tiles.get(0).isSameAs(winTile))
                 continue;
 
             // Check for middle wait
-            if (set.get(1).isSameAs(winTile))
+            if (tiles.get(1).isSameAs(winTile))
                 continue;
 
             return true;

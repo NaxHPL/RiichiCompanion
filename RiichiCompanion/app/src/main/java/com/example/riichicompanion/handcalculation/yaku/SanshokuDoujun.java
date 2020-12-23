@@ -1,9 +1,11 @@
 package com.example.riichicompanion.handcalculation.yaku;
 
+import com.example.riichicompanion.handcalculation.GroupType;
 import com.example.riichicompanion.handcalculation.Hand;
 import com.example.riichicompanion.handcalculation.HandArrangement;
 import com.example.riichicompanion.handcalculation.Suit;
 import com.example.riichicompanion.handcalculation.Tile;
+import com.example.riichicompanion.handcalculation.TileGroup;
 import com.example.riichicompanion.handcalculation.WinConditions;
 
 import java.util.ArrayList;
@@ -21,11 +23,11 @@ public class SanshokuDoujun implements Yaku {
         ArrayList<Integer> pinChii = new ArrayList<>();
         ArrayList<Integer> souChii = new ArrayList<>();
 
-        for (ArrayList<Tile> set : arrangement.getSets()) {
-            if (!Tile.isChii(set))
+        for (TileGroup group : arrangement.getGroups()) {
+            if (group.getGroupType() != GroupType.Chii)
                 continue;
 
-            Tile firstTile = set.get(0);
+            Tile firstTile = group.getTiles().get(0);
 
             if (firstTile.getSuit() == Suit.Man)
                 manChii.add(firstTile.getRank());

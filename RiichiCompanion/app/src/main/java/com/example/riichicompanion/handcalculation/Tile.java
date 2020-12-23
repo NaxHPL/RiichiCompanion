@@ -6,7 +6,6 @@ import com.example.riichicompanion.Wind;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 public class Tile {
@@ -206,13 +205,13 @@ public class Tile {
         }
     }
 
-    public static SetType getSetType(ArrayList<Tile> set) {
+    public static GroupType getGroupType(ArrayList<Tile> set) {
         if (Tile.isPair(set))
-            return SetType.Pair;
+            return GroupType.Pair;
         if (Tile.isPon(set))
-            return SetType.Pon;
+            return GroupType.Pon;
         if (Tile.isChii(set))
-            return SetType.Chii;
+            return GroupType.Chii;
 
         return null;
     }

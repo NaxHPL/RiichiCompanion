@@ -248,7 +248,7 @@ public class Hand {
             ArrayList<HandArrangement> arrangementsWithoutPair = getArrangements(tilesWithoutPair);
 
             for (HandArrangement arrangement : arrangementsWithoutPair)
-                arrangement.addSet(pair, SetType.Pair);
+                arrangement.addGroup(new TileGroup(pair, GroupType.Pair, false));
 
             arrangements.addAll(arrangementsWithoutPair);
             i++;
@@ -258,16 +258,17 @@ public class Hand {
         for (HandArrangement arrangement : arrangements) {
             for (Meld meld : melds) {
                 Tile[] meldTiles = meld.getTiles();
-                SetType setType = meld.getMeldType() == MeldType.Chii ? SetType.Chii : SetType.Pon;
+                GroupType groupType = meld.getMeldType() == MeldType.Chii ? GroupType.Chii : GroupType.Pon;
 
-                arrangement.addSet(
+                arrangement.addGroup(new TileGroup(
                     new ArrayList<Tile>(3) {{
                         add(meldTiles[0]);
                         add(meldTiles[1]);
                         add(meldTiles[2]);
                     }},
-                    setType
-                );
+                    groupType,
+                    true
+                ));
             }
         }
 
@@ -280,10 +281,11 @@ public class Hand {
         for (int i = 0; i < tiles.length; i += 2) {
             Tile t1 = tiles[i];
             Tile t2 = tiles[i + 1];
-            arrangement.addSet(
+            arrangement.addGroup(new TileGroup(
                 new ArrayList<Tile>(2) {{ add(t1); add(t2); }},
-                SetType.Pair
-            );
+                GroupType.Pair,
+                false
+            ));
         }
 
         return arrangement;
@@ -310,7 +312,7 @@ public class Hand {
         }
 
         for (ArrayList<Tile> set : initialSets) {
-            workingArrangement.addSet(set, Tile.getSetType(set));
+            workingArrangement.addGroup(new TileGroup(set, Tile.getGroupType(set), false));
 
             ArrayList<Tile> rest = new ArrayList<>(remaining);
             for (Tile t : set)

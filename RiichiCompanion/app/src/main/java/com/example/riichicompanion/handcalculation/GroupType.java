@@ -1,6 +1,6 @@
 package com.example.riichicompanion.handcalculation;
 
-public enum SetType {
+public enum GroupType {
     Pon,
     Chii,
     Pair
