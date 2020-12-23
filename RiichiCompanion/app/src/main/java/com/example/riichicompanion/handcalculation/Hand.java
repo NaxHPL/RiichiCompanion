@@ -267,7 +267,7 @@ public class Hand {
                         add(meldTiles[2]);
                     }},
                     groupType,
-                    true
+                    meld.getMeldType() != MeldType.ClosedKan
                 ));
             }
         }
