@@ -30,6 +30,10 @@ public class MenzenTsumo implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(3) {{
+            add(Houtei.class);
+            add(Chankan.class);
+            add(Toitoi.class);
+        }};
     }
 }

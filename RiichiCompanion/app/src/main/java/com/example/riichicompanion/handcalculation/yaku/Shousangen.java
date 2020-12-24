@@ -41,6 +41,16 @@ public class Shousangen implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(9) {{
+            add(Tanyao.class);
+            add(Pinfu.class);
+            add(Ittsuu.class);
+            add(SanshokuDoujun.class);
+            add(SanshokuDoukou.class);
+            add(JunchanTaiyao.class);
+            add(Ryanpeikou.class);
+            add(Chinitsu.class);
+            add(Chiitoitsu.class);
+        }};
     }
 }

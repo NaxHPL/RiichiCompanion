@@ -30,6 +30,14 @@ public class Rinshan implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(7) {{
+            add(Ippatsu.class);
+            add(Pinfu.class);
+            add(Ryanpeikou.class);
+            add(Chiitoitsu.class);
+            add(Haitei.class);
+            add(Houtei.class);
+            add(Chankan.class);
+        }};
     }
 }

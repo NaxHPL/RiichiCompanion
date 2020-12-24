@@ -48,6 +48,13 @@ public class Sanankou implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(6) {{
+            add(Pinfu.class);
+            add(Iipeikou.class);
+            add(Ittsuu.class);
+            add(SanshokuDoujun.class);
+            add(Ryanpeikou.class);
+            add(Chiitoitsu.class);
+        }};
     }
 }

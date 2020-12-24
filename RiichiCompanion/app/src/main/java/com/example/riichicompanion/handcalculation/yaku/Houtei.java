@@ -30,6 +30,12 @@ public class Houtei implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(5) {{
+            add(Ippatsu.class);
+            add(MenzenTsumo.class);
+            add(Rinshan.class);
+            add(Haitei.class);
+            add(Chankan.class);
+        }};
     }
 }

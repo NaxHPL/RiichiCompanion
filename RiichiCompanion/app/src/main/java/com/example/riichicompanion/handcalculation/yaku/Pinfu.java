@@ -72,6 +72,16 @@ public class Pinfu implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(9) {{
+            add(Yakuhai.class);
+            add(SanshokuDoukou.class);
+            add(Toitoi.class);
+            add(Sanankou.class);
+            add(Sankantsu.class);
+            add(Shousangen.class);
+            add(Honroutou.class);
+            add(Chiitoitsu.class);
+            add(Rinshan.class);
+        }};
     }
 }

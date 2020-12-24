@@ -32,6 +32,14 @@ public class Toitoi implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(7) {{
+            add(MenzenTsumo.class);
+            add(Pinfu.class);
+            add(Iipeikou.class);
+            add(Ittsuu.class);
+            add(SanshokuDoujun.class);
+            add(Ryanpeikou.class);
+            add(Chiitoitsu.class);
+        }};
     }
 }

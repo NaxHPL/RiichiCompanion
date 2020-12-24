@@ -39,6 +39,17 @@ public class Honroutou implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(10) {{
+            add(Tanyao.class);
+            add(Pinfu.class);
+            add(Iipeikou.class);
+            add(Ittsuu.class);
+            add(SanshokuDoujun.class);
+            add(Chantaiyao.class);
+            add(JunchanTaiyao.class);
+            add(Ryanpeikou.class);
+            add(Chinitsu.class);
+            add(Chankan.class);
+        }};
     }
 }

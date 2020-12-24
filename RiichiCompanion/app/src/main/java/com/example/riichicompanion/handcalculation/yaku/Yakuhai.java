@@ -65,6 +65,13 @@ public class Yakuhai implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(6) {{
+            add(Tanyao.class);
+            add(Pinfu.class);
+            add(JunchanTaiyao.class);
+            add(Ryanpeikou.class);
+            add(Chinitsu.class);
+            add(Chiitoitsu.class);
+        }};
     }
 }

@@ -46,6 +46,14 @@ public class Chinitsu implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(7) {{
+            add(Yakuhai.class);
+            add(SanshokuDoujun.class);
+            add(SanshokuDoukou.class);
+            add(Chantaiyao.class);
+            add(Shousangen.class);
+            add(Honroutou.class);
+            add(Honitsu.class);
+        }};
     }
 }

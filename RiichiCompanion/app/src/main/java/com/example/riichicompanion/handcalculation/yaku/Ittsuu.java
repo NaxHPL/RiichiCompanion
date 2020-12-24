@@ -68,6 +68,19 @@ public class Ittsuu implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(12) {{
+            add(Tanyao.class);
+            add(SanshokuDoujun.class);
+            add(SanshokuDoukou.class);
+            add(Toitoi.class);
+            add(Sanankou.class);
+            add(Sankantsu.class);
+            add(Chantaiyao.class);
+            add(JunchanTaiyao.class);
+            add(Ryanpeikou.class);
+            add(Shousangen.class);
+            add(Honroutou.class);
+            add(Chiitoitsu.class);
+        }};
     }
 }

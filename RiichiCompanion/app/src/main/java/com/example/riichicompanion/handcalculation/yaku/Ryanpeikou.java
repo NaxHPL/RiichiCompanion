@@ -60,6 +60,20 @@ public class Ryanpeikou implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(13) {{
+            add(Iipeikou.class);
+            add(Ittsuu.class);
+            add(Yakuhai.class);
+            add(SanshokuDoujun.class);
+            add(SanshokuDoukou.class);
+            add(Toitoi.class);
+            add(Sanankou.class);
+            add(Sankantsu.class);
+            add(Shousangen.class);
+            add(Honroutou.class);
+            add(Chiitoitsu.class);
+            add(Rinshan.class);
+            add(Chankan.class);
+        }};
     }
 }

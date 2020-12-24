@@ -30,6 +30,8 @@ public class DoubleRiichi implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(1) {{
+            add(Riichi.class);
+        }};
     }
 }

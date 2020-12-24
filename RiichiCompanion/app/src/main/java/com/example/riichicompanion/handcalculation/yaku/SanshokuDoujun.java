@@ -64,6 +64,18 @@ public class SanshokuDoujun implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(11) {{
+            add(Ittsuu.class);
+            add(SanshokuDoukou.class);
+            add(Toitoi.class);
+            add(Sanankou.class);
+            add(Sankantsu.class);
+            add(Ryanpeikou.class);
+            add(Shousangen.class);
+            add(Honroutou.class);
+            add(Honitsu.class);
+            add(Chinitsu.class);
+            add(Chiitoitsu.class);
+        }};
     }
 }

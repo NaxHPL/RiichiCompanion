@@ -30,6 +30,15 @@ public class Chankan implements Yaku {
 
     @Override
     public ArrayList<Class<? extends Yaku>> getInvalidYaku() {
-        return null;
+        return new ArrayList<Class<? extends Yaku>>(8) {{
+            add(MenzenTsumo.class);
+            add(Toitoi.class);
+            add(Ryanpeikou.class);
+            add(Honroutou.class);
+            add(Chiitoitsu.class);
+            add(Rinshan.class);
+            add(Haitei.class);
+            add(Houtei.class);
+        }};
     }
 }
