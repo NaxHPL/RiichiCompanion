@@ -6,14 +6,11 @@ import com.example.riichicompanion.handcalculation.WinConditions;
 
 import java.util.ArrayList;
 
-public class HaiteiHoutei implements Yaku {
-
-    private boolean isTsumo = false;
+public class Houtei implements Yaku {
 
     @Override
     public boolean isConditionMet(Hand hand, HandArrangement arrangement, WinConditions conditions) {
-        isTsumo = conditions.isTsumo();
-        return conditions.isHaiteiOrHoutei();
+        return conditions.isHaiteiOrHoutei() && !conditions.isTsumo();
     }
 
     @Override
@@ -28,7 +25,7 @@ public class HaiteiHoutei implements Yaku {
 
     @Override
     public String getDisplayName() {
-        return isTsumo ? "Haitei raoyui" : "Houtei raoyui";
+        return "Houtei raoyui";
     }
 
     @Override
