@@ -254,17 +254,19 @@ public class Hand {
             i++;
         }
 
-        // Add fixed sets (melds) to arrangements (kans as 3 of a kind)
+        // Add fixed sets (melds) to arrangements
         for (HandArrangement arrangement : arrangements) {
             for (Meld meld : melds) {
                 Tile[] meldTiles = meld.getTiles();
                 GroupType groupType = meld.getMeldType() == MeldType.Chii ? GroupType.Chii : GroupType.Pon;
 
                 arrangement.addGroup(new TileGroup(
-                    new ArrayList<Tile>(3) {{
+                    new ArrayList<Tile>(4) {{
                         add(meldTiles[0]);
                         add(meldTiles[1]);
                         add(meldTiles[2]);
+                        if (meld.getMeldType() == MeldType.Kan || meld.getMeldType() == MeldType.ClosedKan)
+                            add(meldTiles[3]);
                     }},
                     groupType,
                     meld.getMeldType() != MeldType.ClosedKan

@@ -1,5 +1,8 @@
 package com.example.riichicompanion.handcalculation;
 
+import androidx.core.util.Pair;
+
+import com.example.riichicompanion.Fu;
 import com.example.riichicompanion.HandScore;
 import com.example.riichicompanion.ScoringTable;
 import com.example.riichicompanion.handcalculation.yaku.Chankan;
@@ -61,18 +64,27 @@ public class HandCalculator {
 
         for (HandArrangement arrangement : hand.getAllArrangements()) {
             ArrayList<Yaku> yakuFound = new ArrayList<>();
-            int han = checkForYaku(hand, arrangement, conditions, yakuFound) + conditions.getDora();
-            int fu = 0;
+            ArrayList<FuItem> fuItems = new ArrayList<>();
 
-            if (han < 5) {
-                // TODO: Calculate fu
-            }
+            int han = checkForYaku(hand, arrangement, conditions, yakuFound) + conditions.getDora();
+            int fu = 20;
+
+            if (han < 5)
+                fu = calculateFu(
+                    hand,
+                    arrangement,
+                    conditions,
+                    fuItems,
+                    yakuWasFound(Chiitoitsu.class, yakuFound),
+                    yakuWasFound(Pinfu.class, yakuFound));
 
             Yaku[] yakuArray = new Yaku[yakuFound.size()];
+            FuItem[] fuArray = new FuItem[fuItems.size()];
+
             handResponses.add(new HandResponse(
                 new HandScore(han, fu),
                 yakuFound.toArray(yakuArray),
-                new FuItem[0]
+                fuItems.toArray(fuArray)
             ));
         }
 
@@ -166,5 +178,133 @@ public class HandCalculator {
         }
 
         return hanCount;
+    }
+
+    private static int calculateFu(Hand hand, HandArrangement arrangement, WinConditions conditions,
+                                   ArrayList<FuItem> fuItems, boolean chiitoitsuFound, boolean pinfuFound) {
+        if (chiitoitsuFound) {
+            fuItems.add(new FuItem("Base points", 25));
+            return 25;
+        }
+
+        if (pinfuFound) {
+            fuItems.add(new FuItem("Base points", 20));
+            if (!conditions.isTsumo()) {
+                fuItems.add(new FuItem("Closed ron", 10));
+                return 30;
+            }
+
+            return 20;
+        }
+
+        ArrayList<TileGroup> concealedGroupsWithWinTile = new ArrayList<>();
+        for (TileGroup group : arrangement.getGroups()) {
+            if (!group.isOpenMeld() && group.containsTile(hand.getWinTile()))
+                concealedGroupsWithWinTile.add(group);
+        }
+
+        // The win tile might complete multiple groups. The win group that maximizes fu must be used.
+        ArrayList<Pair<Integer, ArrayList<FuItem>>> fuAndFuItems = new ArrayList<>();
+
+        for (TileGroup groupWithWinTile : concealedGroupsWithWinTile) {
+            ArrayList<FuItem> fuItemsForThisWinGroup = new ArrayList<>();
+            fuItemsForThisWinGroup.add(new FuItem("Base points", 20));
+            int fuForThisWinGroup = 20;
+
+            for (TileGroup group : arrangement.getGroups()) {
+                if (group.getGroupType() == GroupType.Pon) {
+                    boolean groupIsOpen = group.isOpenMeld() || (group == groupWithWinTile && !conditions.isTsumo());
+                    FuItem groupFuItem = group.getFuItem(conditions.getPrevWind(), conditions.getSeatWind(), groupIsOpen);
+
+                    if (groupFuItem != null) {
+                        fuItemsForThisWinGroup.add(groupFuItem);
+                        fuForThisWinGroup += groupFuItem.getValue();
+                    }
+                }
+                else if (group.getGroupType() == GroupType.Chii) {
+                    if (group == groupWithWinTile) {
+                        if (isClosedWait(group, hand.getWinTile())) {
+                            fuItemsForThisWinGroup.add(new FuItem("Closed wait", 2));
+                            fuForThisWinGroup += 2;
+                        }
+                        else if (isEdgeWait(group, hand.getWinTile())) {
+                            fuItemsForThisWinGroup.add(new FuItem("Edge wait", 2));
+                            fuForThisWinGroup += 2;
+                        }
+                    }
+                }
+                else { // Group is a pair
+                    if (group == groupWithWinTile) {
+                        fuItemsForThisWinGroup.add(new FuItem("Pair wait", 2));
+                        fuForThisWinGroup += 2;
+                    }
+
+                    FuItem groupFuItem = group.getFuItem(conditions.getPrevWind(), conditions.getSeatWind(), false);
+                    if (groupFuItem != null) {
+                        fuItemsForThisWinGroup.add(groupFuItem);
+                        fuForThisWinGroup += groupFuItem.getValue();
+                    }
+                }
+            }
+
+            if (!hand.isOpen() && !conditions.isTsumo()) {
+                fuItemsForThisWinGroup.add(new FuItem("Closed ron", 10));
+                fuForThisWinGroup += 10;
+            }
+
+            if (conditions.isTsumo()) {
+                fuItemsForThisWinGroup.add(new FuItem("Tsumo", 2));
+                fuForThisWinGroup += 2;
+            }
+
+            if (fuForThisWinGroup == 20) {
+                fuItemsForThisWinGroup.add(new FuItem("Open pinfu", 2));
+                fuForThisWinGroup += 2;
+            }
+
+            FuItem roundUpFuItem = getRoundUpFuItem(fuForThisWinGroup);
+            fuItemsForThisWinGroup.add(roundUpFuItem);
+            fuForThisWinGroup += roundUpFuItem.getValue();
+
+            fuAndFuItems.add(Pair.create(fuForThisWinGroup, fuItemsForThisWinGroup));
+        }
+
+        Pair<Integer, ArrayList<FuItem>> maxFuAndItems = fuAndFuItems.get(0);
+        for (Pair<Integer, ArrayList<FuItem>> fuAndItems : fuAndFuItems) {
+            if (fuAndItems.first > maxFuAndItems.first)
+                maxFuAndItems = fuAndItems;
+        }
+
+        fuItems.addAll(maxFuAndItems.second);
+        return maxFuAndItems.first;
+    }
+
+    private static boolean yakuWasFound(Class<? extends Yaku> toFind, ArrayList<Yaku> yakuList) {
+        for (Yaku yaku : yakuList) {
+            if (yaku.getClass() == toFind)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static boolean isClosedWait(TileGroup group, Tile winTile) {
+        if (group.getGroupType() != GroupType.Chii)
+            return false;
+
+        return group.getTiles().get(1).isSameAs(winTile);
+    }
+
+    private static boolean isEdgeWait(TileGroup group, Tile winTile) {
+        if (group.getGroupType() != GroupType.Chii)
+            return false;
+
+        return (group.getTiles().get(0).getRank() == 1 && winTile.getRank() == 3)
+            || (group.getTiles().get(2).getRank() == 9 && winTile.getRank() == 7);
+    }
+
+    private static FuItem getRoundUpFuItem(int fu) {
+        int roundedUpFu = ((fu + 9) / 10 ) * 10;
+        return new FuItem("Round up", roundedUpFu - fu);
     }
 }
