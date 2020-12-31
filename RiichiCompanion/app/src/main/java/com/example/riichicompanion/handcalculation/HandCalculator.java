@@ -67,10 +67,7 @@ public class HandCalculator {
             ArrayList<FuItem> fuItems = new ArrayList<>();
 
             int han = checkForYaku(hand, arrangement, conditions, yakuFound) + conditions.getDora();
-            int fu = 20;
-
-            if (han < 5)
-                fu = calculateFu(
+            int fu = calculateFu(
                     hand,
                     arrangement,
                     conditions,
