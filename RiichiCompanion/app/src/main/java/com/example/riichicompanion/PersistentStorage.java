@@ -58,7 +58,7 @@ public class PersistentStorage {
 
     public static ThemeOption getThemeOption(Context context) {
             SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.settings_file_name), Context.MODE_PRIVATE);
-            String strTheme = prefs.getString(context.getString(R.string.theme_option_key), "Auto");
+            String strTheme = prefs.getString(context.getString(R.string.theme_option_key), "Dark");
             return ThemeOption.valueOf(strTheme);
     }
 }

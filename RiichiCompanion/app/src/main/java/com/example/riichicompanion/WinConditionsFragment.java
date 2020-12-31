@@ -162,10 +162,8 @@ public class WinConditionsFragment extends Fragment {
     }
 
     private void setWindColours(ThemeOption theme) {
-        boolean nightModeOn = (getActivity().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         ColorStateList color;
-
-        if (theme == ThemeOption.Dark || (theme == ThemeOption.Auto && nightModeOn))
+        if (theme == ThemeOption.Dark)
             color = ColorStateList.valueOf(Color.parseColor("#FFFFFF"));
         else
             color = ColorStateList.valueOf(Color.parseColor("#000000"));

@@ -476,10 +476,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     private void setScoreTextColours(ThemeOption theme) {
-        boolean nightModeOn = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-
         int color;
-        if (theme == ThemeOption.Dark || (theme == ThemeOption.Auto && nightModeOn))
+        if (theme == ThemeOption.Dark)
             color = getResources().getColor(R.color.white, getTheme());
         else
             color = getResources().getColor(R.color.black, getTheme());
