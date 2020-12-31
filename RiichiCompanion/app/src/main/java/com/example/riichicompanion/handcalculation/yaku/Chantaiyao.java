@@ -18,8 +18,10 @@ public class Chantaiyao implements Yaku {
         for (TileGroup group : arrangement.getGroups()) {
             Tile firstTile = group.getTiles().get(0);
 
-            if (group.getGroupType() == GroupType.Chii && (firstTile.getRank() != 1 && firstTile.getRank() != 7))
-                return false;
+            if (group.getGroupType() == GroupType.Chii) {
+                if (firstTile.getRank() != 1 && firstTile.getRank() != 7)
+                    return false;
+            }
             else if (firstTile.isSimple())
                 return false;
         }
