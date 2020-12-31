@@ -18,6 +18,11 @@ import java.util.Locale;
 
 public class HandScoreDialog extends AppCompatDialogFragment {
 
+    public interface HandScoreDialogListener {
+        void onHandScoreConfirm(HandScore hs);
+        void onHandScoreDismiss();
+    }
+
     private TextView tvHan;
     private TextView tvHanLabel;
     private TextView tvFu;
@@ -40,11 +45,6 @@ public class HandScoreDialog extends AppCompatDialogFragment {
         this.winType = winType;
     }
 
-    public interface HandScoreDialogListener {
-        void onHandScoreConfirm(HandScore hs);
-        void onHandScoreDismiss();
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class HandScoreDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
             .setNegativeButton("Cancel", (dialog, which) -> listener.onHandScoreDismiss())
-            .setPositiveButton("OK", (dialog, which) -> {
+            .setPositiveButton("Confirm", (dialog, which) -> {
                 HandScore hs;
 
                 if (chkYakuman.isChecked())
