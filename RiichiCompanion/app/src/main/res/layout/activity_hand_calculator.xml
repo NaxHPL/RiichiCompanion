@@ -17,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/app_bar_hand_calculator"
         app:navigationIcon="@drawable/ic_close_black_24dp" />
 
     <com.google.android.material.tabs.TabLayout

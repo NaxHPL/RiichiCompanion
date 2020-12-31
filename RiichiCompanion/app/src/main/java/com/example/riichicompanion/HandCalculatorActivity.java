@@ -2,6 +2,7 @@ package com.example.riichicompanion;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -20,7 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Locale;
 
-public class HandCalculatorActivity extends AppCompatActivity {
+public class HandCalculatorActivity extends AppCompatActivity implements HandScoreDialog.HandScoreDialogListener {
 
     public static final int REQUEST_CODE = 12;
     public static final int RESULT_CODE_CONFIRMED = 24;
@@ -99,9 +100,19 @@ public class HandCalculatorActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_hand_calculator, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return true;
+        }
+        else if (item.getItemId() == R.id.miManualEntry) {
+            openManualEntryDialog();
             return true;
         }
 
@@ -116,10 +127,31 @@ public class HandCalculatorActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    private void openManualEntryDialog() {
+        HandScoreDialog dialog = new HandScoreDialog(winType);
+        dialog.show(getSupportFragmentManager(), "hand_score_dialog");
+    }
+
     private void calculateHand() {
         Hand hand = viewModel.getHand().getValue();
         WinConditions winConditions = adapter.getWinConditionsFragment().getWinConditions();
-
         HandResponse response = HandCalculator.calculateHand(hand, winConditions);
+    }
+
+    private void setResultAndClose(HandScore handScore) {
+        Intent data = new Intent();
+        data.putExtra(ScoreTrackerActivity.CALCULATED_HAND_EXTRA, handScore);
+        setResult(RESULT_CODE_CONFIRMED, data);
+        finish();
+    }
+
+    @Override
+    public void onHandScoreConfirm(HandScore hs) {
+        setResultAndClose(hs);
+    }
+
+    @Override
+    public void onHandScoreDismiss() {
+        // Do nothing
     }
 }
