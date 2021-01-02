@@ -260,8 +260,10 @@ public class HandCalculator {
             }
 
             FuItem roundUpFuItem = getRoundUpFuItem(fuForThisWinGroup);
-            fuItemsForThisWinGroup.add(roundUpFuItem);
-            fuForThisWinGroup += roundUpFuItem.getValue();
+            if (roundUpFuItem.getValue() > 0) {
+                fuItemsForThisWinGroup.add(roundUpFuItem);
+                fuForThisWinGroup += roundUpFuItem.getValue();
+            }
 
             fuAndFuItems.add(Pair.create(fuForThisWinGroup, fuItemsForThisWinGroup));
         }
