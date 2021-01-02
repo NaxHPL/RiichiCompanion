@@ -3,6 +3,7 @@ package com.example.riichicompanion;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ import java.util.HashMap;
 
 public class HandInputFragment extends Fragment {
 
-    private static final int MELD_MARGIN = 24;
     private static final HashMap<String, Integer> tileDrawableIds = new HashMap<String, Integer>() {{
         put("1m", R.drawable._1m);
         put("2m", R.drawable._2m);
@@ -118,6 +118,7 @@ public class HandInputFragment extends Fragment {
     private ArrayList<ConstraintLayout> meldCls;
     private ImageButton winTileButton;
     private Hand hand;
+    private int meldMargin;
 
     public static HandInputFragment newInstance() {
         return new HandInputFragment();
@@ -192,6 +193,11 @@ public class HandInputFragment extends Fragment {
             ib1s, ib2s, ib3s, ib4s, ib5s, ib6s, ib7s, ib8s, ib9s,
             ibEast, ibSouth, ibWest, ibNorth, ibGreen, ibRed, ibWhite
         };
+        meldMargin = (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP,
+            8f,
+            getActivity().getResources().getDisplayMetrics()
+        );
 
         setImageButtonTags();
         setButtonListeners();
@@ -502,19 +508,19 @@ public class HandInputFragment extends Fragment {
 
         switch (meldCls.size()) {
             case 1:
-                constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
-                constraintSet.connect(cl.getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, meldMargin);
+                constraintSet.connect(cl.getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, meldMargin);
                 break;
             case 2:
-                constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, meldMargin);
                 constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.TOP, 0);
                 break;
             case 3:
-                constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
-                constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, meldMargin);
+                constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, meldMargin);
                 break;
             case 4:
-                constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(2).getId(), ConstraintSet.END, MELD_MARGIN);
+                constraintSet.connect(cl.getId(), ConstraintSet.START, meldCls.get(2).getId(), ConstraintSet.END, meldMargin);
                 constraintSet.connect(cl.getId(), ConstraintSet.TOP, meldCls.get(2).getId(), ConstraintSet.TOP, 0);
                 break;
         }
@@ -533,16 +539,16 @@ public class HandInputFragment extends Fragment {
         for (int i = 1; i <= meldCls.size(); i++) {
             switch (i) {
                 case 1:
-                    constraintSet.connect(meldCls.get(0).getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
-                    constraintSet.connect(meldCls.get(0).getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, MELD_MARGIN);
+                    constraintSet.connect(meldCls.get(0).getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, meldMargin);
+                    constraintSet.connect(meldCls.get(0).getId(), ConstraintSet.TOP,  clExposedTiles.getId(), ConstraintSet.TOP, meldMargin);
                     break;
                 case 2:
-                    constraintSet.connect(meldCls.get(1).getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, MELD_MARGIN);
+                    constraintSet.connect(meldCls.get(1).getId(), ConstraintSet.START, meldCls.get(0).getId(), ConstraintSet.END, meldMargin);
                     constraintSet.connect(meldCls.get(1).getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.TOP, 0);
                     break;
                 case 3:
-                    constraintSet.connect(meldCls.get(2).getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, MELD_MARGIN);
-                    constraintSet.connect(meldCls.get(2).getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, MELD_MARGIN);
+                    constraintSet.connect(meldCls.get(2).getId(), ConstraintSet.START, clExposedTiles.getId(), ConstraintSet.START, meldMargin);
+                    constraintSet.connect(meldCls.get(2).getId(), ConstraintSet.TOP, meldCls.get(0).getId(), ConstraintSet.BOTTOM, meldMargin);
                     break;
             }
         }
