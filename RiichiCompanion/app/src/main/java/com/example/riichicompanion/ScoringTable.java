@@ -5,7 +5,7 @@ import android.util.Pair;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Scoring {
+public class ScoringTable {
 
     private static final ScoreEntry baseYakumanEntry = new ScoreEntry(48000, 16000, 32000, Pair.create(8000, 16000));
     private static final ScoreEntry manganEntry = new ScoreEntry(12000, 4000, 8000, Pair.create(2000, 4000));
@@ -153,16 +153,5 @@ public class Scoring {
 
     public static ScoreEntry getManganEntry() {
         return manganEntry;
-    }
-
-    public static Player getAtamahaneWinner(Player discarder, List<Player> winners) {
-        for (int i = 1; i <= 3; i++) {
-            for (Player winner : winners) {
-                if (winner.getSeatWind().ordinal() == (discarder.getSeatWind().ordinal() + i) % 4)
-                    return winner;
-            }
-        }
-
-        return winners.get(0);
     }
 }

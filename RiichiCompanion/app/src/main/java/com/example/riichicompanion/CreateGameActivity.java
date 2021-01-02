@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,10 +37,11 @@ public class CreateGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
+        int themeId = PersistentStorage.getThemeOption(this).getThemeId();
+        setTheme(themeId);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
-        setSupportActionBar(findViewById(R.id.toolbarCreateGameActivity));
 
         ActionBar ab = getSupportActionBar();
         if (ab != null)
@@ -57,6 +59,10 @@ public class CreateGameActivity extends AppCompatActivity {
         fabRemoveFourthPlayer = findViewById(R.id.fabRemoveFourthPlayer);
         btnAddPlayer = findViewById(R.id.btnAddPlayer);
         threePlayerGame = false;
+
+        Toolbar toolbarCreateGameActivity = findViewById(R.id.toolbarCreateGameActivity);
+        toolbarCreateGameActivity.setPopupTheme(themeId);
+        setSupportActionBar(toolbarCreateGameActivity);
     }
 
     @Override
@@ -121,7 +127,7 @@ public class CreateGameActivity extends AppCompatActivity {
         PersistentStorage.saveOngoingGame(this, game);
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, game);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, game);
         startActivity(intent);
 
         finish();

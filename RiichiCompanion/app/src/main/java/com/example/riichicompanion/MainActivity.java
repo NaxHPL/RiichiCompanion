@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Locale;
@@ -30,10 +31,11 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
+        int themeId = PersistentStorage.getThemeOption(this).getThemeId();
+        setTheme(themeId);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setSupportActionBar(findViewById(R.id.toolbarMainActivity));
 
         constraintLayoutOngoingGame = findViewById(R.id.ConstraintLayout_ongoing_game);
         tvOngoingGamePlayers = findViewById(R.id.tvOngoingGamePlayers);
@@ -41,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
         tvOngoingGameRoundNumber = findViewById(R.id.tvOngoingGameRoundNumber);
         ivOngoingGameRoundWind = findViewById(R.id.ivOngoingGameRoundWind);
         divider1 = findViewById(R.id.divider1);
+
+        Toolbar toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
+        toolbarMainActivity.setPopupTheme(themeId);
+        setSupportActionBar(toolbarMainActivity);
 
         newGameDialogBuilder = new AlertDialog.Builder(this) {{
             setTitle(R.string.new_game_dialog_title);
@@ -134,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
 
     public void openOngoingGame(View view) {
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW, ongoingGame);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, ongoingGame);
         startActivity(intent);
     }
 

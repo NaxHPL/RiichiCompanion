@@ -18,6 +18,11 @@ import java.util.Locale;
 
 public class HandScoreDialog extends AppCompatDialogFragment {
 
+    public interface HandScoreDialogListener {
+        void onHandScoreConfirm(HandScore hs);
+        void onHandScoreDismiss();
+    }
+
     private TextView tvHan;
     private TextView tvHanLabel;
     private TextView tvFu;
@@ -40,11 +45,6 @@ public class HandScoreDialog extends AppCompatDialogFragment {
         this.winType = winType;
     }
 
-    public interface HandScoreDialogListener {
-        void onHandScoreConfirm(HandScore hs);
-        void onHandScoreDismiss();
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -54,17 +54,17 @@ public class HandScoreDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_hand_score, null);
 
         builder.setView(view)
-               .setNegativeButton("Cancel", (dialog, which) -> listener.onHandScoreDismiss())
-               .setPositiveButton("OK", (dialog, which) -> {
-                   HandScore hs;
+            .setNegativeButton("Cancel", (dialog, which) -> listener.onHandScoreDismiss())
+            .setPositiveButton("Confirm", (dialog, which) -> {
+                HandScore hs;
 
-                   if (chkYakuman.isChecked())
-                       hs = new HandScore(getYakuman());
-                   else
-                       hs = new HandScore(getHan(), getFu());
+                if (chkYakuman.isChecked())
+                    hs = new HandScore(getYakuman());
+                else
+                    hs = new HandScore(getHan(), getFu());
 
-                   listener.onHandScoreConfirm(hs);
-               });
+                listener.onHandScoreConfirm(hs);
+            });
 
         initializeViews(view);
 
@@ -86,7 +86,7 @@ public class HandScoreDialog extends AppCompatDialogFragment {
     }
 
     private void initializeViews(View view) {
-        tvHan = view.findViewById(R.id.tvHan); 
+        tvHan = view.findViewById(R.id.tvHan);
         tvHanLabel = view.findViewById(R.id.tvHanLabel);
         tvFu = view.findViewById(R.id.tvFu);
         tvFuLabel = view.findViewById(R.id.tvFuLabel);

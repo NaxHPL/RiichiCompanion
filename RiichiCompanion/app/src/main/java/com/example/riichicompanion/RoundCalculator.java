@@ -13,7 +13,7 @@ public class RoundCalculator {
 
         for (Pair<Player, HandScore> pair : winnerHandScorePairs) {
             Player winner = pair.first;
-            ScoreEntry scoreEntry = Scoring.getScoreEntry(pair.second);
+            ScoreEntry scoreEntry = ScoringTable.getScoreEntry(pair.second);
 
             if (winner.isDealer()) {
                 loser.changeScoreBy(-scoreEntry.getDealerRon());
@@ -34,7 +34,7 @@ public class RoundCalculator {
             game.incrementRiichiStickCount();
         }
 
-        Player atamahaneWinner = Scoring.getAtamahaneWinner(loser, winners);
+        Player atamahaneWinner = getAtamahaneWinner(loser, winners);
 
         atamahaneWinner.changeScoreBy(1000 * game.getRiichiCount());
         game.setRiichiCount(0);
@@ -53,7 +53,7 @@ public class RoundCalculator {
     }
 
     public static void updateGameStateFromTsumo(Game game, Player winner, HandScore handScore, List<Player> playersDeclaredRiichi) {
-        ScoreEntry scoreEntry = Scoring.getScoreEntry(handScore);
+        ScoreEntry scoreEntry = ScoringTable.getScoreEntry(handScore);
         boolean repeatRound = false;
 
         if (winner.isDealer()) {
@@ -187,7 +187,7 @@ public class RoundCalculator {
     }
 
     public static void updateGameStateFromChombo(Game game, Player playerFailed) {
-        ScoreEntry mangan = Scoring.getManganEntry();
+        ScoreEntry mangan = ScoringTable.getManganEntry();
 
         if (playerFailed.isDealer()) {
             for (Player player : game.getPlayers()) {
@@ -222,6 +222,19 @@ public class RoundCalculator {
                 }
             }
         }
+    }
+
+
+
+    public static Player getAtamahaneWinner(Player discarder, List<Player> winners) {
+        for (int i = 1; i <= 3; i++) {
+            for (Player winner : winners) {
+                if (winner.getSeatWind().ordinal() == (discarder.getSeatWind().ordinal() + i) % 4)
+                    return winner;
+            }
+        }
+
+        return winners.get(0);
     }
 
     private static int roundUpToNearest100(int x) {

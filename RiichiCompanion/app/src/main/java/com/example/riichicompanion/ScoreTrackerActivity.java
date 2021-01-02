@@ -1,6 +1,8 @@
 package com.example.riichicompanion;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -14,18 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ScoreTrackerActivity extends AppCompatActivity implements HandScoreDialog.HandScoreDialogListener {
+public class ScoreTrackerActivity extends AppCompatActivity {
 
-    public static final String GAME_TO_SHOW = "com.example.riichicompanion.GAME_TO_SHOW";
+    public static final String GAME_TO_SHOW_EXTRA = "com.example.riichicompanion.GAME_TO_SHOW_EXTRA";
+    public static final String CALCULATED_HAND_EXTRA = "com.example.riichicompanion.CALCULATED_HAND_EXTRA";
     private static final int TIME_BEFORE_FADE_OUT = 8000;
     private static final int FADE_OUT_TIME = 1000;
 
@@ -368,7 +373,9 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PersistentStorage.getThemeOption(this).getThemeId());
+        ThemeOption theme = PersistentStorage.getThemeOption(this);
+        setTheme(theme.getThemeId());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_tracker);
         setSupportActionBar(findViewById(R.id.toolbarScoreTrackerActivity));
@@ -377,7 +384,7 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         if (ab != null)
             ab.setDisplayHomeAsUpEnabled(true);
 
-        game = getIntent().getParcelableExtra(GAME_TO_SHOW);
+        game = getIntent().getParcelableExtra(GAME_TO_SHOW_EXTRA);
         inEndRoundProcess = false;
         beforeFadeOutHandler = new Handler();
         afterFadeOutHandler = new Handler();
@@ -430,6 +437,12 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
         //endregion
 
+        Toolbar toolbarScoreTrackerActivity = findViewById(R.id.toolbarScoreTrackerActivity);
+        toolbarScoreTrackerActivity.setPopupTheme(theme.getThemeId());
+        setSupportActionBar(toolbarScoreTrackerActivity);
+
+        setScoreTextColours(theme);
+
         btnContinue.setOnClickListener((v) -> continueToNextStep());
         btnConfirm.setOnClickListener((v) -> continueToNextStep());
 
@@ -440,12 +453,6 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
         ConstraintLayout clScoreTrackerMain = findViewById(R.id.clScoreTrackerMain);
         clScoreTrackerMain.setKeepScreenOn(PersistentStorage.getKeepScreenOn(this));
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         if (game.getNumberOfPlayers() == 3) {
             clLeft.setVisibility(View.INVISIBLE);
@@ -466,6 +473,19 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
             tvMiddleText.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setScoreTextColours(ThemeOption theme) {
+        int color;
+        if (theme == ThemeOption.Dark)
+            color = getResources().getColor(R.color.white, getTheme());
+        else
+            color = getResources().getColor(R.color.black, getTheme());
+
+        tvBottomScore.setTextColor(color);
+        tvRightScore.setTextColor(color);
+        tvTopScore.setTextColor(color);
+        tvLeftScore.setTextColor(color);
     }
 
     @Override
@@ -510,6 +530,37 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             cancelEndRoundProcess();
         else
             super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == HandCalculatorActivity.REQUEST_CODE) {
+            if (resultCode == HandCalculatorActivity.RESULT_CODE_CONFIRMED) {
+                HandScore hs = data.getParcelableExtra(CALCULATED_HAND_EXTRA);
+
+                if (currentEndRoundStep == tsumoStepGetWinner) {
+                    tsumoWinnerAndHandScore = Pair.create(playerToApplyHandScore, hs);
+                    continueToNextStep();
+                }
+                else if (currentEndRoundStep == ronStepGetWinners) {
+                    ronWinnersAndHandScores.add(Pair.create(playerToApplyHandScore, hs));
+                    btnContinue.setVisibility(View.VISIBLE);
+                    getLayoutFromPlayer(playerToApplyHandScore).setClickable(false);
+                }
+
+                TextView tvAux = getAuxTextView(playerToApplyHandScore);
+
+                tvAux.setText(String.format(Locale.getDefault(), "%s", hs.toDisplayString()));
+                tvAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.won_text, getTheme()));
+                tvAux.setVisibility(View.VISIBLE);
+            }
+            else if (resultCode == HandCalculatorActivity.RESULT_CODE_CANCELLED) {
+                if (currentEndRoundStep == tsumoStepGetWinner)
+                    setAllPlayersClickable(true);
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void openGameSettingsDialog() {
@@ -642,12 +693,12 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
 
     private void setPlayerAsRonWinner(Player player) {
         playerToApplyHandScore = player;
-        openHandScoreDialog(WinType.Ron);
+        openHandCalculator(WinType.Ron);
     }
 
     private void setPlayerAsTsumoWinner(Player player) {
         playerToApplyHandScore = player;
-        openHandScoreDialog(WinType.Tsumo);
+        openHandCalculator(WinType.Tsumo);
     }
 
     private void setPlayerAsInTenpai(Player player) {
@@ -697,9 +748,15 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
         return tvLeftPlayerAux;
     }
 
-    private void openHandScoreDialog(WinType winType) {
-        HandScoreDialog dialog = new HandScoreDialog(winType);
-        dialog.show(getSupportFragmentManager(), "hand_score_dialog");
+    private void openHandCalculator(WinType winType) {
+        Intent intent = new Intent(this, HandCalculatorActivity.class);
+
+        intent.putExtra(HandCalculatorActivity.WINNER_NAME_EXTRA, playerToApplyHandScore.getName());
+        intent.putExtra(HandCalculatorActivity.WIN_TYPE_EXTRA, winType.name());
+        intent.putExtra(HandCalculatorActivity.PREVALENT_WIND_EXTRA, game.getPrevalentWind().name());
+        intent.putExtra(HandCalculatorActivity.SEAT_WIND_EXTRA, playerToApplyHandScore.getSeatWind().name());
+
+        startActivityForResult(intent, HandCalculatorActivity.REQUEST_CODE);
     }
 
     public void selectPlayer(View view) {
@@ -810,31 +867,6 @@ public class ScoreTrackerActivity extends AppCompatActivity implements HandScore
             return game.getTopPlayer();
 
         return game.getLeftPlayer();
-    }
-
-    @Override
-    public void onHandScoreConfirm(HandScore hs) {
-        if (currentEndRoundStep == tsumoStepGetWinner) {
-            tsumoWinnerAndHandScore = Pair.create(playerToApplyHandScore, hs);
-            continueToNextStep();
-        }
-        else if (currentEndRoundStep == ronStepGetWinners) {
-            ronWinnersAndHandScores.add(Pair.create(playerToApplyHandScore, hs));
-            btnContinue.setVisibility(View.VISIBLE);
-            getLayoutFromPlayer(playerToApplyHandScore).setClickable(false);
-        }
-
-        TextView tvAux = getAuxTextView(playerToApplyHandScore);
-
-        tvAux.setText(String.format(Locale.getDefault(), "%s", hs.toDisplayString()));
-        tvAux.setTextColor(ResourcesCompat.getColor(getResources(), R.color.won_text, getTheme()));
-        tvAux.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onHandScoreDismiss() {
-        if (currentEndRoundStep == tsumoStepGetWinner)
-            setAllPlayersClickable(true);
     }
 
     private void finishGame() {

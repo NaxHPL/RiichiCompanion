@@ -5,4 +5,6 @@
     <color name="won_text">#00B400</color>
     <color name="neutral_text">#969696</color>
     <color name="rc_theme_color">#003E2C</color>
+    <color name="toggle_button_checked_bg">#800089FF</color>
+    <color name="black">#000000</color>
 </resources>
