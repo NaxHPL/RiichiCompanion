@@ -63,6 +63,7 @@ public class PersistentStorage {
         try {
             return ThemeOption.valueOf(strTheme);
         } catch (IllegalArgumentException e) {
+            saveThemeOption(context, ThemeOption.Dark);
             return ThemeOption.Dark;
         }
     }
