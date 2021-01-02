@@ -14,6 +14,17 @@
     <string name="app_settings_dialog_title">App Settings</string>
     <string name="save">Save</string>
     <string name="theme_option_key">com.example.riichicompanion.THEME_KEY</string>
+    <string name="mangan">Mangan</string>
+    <string name="haneman">Haneman</string>
+    <string name="baiman">Baiman</string>
+    <string name="sanbaiman">Sanbaiman</string>
+    <string name="kazoeYakuman">Kazoe Yakuman</string>
+    <string name="yakuman">Yakuman</string>
+    <string name="doubleYakuman">Double Yakuman</string>
+    <string name="tripleYakuman">Triple Yakuman</string>
+    <string name="noYaku">No Yaku</string>
+    <string name="dora">Dora</string>
+
     <string-array name="game_length_types">
         <item>Hanchan</item>
         <item>Tonpuusen</item>

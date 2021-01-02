@@ -21,7 +21,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Locale;
 
-public class HandCalculatorActivity extends AppCompatActivity implements HandScoreDialog.HandScoreDialogListener {
+public class HandCalculatorActivity
+    extends AppCompatActivity
+    implements HandScoreDialog.HandScoreDialogListener, CalculatorResultsDialog.CalculatorResultsDialogListener {
 
     public static final int REQUEST_CODE = 12;
     public static final int RESULT_CODE_CONFIRMED = 24;
@@ -136,6 +138,9 @@ public class HandCalculatorActivity extends AppCompatActivity implements HandSco
         Hand hand = viewModel.getHand().getValue();
         WinConditions winConditions = adapter.getWinConditionsFragment().getWinConditions();
         HandResponse response = HandCalculator.calculateHand(hand, winConditions);
+
+        CalculatorResultsDialog resultsDialog = new CalculatorResultsDialog(response, winConditions);
+        resultsDialog.show(getSupportFragmentManager(), "results_dialog");
     }
 
     private void setResultAndClose(HandScore handScore) {
@@ -152,6 +157,16 @@ public class HandCalculatorActivity extends AppCompatActivity implements HandSco
 
     @Override
     public void onHandScoreDismiss() {
+        // Do nothing
+    }
+
+    @Override
+    public void onResultsConfirm(HandScore hs) {
+        setResultAndClose(hs);
+    }
+
+    @Override
+    public void onResultsDismiss() {
         // Do nothing
     }
 }
