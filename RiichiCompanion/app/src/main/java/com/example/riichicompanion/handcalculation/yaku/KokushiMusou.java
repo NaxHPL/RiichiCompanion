@@ -53,7 +53,7 @@ public class KokushiMusou implements Yaku {
 
     @Override
     public String getDisplayName() {
-        return junsei ? "Junsei kokushi musou" : "kokushi musou";
+        return junsei ? "Junsei kokushi musou" : "Kokushi musou";
     }
 
     @Override
