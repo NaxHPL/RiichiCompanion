@@ -61,6 +61,10 @@ public class Player implements Parcelable {
         this.score += amount;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public Wind getSeatWind() {
         return seatWind;
     }

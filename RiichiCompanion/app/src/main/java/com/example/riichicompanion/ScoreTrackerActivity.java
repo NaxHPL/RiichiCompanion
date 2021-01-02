@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -103,6 +104,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         },
         (player) -> {},
         () -> {
+            game.saveGameState();
+
             int bottomPlayerScoreBefore = game.getBottomPlayer().getScore();
             int rightPlayerScoreBefore = game.getRightPlayer().getScore();
             int topPlayerScoreBefore = game.getTopPlayer().getScore();
@@ -186,6 +189,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         },
         (player) -> {},
         () -> {
+            game.saveGameState();
+
             int bottomPlayerScoreBefore = game.getBottomPlayer().getScore();
             int rightPlayerScoreBefore = game.getRightPlayer().getScore();
             int topPlayerScoreBefore = game.getTopPlayer().getScore();
@@ -254,6 +259,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         },
         (player) -> {},
         () -> {
+            game.saveGameState();
+
             int bottomPlayerScoreBefore = game.getBottomPlayer().getScore();
             int rightPlayerScoreBefore = game.getRightPlayer().getScore();
             int topPlayerScoreBefore = game.getTopPlayer().getScore();
@@ -322,6 +329,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         },
         (player) -> {},
         () -> {
+            game.saveGameState();
+
             int bottomPlayerScoreBefore = game.getBottomPlayer().getScore();
             int rightPlayerScoreBefore = game.getRightPlayer().getScore();
             int topPlayerScoreBefore = game.getTopPlayer().getScore();
@@ -469,7 +478,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             btnEndRound.setVisibility(View.INVISIBLE);
             showPlayerAuxTextViews(false);
 
-            tvMiddleText.setTextSize(34.0f);
+            tvMiddleText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34);
             tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
             tvMiddleText.setVisibility(View.VISIBLE);
         }
@@ -504,11 +513,28 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             openGameSettingsDialog();
             return true;
         }
+        else if (item.getItemId() == R.id.miUndoRound) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Undo Last Round?")
+                .setMessage("Are you sure you want to undo the last round?")
+                .setPositiveButton("Undo Round", ((dialog, which) -> {
+                    game.restoreLastGameState();
+                    PersistentStorage.saveOngoingGame(this, game);
+                    updateInterface(true);
+                }))
+                .setNegativeButton("Cancel", ((dialog, which) -> {}));
+
+            builder.create().show();
+            return true;
+        }
         else if (item.getItemId() == R.id.miFinishGame) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Finish Game?")
                    .setMessage("Are you sure you want to end the game?")
-                   .setPositiveButton("Finish Game", ((dialog, which) -> finishGame()))
+                   .setPositiveButton("Finish Game", ((dialog, which) -> {
+                       game.saveGameState();
+                       finishGame();
+                   }))
                    .setNegativeButton("Cancel", ((dialog, which) -> {}));
 
             builder.create().show();
@@ -520,7 +546,8 @@ public class ScoreTrackerActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setEnabled(!inEndRoundProcess && !game.isFinished());
+        menu.getItem(1).setEnabled(game.hasPreviousRoundState());
+        menu.getItem(2).setEnabled(!inEndRoundProcess && !game.isFinished());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -569,6 +596,12 @@ public class ScoreTrackerActivity extends AppCompatActivity {
     }
 
     private void updateInterface(boolean updateSeatWinds) {
+        showRoundInfo(true);
+        showRiichiAndHonba(true);
+        btnEndRound.setVisibility(View.VISIBLE);
+        tvMiddleText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+        tvMiddleText.setVisibility(View.INVISIBLE);
+
         updateRoundInformation();
         updateStickCounts();
         updatePlayerInformation(updateSeatWinds);
@@ -875,8 +908,9 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         btnEndRound.setVisibility(View.INVISIBLE);
         btnConfirm.setVisibility(View.INVISIBLE);
         showPlayerAuxTextViews(false);
+        hidePlayerRiichiSticks();
 
-        tvMiddleText.setTextSize(34.0f);
+        tvMiddleText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34);
         tvMiddleText.setText(String.format(Locale.getDefault(), "%s", "Finish!"));
         tvMiddleText.setVisibility(View.VISIBLE);
 

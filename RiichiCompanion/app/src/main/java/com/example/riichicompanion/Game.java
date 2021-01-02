@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.text.DateFormat;
+import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -25,6 +26,7 @@ public class Game implements Parcelable {
     private final boolean useTsumoLoss;
     private boolean isFinished;
     private boolean dealerRecentlyWonInAllLast;
+    private final ArrayDeque<GameState> gameStateStack;
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer, int initialPoints,
                 int minPointsToWin, int numberOfPlayers, GameLength gameLength, boolean useTsumoLoss) {
@@ -42,6 +44,7 @@ public class Game implements Parcelable {
         this.useTsumoLoss = useTsumoLoss;
         this.isFinished = false;
         this.dealerRecentlyWonInAllLast = false;
+        this.gameStateStack = new ArrayDeque<>();
 
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, Locale.getDefault());
@@ -66,6 +69,12 @@ public class Game implements Parcelable {
         useTsumoLoss = in.readInt() == 1;
         isFinished = in.readInt() == 1;
         dealerRecentlyWonInAllLast = in.readInt() == 1;
+
+        ArrayDeque<GameState> deque = (ArrayDeque<GameState>) in.readSerializable();
+        if (deque != null)
+            gameStateStack = deque;
+        else
+            gameStateStack = new ArrayDeque<>();
     }
 
     @Override
@@ -85,6 +94,7 @@ public class Game implements Parcelable {
         dest.writeInt(useTsumoLoss ? 1 : 0);
         dest.writeInt(isFinished ? 1 : 0);
         dest.writeInt(dealerRecentlyWonInAllLast ? 1 : 0);
+        dest.writeSerializable(gameStateStack);
     }
 
     @Override
@@ -324,5 +334,45 @@ public class Game implements Parcelable {
         }
 
         return playerInFirst;
+    }
+
+    public void saveGameState() {
+        gameStateStack.push(new GameState(
+            bottomPlayer.getScore(), bottomPlayer.getSeatWind(),
+            rightPlayer.getScore(), rightPlayer.getSeatWind(),
+            topPlayer.getScore(), topPlayer.getSeatWind(),
+            leftPlayer.getScore(), leftPlayer.getSeatWind(),
+            riichiCount,
+            honbaCount,
+            roundNumber,
+            isFinished,
+            dealerRecentlyWonInAllLast
+        ));
+    }
+
+    public void restoreLastGameState() {
+        if (!hasPreviousRoundState())
+            return;
+
+        GameState stateToRestore = gameStateStack.pop();
+
+        bottomPlayer.setScore(stateToRestore.getBottomPlayerScore());
+        bottomPlayer.setSeatWind(stateToRestore.getBottomPlayerSeatWind());
+        rightPlayer.setScore(stateToRestore.getRightPlayerScore());
+        rightPlayer.setSeatWind(stateToRestore.getRightPlayerSeatWind());
+        topPlayer.setScore(stateToRestore.getTopPlayerScore());
+        topPlayer.setSeatWind(stateToRestore.getTopPlayerSeatWind());
+        leftPlayer.setScore(stateToRestore.getLeftPlayerScore());
+        leftPlayer.setSeatWind(stateToRestore.getLeftPlayerSeatWind());
+
+        riichiCount = stateToRestore.getRiichiCount();
+        honbaCount = stateToRestore.getHonbaCount();
+        roundNumber = stateToRestore.getRoundNumber();
+        isFinished = stateToRestore.getIsFinished();
+        dealerRecentlyWonInAllLast = stateToRestore.getDealerRecentlyWonInAllLast();
+    }
+
+    public boolean hasPreviousRoundState() {
+        return !gameStateStack.isEmpty();
     }
 }
