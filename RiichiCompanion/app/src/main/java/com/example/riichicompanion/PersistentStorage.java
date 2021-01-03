@@ -4,37 +4,75 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class PersistentStorage {
 
-    public static void saveOngoingGame(Context context, Game gameToSave) {
-        Gson gson = new Gson();
-        String json = gson.toJson(gameToSave);
+    public static void saveGame(Context context, Game game) {
+        ArrayList<Game> savedGames = retrieveSavedGames(context);
+        boolean foundGameWithSameID = false;
 
-        context.getSharedPreferences(context.getString(R.string.ongoing_game_file_name), Context.MODE_PRIVATE)
-            .edit()
-            .putString(context.getString(R.string.ongoing_game_key), json)
-            .apply();
+        for (int i = 0; i < savedGames.size(); i++) {
+            if (savedGames.get(i).getGameID().equals(game.getGameID())) {
+                savedGames.set(i, game);
+                foundGameWithSameID = true;
+                break;
+            }
+        }
+
+        if (!foundGameWithSameID)
+            savedGames.add(game);
+
+        saveGames(context, savedGames);
     }
 
-    public static Game retrieveOngoingGame(Context context) {
+    public static ArrayList<Game> retrieveSavedGames(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(
-            context.getString(R.string.ongoing_game_file_name),
+            context.getString(R.string.saved_games_file_name),
             Context.MODE_PRIVATE
         );
         String gameAsJson = prefs.getString(
-            context.getString(R.string.ongoing_game_key),
-            context.getString(R.string.ongoing_game_default_value)
+            context.getString(R.string.saved_games_key),
+            context.getString(R.string.saved_games_default_value)
         );
 
-        Gson gson = new Gson();
-
         try {
-            return gson.fromJson(gameAsJson, Game.class);
+            return new Gson().fromJson(
+                gameAsJson,
+                new TypeToken<ArrayList<Game>>(){}.getType()
+            );
         }
         catch (Exception ex) {
-            return null;
+            return new ArrayList<>();
         }
+    }
+
+    public static void deleteGame(Context context, Game gameToDelete) {
+        ArrayList<Game> savedGames = retrieveSavedGames(context);
+
+        for (int i = 0; i < savedGames.size(); i++) {
+            if (savedGames.get(i).getGameID().equals(gameToDelete.getGameID())) {
+                savedGames.remove(i);
+                break;
+            }
+        }
+
+        saveGames(context, savedGames);
+    }
+
+    private static void saveGames(Context context, ArrayList<Game> games) {
+        String json = new Gson().toJson(
+            games,
+            new TypeToken<ArrayList<Game>>(){}.getType()
+        );
+
+        context.getSharedPreferences(context.getString(R.string.saved_games_file_name), Context.MODE_PRIVATE)
+            .edit()
+            .putString(context.getString(R.string.saved_games_key), json)
+            .apply();
     }
 
     public static void saveKeepScreenOn(Context context, boolean keepScreenOn) {

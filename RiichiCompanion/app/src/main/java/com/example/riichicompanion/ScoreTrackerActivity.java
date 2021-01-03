@@ -2,7 +2,6 @@ package com.example.riichicompanion;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -112,7 +111,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             int leftPlayerScoreBefore = game.getLeftPlayer().getScore();
 
             RoundCalculator.updateGameStateFromRon(game, loser, ronWinnersAndHandScores, playersDeclaredRiichi);
-            PersistentStorage.saveOngoingGame(this, game);
+            PersistentStorage.saveGame(this, game);
 
             if (game.satisfiesFinishConditions()) {
                 updateInterface(false);
@@ -197,7 +196,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             int leftPlayerScoreBefore = game.getLeftPlayer().getScore();
 
             RoundCalculator.updateGameStateFromTsumo(game, tsumoWinnerAndHandScore.first, tsumoWinnerAndHandScore.second, playersDeclaredRiichi);
-            PersistentStorage.saveOngoingGame(this, game);
+            PersistentStorage.saveGame(this, game);
 
             if (game.satisfiesFinishConditions()) {
                 updateInterface(false);
@@ -267,7 +266,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             int leftPlayerScoreBefore = game.getLeftPlayer().getScore();
 
             RoundCalculator.updateGameStateFromRyuukyoku(game, playersInTenpai, playersDeclaredRiichi);
-            PersistentStorage.saveOngoingGame(this, game);
+            PersistentStorage.saveGame(this, game);
 
             if (game.satisfiesFinishConditions()) {
                 updateInterface(false);
@@ -337,7 +336,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
             int leftPlayerScoreBefore = game.getLeftPlayer().getScore();
 
             RoundCalculator.updateGameStateFromChombo(game, loser);
-            PersistentStorage.saveOngoingGame(this, game);
+            PersistentStorage.saveGame(this, game);
 
             if (game.satisfiesFinishConditions()) {
                 updateInterface(false);
@@ -519,7 +518,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to undo the last round?")
                 .setPositiveButton("Undo Round", ((dialog, which) -> {
                     game.restoreLastGameState();
-                    PersistentStorage.saveOngoingGame(this, game);
+                    PersistentStorage.saveGame(this, game);
                     updateInterface(true);
                 }))
                 .setNegativeButton("Cancel", ((dialog, which) -> {}));
@@ -915,7 +914,7 @@ public class ScoreTrackerActivity extends AppCompatActivity {
         tvMiddleText.setVisibility(View.VISIBLE);
 
         game.setFinished(true);
-        PersistentStorage.saveOngoingGame(this, game);
+        PersistentStorage.saveGame(this, game);
     }
 
     private boolean onPlayerTouched(View view, MotionEvent event) {

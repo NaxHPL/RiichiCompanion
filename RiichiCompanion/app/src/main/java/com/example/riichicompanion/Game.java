@@ -8,9 +8,11 @@ import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class Game implements Parcelable {
 
+    private final UUID gameID;
     private final Player bottomPlayer;
     private final Player rightPlayer;
     private final Player topPlayer;
@@ -30,6 +32,7 @@ public class Game implements Parcelable {
 
     public Game(Player bottomPlayer, Player rightPlayer, Player topPlayer, Player leftPlayer, int initialPoints,
                 int minPointsToWin, int numberOfPlayers, GameLength gameLength, boolean useTsumoLoss) {
+        this.gameID = UUID.randomUUID();
         this.bottomPlayer = bottomPlayer;
         this.rightPlayer = rightPlayer;
         this.topPlayer = topPlayer;
@@ -54,6 +57,7 @@ public class Game implements Parcelable {
     //region Parcelable Implementation
 
     protected Game(Parcel in) {
+        gameID = UUID.fromString(in.readString());
         bottomPlayer = in.readParcelable(Player.class.getClassLoader());
         rightPlayer = in.readParcelable(Player.class.getClassLoader());
         topPlayer = in.readParcelable(Player.class.getClassLoader());
@@ -79,6 +83,7 @@ public class Game implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(gameID.toString());
         dest.writeParcelable(bottomPlayer, flags);
         dest.writeParcelable(rightPlayer, flags);
         dest.writeParcelable(topPlayer, flags);
@@ -115,6 +120,10 @@ public class Game implements Parcelable {
     };
 
     //endregion
+
+    public UUID getGameID() {
+        return gameID;
+    }
 
     public Player getBottomPlayer() {
         return bottomPlayer;

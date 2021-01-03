@@ -2,4 +2,5 @@
 <resources>
     <item name="tile_object" type="id" />
     <item name="meld_object" type="id" />
+    <item name="saved_game_object" type="id" />
 </resources>

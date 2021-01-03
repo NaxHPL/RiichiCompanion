@@ -14,20 +14,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements AppSettingsDialog.AppSettingsDialogListener {
 
-    private ConstraintLayout constraintLayoutOngoingGame;
-    private TextView tvOngoingGamePlayers;
-    private TextView tvOngoingGameDateTime;
-    private TextView tvOngoingGameRoundNumber;
-    private ImageView ivOngoingGameRoundWind;
-    private View divider1;
-
-    private Game ongoingGame;
-    private AlertDialog.Builder newGameDialogBuilder;
+    private ConstraintLayout clMainRoot;
+    private Toolbar toolbarMainActivity;
+    private View constrainNextGameTo;
+    private ArrayList<ConstraintLayout> savedGameCLs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,41 +34,17 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        constraintLayoutOngoingGame = findViewById(R.id.ConstraintLayout_ongoing_game);
-        tvOngoingGamePlayers = findViewById(R.id.tvOngoingGamePlayers);
-        tvOngoingGameDateTime = findViewById(R.id.tvOngoingGameDateTime);
-        tvOngoingGameRoundNumber = findViewById(R.id.tvOngoingGameRoundNumber);
-        ivOngoingGameRoundWind = findViewById(R.id.ivOngoingGameRoundWind);
-        divider1 = findViewById(R.id.divider1);
+        clMainRoot = findViewById(R.id.clMainRoot);
+        toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
 
-        Toolbar toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
         toolbarMainActivity.setPopupTheme(themeId);
         setSupportActionBar(toolbarMainActivity);
-
-        newGameDialogBuilder = new AlertDialog.Builder(this) {{
-            setTitle(R.string.new_game_dialog_title);
-            setMessage(R.string.new_game_dialog_message);
-            setPositiveButton(R.string.new_game, (dialog, which) -> startCreateGameActivity());
-            setNegativeButton(R.string.cancel, (dialog, which) -> {});
-        }};
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        ongoingGame = PersistentStorage.retrieveOngoingGame(this);
-
-        if (ongoingGame != null) {
-            updateOngoingGameInfo();
-            constraintLayoutOngoingGame.setVisibility(View.VISIBLE);
-            divider1.setVisibility(View.VISIBLE);
-        }
-        else {
-            constraintLayoutOngoingGame.setVisibility(View.GONE);
-            divider1.setVisibility(View.GONE);
-
-        }
+        updateSavedGames();
     }
 
     @Override
@@ -100,47 +73,13 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
     }
 
     public void createNewGame() {
-        if (ongoingGame == null) {
-            startCreateGameActivity();
-            return;
-        }
-
-        newGameDialogBuilder.create().show();
-    }
-
-    private void startCreateGameActivity() {
         Intent intent = new Intent(this, CreateGameActivity.class);
         startActivity(intent);
     }
 
-    private void updateOngoingGameInfo() {
-        String players = String.format(
-            "%s, %s, %s",
-            ongoingGame.getBottomPlayer().getName(),
-            ongoingGame.getRightPlayer().getName(),
-            ongoingGame.getTopPlayer().getName()
-        );
-
-        if (ongoingGame.getNumberOfPlayers() == 4)
-            players = players.concat(String.format(", %s", ongoingGame.getLeftPlayer().getName()));
-
-        tvOngoingGamePlayers.setText(String.format(Locale.getDefault(), "%s", players));
-        tvOngoingGameDateTime.setText(String.format(Locale.getDefault(), "%s", ongoingGame.getStartDateTime()));
-
-        if (ongoingGame.isFinished()) {
-            ivOngoingGameRoundWind.setVisibility(View.INVISIBLE);
-            tvOngoingGameRoundNumber.setText(String.format(Locale.getDefault(), "%s", "Finished"));
-        }
-        else {
-            tvOngoingGameRoundNumber.setText(String.format(Locale.getDefault(), "%d", ongoingGame.getRoundNumberForDisplay()));
-            ivOngoingGameRoundWind.setVisibility(View.VISIBLE);
-            ivOngoingGameRoundWind.setImageDrawable(ongoingGame.getPrevalentWind().getImage(this));
-        }
-    }
-
-    public void openOngoingGame(View view) {
+    public void openGame(Game game) {
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
-        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, ongoingGame);
+        intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, game);
         startActivity(intent);
     }
 
@@ -148,5 +87,91 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
     public void onSettingsSaved(boolean themeChanged) {
         if (themeChanged)
             (new Handler()).postDelayed(this::recreate, 100);
+    }
+
+    private void updateSavedGames() {
+        if (savedGameCLs == null)
+            savedGameCLs = new ArrayList<>();
+        for (ConstraintLayout cl : savedGameCLs)
+            clMainRoot.removeView(cl);
+
+        ArrayList<Game> savedGames = PersistentStorage.retrieveSavedGames(this);
+        constrainNextGameTo = toolbarMainActivity;
+
+        for (int i = savedGames.size() - 1; i >= 0; i--)
+            showSavedGame(savedGames.get(i));
+    }
+
+    private void showSavedGame(Game game) {
+        ConstraintLayout clSavedGame = (ConstraintLayout) getLayoutInflater().inflate(
+            R.layout.saved_game,
+            clMainRoot,
+            false
+        );
+        clSavedGame.setId(View.generateViewId());
+
+        TextView tvPlayerNames = (TextView) clSavedGame.getChildAt(0);
+        TextView tvGameCreationTime = (TextView) clSavedGame.getChildAt(1);
+        ImageView ivRoundWind = (ImageView) clSavedGame.getChildAt(2);
+        TextView tvRoundNumber = (TextView) clSavedGame.getChildAt(3);
+
+        String playerNames = String.format(
+            Locale.getDefault(),
+            "%s, %s, %s",
+            game.getBottomPlayer().getName(),
+            game.getRightPlayer().getName(),
+            game.getTopPlayer().getName()
+        );
+
+        if (game.getNumberOfPlayers() == 4)
+            playerNames = playerNames.concat(String.format(Locale.getDefault(), ", %s", game.getLeftPlayer().getName()));
+
+        tvPlayerNames.setText(playerNames);
+        tvGameCreationTime.setText(String.format(Locale.getDefault(), "%s", game.getStartDateTime()));
+
+        if (game.isFinished()) {
+            ivRoundWind.setVisibility(View.INVISIBLE);
+            tvRoundNumber.setText(String.format(Locale.getDefault(), "%s", "Finished"));
+        }
+        else {
+            tvRoundNumber.setText(String.format(Locale.getDefault(), "%d", game.getRoundNumberForDisplay()));
+            ivRoundWind.setVisibility(View.VISIBLE);
+            ivRoundWind.setImageDrawable(game.getPrevalentWind().getImage(this));
+        }
+
+        clMainRoot.addView(clSavedGame);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(clMainRoot);
+
+        constraintSet.connect(clSavedGame.getId(), ConstraintSet.START, clMainRoot.getId(), ConstraintSet.START);
+        constraintSet.connect(clSavedGame.getId(), ConstraintSet.END, clMainRoot.getId(), ConstraintSet.END);
+        constraintSet.connect(clSavedGame.getId(), ConstraintSet.TOP, constrainNextGameTo.getId(), ConstraintSet.BOTTOM);
+
+        constraintSet.applyTo(clMainRoot);
+
+        clSavedGame.setTag(R.id.saved_game_object, game);
+        clSavedGame.setOnClickListener(v -> openGame((Game)clSavedGame.getTag(R.id.saved_game_object)));
+        clSavedGame.setOnLongClickListener(v -> {
+            showDeleteGameDialog((Game)clSavedGame.getTag(R.id.saved_game_object));
+            return true;
+        });
+
+        savedGameCLs.add(clSavedGame);
+        constrainNextGameTo = clSavedGame;
+    }
+
+    private void showDeleteGameDialog(Game gameToDelete) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+            .setTitle(R.string.delete_game_dialog_title)
+            .setMessage(R.string.delete_game_dialog_message)
+            .setNegativeButton(R.string.cancel, (dialog, which) -> {})
+            .setPositiveButton(R.string.delete_game, ((dialog, which) -> {
+                PersistentStorage.deleteGame(this, gameToDelete);
+                updateSavedGames();
+            }));
+
+        builder.create().show();
     }
 }

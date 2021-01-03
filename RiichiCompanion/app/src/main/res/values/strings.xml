@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Riichi Companion</string>
-    <string name="ongoing_game_key">com.example.riichicompanion.ONGOING_GAME</string>
-    <string name="ongoing_game_file_name">OngoingGame</string>
-    <string name="ongoing_game_default_value">0</string>
-    <string name="new_game_dialog_title">Start new game?</string>
-    <string name="new_game_dialog_message">There is currently a game in progress. Are you sure you want to start a new game?</string>
+    <string name="saved_games_key">com.example.riichicompanion.SAVED_GAMES</string>
+    <string name="saved_games_file_name">RC_SavedGames</string>
+    <string name="saved_games_default_value">0</string>
+    <string name="delete_game_dialog_title">Delete game?</string>
+    <string name="delete_game_dialog_message">Are you sure you want to delete this game?</string>
     <string name="close">Close</string>
     <string name="game_settings_dialog_title">Game settings</string>
     <string name="cancel">Cancel</string>
     <string name="new_game">New game</string>
+    <string name="delete_game">Delete Game</string>
     <string name="settings_file_name">RiichiCompanionSettings</string>
     <string name="keep_screen_on_key">com.example.riichicompanion.KEEP_SCREEN_ON</string>
     <string name="app_settings_dialog_title">App Settings</string>

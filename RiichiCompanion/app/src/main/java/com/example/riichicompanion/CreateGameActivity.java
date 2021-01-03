@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class CreateGameActivity extends AppCompatActivity {
@@ -124,7 +125,7 @@ public class CreateGameActivity extends AppCompatActivity {
             useTsumoLoss()
         );
 
-        PersistentStorage.saveOngoingGame(this, game);
+        PersistentStorage.saveGame(this, game);
 
         Intent intent = new Intent(this, ScoreTrackerActivity.class);
         intent.putExtra(ScoreTrackerActivity.GAME_TO_SHOW_EXTRA, game);
