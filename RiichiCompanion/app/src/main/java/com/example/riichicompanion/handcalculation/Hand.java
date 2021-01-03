@@ -328,13 +328,13 @@ public class Hand {
 
     private ArrayList<ArrayList<Tile>> getInitialSets(List<Tile> tiles) {
         ArrayList<ArrayList<Tile>> sets = new ArrayList<>();
-        ArrayList<Tile> initChii = getInitialChii(tiles);
         ArrayList<Tile> initPon = getInitialPon(tiles);
+        ArrayList<Tile> initChii = getInitialChii(tiles);
 
-        if (initChii != null)
-            sets.add(initChii);
         if (initPon != null)
             sets.add(initPon);
+        if (initChii != null)
+            sets.add(initChii);
 
         return sets;
     }
