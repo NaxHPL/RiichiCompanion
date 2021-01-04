@@ -1,6 +1,7 @@
 package com.example.riichicompanion;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -246,7 +247,14 @@ public class MainActivity
 
     private void openAboutDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_about, null);
+        TextView tvAppVersion = dialogView.findViewById(R.id.tvAppVersion);
         TextView tvCopyright = dialogView.findViewById(R.id.tvCopyright);
+
+        tvAppVersion.setText(String.format(
+            Locale.getDefault(),
+            "Version %s",
+            getVersionName()
+        ));
         tvCopyright.setText(String.format(
             Locale.getDefault(),
             "Copyright © %d\nAlexander Steffler",
@@ -257,5 +265,14 @@ public class MainActivity
         builder.setView(dialogView)
             .setPositiveButton(R.string.close, (dialog, which) -> {})
             .show();
+    }
+
+    private String getVersionName() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            return "1.1";
+        }
     }
 }
