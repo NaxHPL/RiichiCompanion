@@ -30,10 +30,9 @@ public class MainActivity
     implements AppSettingsDialog.AppSettingsDialogListener, NavigationView.OnNavigationItemSelectedListener {
 
     private ConstraintLayout clMainRoot;
-    private Toolbar toolbarMainActivity;
     private DrawerLayout dlMain;
     private ActionBarDrawerToggle drawerToggle;
-    private View constrainNextGameTo;
+    private int idToConstrainNextGameTo;
     private ArrayList<ConstraintLayout> savedGameCLs;
 
     @Override
@@ -45,9 +44,9 @@ public class MainActivity
         setContentView(R.layout.activity_main);
 
         clMainRoot = findViewById(R.id.clMainRoot);
-        toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
         dlMain = findViewById(R.id.dlMain);
 
+        Toolbar toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
         toolbarMainActivity.setPopupTheme(themeId);
         setSupportActionBar(toolbarMainActivity);
 
@@ -109,17 +108,20 @@ public class MainActivity
     @Override
     public void onSettingsSaved(boolean themeChanged) {
         if (themeChanged)
-            (new Handler()).postDelayed(this::recreate, 100);
+            new Handler().postDelayed(this::recreate, 100);
     }
 
     private void updateSavedGames() {
         if (savedGameCLs == null)
             savedGameCLs = new ArrayList<>();
-        for (ConstraintLayout cl : savedGameCLs)
-            clMainRoot.removeView(cl);
+        else {
+            for (ConstraintLayout cl : savedGameCLs)
+                clMainRoot.removeView(cl);
+            savedGameCLs.clear();
+        }
 
+        idToConstrainNextGameTo = -1;
         ArrayList<Game> savedGames = PersistentStorage.retrieveSavedGames(this);
-        constrainNextGameTo = toolbarMainActivity;
 
         for (int i = savedGames.size() - 1; i >= 0; i--)
             showSavedGame(savedGames.get(i));
@@ -169,19 +171,18 @@ public class MainActivity
 
         constraintSet.connect(clSavedGame.getId(), ConstraintSet.START, clMainRoot.getId(), ConstraintSet.START);
         constraintSet.connect(clSavedGame.getId(), ConstraintSet.END, clMainRoot.getId(), ConstraintSet.END);
-        constraintSet.connect(clSavedGame.getId(), ConstraintSet.TOP, constrainNextGameTo.getId(), ConstraintSet.BOTTOM);
+        constraintSet.connect(clSavedGame.getId(), ConstraintSet.TOP, idToConstrainNextGameTo, ConstraintSet.BOTTOM);
 
         constraintSet.applyTo(clMainRoot);
 
-        clSavedGame.setTag(R.id.saved_game_object, game);
-        clSavedGame.setOnClickListener(v -> openGame((Game)clSavedGame.getTag(R.id.saved_game_object)));
+        clSavedGame.setOnClickListener(v -> openGame(game));
         clSavedGame.setOnLongClickListener(v -> {
-            showDeleteGameDialog((Game)clSavedGame.getTag(R.id.saved_game_object));
+            showDeleteGameDialog(game);
             return true;
         });
 
         savedGameCLs.add(clSavedGame);
-        constrainNextGameTo = clSavedGame;
+        idToConstrainNextGameTo = clSavedGame.getId();
     }
 
     private void showDeleteGameDialog(Game gameToDelete) {
@@ -220,12 +221,30 @@ public class MainActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.miHandCalculator) {
+            openHandCalculator();
+            dlMain.close();
+            return true;
+        }
         if (item.getItemId() == R.id.miSettings) {
             openSettings();
             dlMain.close();
             return true;
         }
+        if (item.getItemId() == R.id.miAbout) {
+            openAboutDialog();
+            dlMain.close();
+            return true;
+        }
 
         return false;
+    }
+
+    private void openHandCalculator() {
+
+    }
+
+    private void openAboutDialog() {
+
     }
 }
