@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miHandCalculator"
+        android:icon="@drawable/ic_calculate_24dp"
+        android:title="Hand Calculator" />
+    <item
+        android:id="@+id/miSettings"
+        android:icon="@drawable/ic_settings_24dp"
+        android:title="Settings" />
+    <item
+        android:id="@+id/miAbout"
+        android:icon="@drawable/ic_help_24dp"
+        android:title="About" />
+</menu>

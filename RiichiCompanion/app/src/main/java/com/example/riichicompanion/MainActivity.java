@@ -1,6 +1,7 @@
 package com.example.riichicompanion;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -10,19 +11,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements AppSettingsDialog.AppSettingsDialogListener {
+public class MainActivity
+    extends AppCompatActivity
+    implements AppSettingsDialog.AppSettingsDialogListener, NavigationView.OnNavigationItemSelectedListener {
 
     private ConstraintLayout clMainRoot;
     private Toolbar toolbarMainActivity;
+    private DrawerLayout dlMain;
+    private ActionBarDrawerToggle drawerToggle;
     private View constrainNextGameTo;
     private ArrayList<ConstraintLayout> savedGameCLs;
 
@@ -36,9 +46,24 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
 
         clMainRoot = findViewById(R.id.clMainRoot);
         toolbarMainActivity = findViewById(R.id.toolbarMainActivity);
+        dlMain = findViewById(R.id.dlMain);
 
         toolbarMainActivity.setPopupTheme(themeId);
         setSupportActionBar(toolbarMainActivity);
+
+        drawerToggle = new ActionBarDrawerToggle(
+            this,
+            dlMain,
+            toolbarMainActivity,
+            R.string.nav_drawer_open,
+            R.string.nav_drawer_close
+        );
+        dlMain.addDrawerListener(drawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        NavigationView nvMain = findViewById(R.id.nvMain);
+        nvMain.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -55,11 +80,9 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.miAppSettings) {
-            openSettings();
+        if (drawerToggle.onOptionsItemSelected(item))
             return true;
-        }
-        else if (item.getItemId() == R.id.miNewGame) {
+        if (item.getItemId() == R.id.miNewGame) {
             createNewGame();
             return true;
         }
@@ -173,5 +196,36 @@ public class MainActivity extends AppCompatActivity implements AppSettingsDialog
             }));
 
         builder.create().show();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (dlMain.isOpen())
+            dlMain.close();
+        else
+            super.onBackPressed();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.miSettings) {
+            openSettings();
+            dlMain.close();
+            return true;
+        }
+
+        return false;
     }
 }

@@ -25,6 +25,8 @@
     <string name="tripleYakuman">Triple Yakuman</string>
     <string name="noYaku">No Yaku</string>
     <string name="dora">Dora</string>
+    <string name="nav_drawer_open">Open menu drawer</string>
+    <string name="nav_drawer_close">Close menu drawer</string>
 
     <string-array name="game_length_types">
         <item>Hanchan</item>

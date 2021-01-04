@@ -5,8 +5,4 @@
         android:id="@+id/miNewGame"
         android:title="@string/new_game"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/miAppSettings"
-        android:title="Settings"
-        app:showAsAction="never" />
 </menu>
