@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class MainActivity
@@ -194,9 +195,8 @@ public class MainActivity
             .setPositiveButton(R.string.delete_game, ((dialog, which) -> {
                 PersistentStorage.deleteGame(this, gameToDelete);
                 updateSavedGames();
-            }));
-
-        builder.create().show();
+            }))
+            .show();
     }
 
     @Override
@@ -245,6 +245,17 @@ public class MainActivity
     }
 
     private void openAboutDialog() {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_about, null);
+        TextView tvCopyright = dialogView.findViewById(R.id.tvCopyright);
+        tvCopyright.setText(String.format(
+            Locale.getDefault(),
+            "Copyright © %d\nAlexander Steffler",
+            Calendar.getInstance().get(Calendar.YEAR)
+        ));
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+            .setPositiveButton(R.string.close, (dialog, which) -> {})
+            .show();
     }
 }
