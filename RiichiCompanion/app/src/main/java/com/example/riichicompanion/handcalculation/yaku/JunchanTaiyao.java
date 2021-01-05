@@ -22,11 +22,11 @@ public class JunchanTaiyao implements Yaku {
                 return false;
 
             if (group.getGroupType() == GroupType.Chii) {
-                if (firstTile.getRank() != 1 || firstTile.getRank() != 7)
+                if (firstTile.getRank() != 1 && firstTile.getRank() != 7)
                     return false;
             }
             else {
-                if (firstTile.getRank() != 1 || firstTile.getRank() != 9)
+                if (firstTile.getRank() != 1 && firstTile.getRank() != 9)
                     return false;
             }
         }
