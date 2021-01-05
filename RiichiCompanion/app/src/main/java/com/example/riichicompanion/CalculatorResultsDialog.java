@@ -66,13 +66,12 @@ public class CalculatorResultsDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Close", ((dialog, which) -> listener.onResultsDismiss()));
         }
 
-
         initializeViews(view);
         setHandScoreInformation();
 
         AlertDialog alertDialog = builder.create();
         alertDialog.setOnShowListener((dialog) -> {
-            if (handResponse.getYaku().length == 0)
+            if (handResponse.getYaku().length == 0 && gameInProgress)
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         });
 
