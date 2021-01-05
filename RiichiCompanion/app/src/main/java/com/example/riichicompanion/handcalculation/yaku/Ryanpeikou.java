@@ -1,5 +1,6 @@
 package com.example.riichicompanion.handcalculation.yaku;
 
+import com.example.riichicompanion.handcalculation.GroupType;
 import com.example.riichicompanion.handcalculation.Hand;
 import com.example.riichicompanion.handcalculation.HandArrangement;
 import com.example.riichicompanion.handcalculation.TileGroup;
@@ -18,6 +19,9 @@ public class Ryanpeikou implements Yaku {
         HashMap<String, Integer> chiiCounts = new HashMap<>();
 
         for (TileGroup group : arrangement.getGroups()) {
+            if (group.getGroupType() != GroupType.Chii)
+                continue;
+
             String key = group.getTiles().get(0).getStringRep();
             if (chiiCounts.containsKey(key))
                 chiiCounts.put(key, chiiCounts.get(key) + 1);
