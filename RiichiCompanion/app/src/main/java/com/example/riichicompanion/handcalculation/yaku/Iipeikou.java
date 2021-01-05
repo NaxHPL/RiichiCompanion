@@ -3,7 +3,6 @@ package com.example.riichicompanion.handcalculation.yaku;
 import com.example.riichicompanion.handcalculation.GroupType;
 import com.example.riichicompanion.handcalculation.Hand;
 import com.example.riichicompanion.handcalculation.HandArrangement;
-import com.example.riichicompanion.handcalculation.Tile;
 import com.example.riichicompanion.handcalculation.TileGroup;
 import com.example.riichicompanion.handcalculation.WinConditions;
 

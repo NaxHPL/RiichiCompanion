@@ -3,7 +3,6 @@ package com.example.riichicompanion;
 import android.util.Pair;
 
 import java.util.EnumMap;
-import java.util.List;
 
 public class ScoringTable {
 

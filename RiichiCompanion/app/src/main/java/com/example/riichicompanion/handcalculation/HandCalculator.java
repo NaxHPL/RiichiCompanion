@@ -2,7 +2,6 @@ package com.example.riichicompanion.handcalculation;
 
 import androidx.core.util.Pair;
 
-import com.example.riichicompanion.Fu;
 import com.example.riichicompanion.HandScore;
 import com.example.riichicompanion.ScoringTable;
 import com.example.riichicompanion.handcalculation.yaku.Chankan;
