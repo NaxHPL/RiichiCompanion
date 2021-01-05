@@ -15,7 +15,15 @@ public class Honitsu implements Yaku {
 
     @Override
     public boolean isConditionMet(Hand hand, HandArrangement arrangement, WinConditions conditions) {
-        Suit requiredSuit = arrangement.getGroups().get(0).getTiles().get(0).getSuit();
+        Suit requiredSuit = null;
+        for (TileGroup group : arrangement.getGroups()) {
+            Tile firstTile = group.getTiles().get(0);
+            if (firstTile.isSuited()) {
+                requiredSuit = firstTile.getSuit();
+                break;
+            }
+        }
+
         if (requiredSuit == null)
             return false;
 
