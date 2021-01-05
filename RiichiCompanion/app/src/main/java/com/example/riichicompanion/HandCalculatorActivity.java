@@ -40,6 +40,7 @@ public class HandCalculatorActivity
     private WinType winType;
     private Wind prevalentWind;
     private Wind seatWind;
+    private boolean gameInProgress;
     private Button btnCalculate;
 
     @Override
@@ -66,6 +67,8 @@ public class HandCalculatorActivity
         });
 
         setExtras(getIntent());
+        gameInProgress = winType != WinType.Unknown && prevalentWind != Wind.Unknown && seatWind != Wind.Unknown;
+
         setupToolbar(themeId);
         setupTabs();
 
@@ -75,9 +78,21 @@ public class HandCalculatorActivity
 
     private void setExtras(Intent intent) {
         winnerName = intent.getStringExtra(WINNER_NAME_EXTRA);
-        winType = WinType.valueOf(intent.getStringExtra(WIN_TYPE_EXTRA));
-        prevalentWind = Wind.valueOf(intent.getStringExtra(PREVALENT_WIND_EXTRA));
-        seatWind = Wind.valueOf(intent.getStringExtra(SEAT_WIND_EXTRA));
+
+        String strWinType = intent.getStringExtra(WIN_TYPE_EXTRA);
+        String strPrevWind = intent.getStringExtra(PREVALENT_WIND_EXTRA);
+        String strSeatWind = intent.getStringExtra(SEAT_WIND_EXTRA);
+
+        if (strWinType == null || strPrevWind == null || strSeatWind == null) {
+            winType = WinType.Unknown;
+            prevalentWind = Wind.Unknown;
+            seatWind = Wind.Unknown;
+        }
+        else {
+            winType = WinType.valueOf(strWinType);
+            prevalentWind = Wind.valueOf(strPrevWind);
+            seatWind = Wind.valueOf(strSeatWind);
+        }
     }
 
     private void setupToolbar(int themeId) {
@@ -104,6 +119,7 @@ public class HandCalculatorActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_bar_hand_calculator, menu);
+        menu.getItem(0).setVisible(gameInProgress);
         return true;
     }
 
@@ -139,7 +155,7 @@ public class HandCalculatorActivity
         WinConditions winConditions = adapter.getWinConditionsFragment().getWinConditions();
         HandResponse response = HandCalculator.calculateHand(hand, winConditions);
 
-        CalculatorResultsDialog resultsDialog = new CalculatorResultsDialog(response, winConditions);
+        CalculatorResultsDialog resultsDialog = new CalculatorResultsDialog(response, winConditions, gameInProgress);
         resultsDialog.show(getSupportFragmentManager(), "results_dialog");
     }
 

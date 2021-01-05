@@ -65,7 +65,6 @@ public class WinConditionsFragment extends Fragment {
 
         Bundle args = new Bundle();
         args.putString(ARG_WIN_TYPE, winType.name());
-        args.putString(ARG_WIN_TYPE, winType.name());
         args.putString(ARG_PREVALENT_WIND, prevalentWind.name());
         args.putString(ARG_SEAT_WIND, seatWind.name());
         fragment.setArguments(args);
@@ -189,6 +188,8 @@ public class WinConditionsFragment extends Fragment {
         tbRon.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 tbTsumo.setChecked(false);
+                tbTsumo.setClickable(true);
+                tbRon.setClickable(false);
 
                 CharSequence text = String.format(Locale.getDefault(), "%s", "Houtei");
                 tbHouteiHaitei.setTextOn(text);
@@ -199,6 +200,8 @@ public class WinConditionsFragment extends Fragment {
         tbTsumo.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 tbRon.setChecked(false);
+                tbRon.setClickable(true);
+                tbTsumo.setClickable(false);
 
                 CharSequence text = String.format(Locale.getDefault(), "%s", "Haitei");
                 tbHouteiHaitei.setTextOn(text);

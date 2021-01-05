@@ -3,7 +3,6 @@ package com.example.riichicompanion;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.view.ViewCompat;
 
 import com.example.riichicompanion.handcalculation.FuItem;
 import com.example.riichicompanion.handcalculation.HandResponse;
@@ -41,11 +39,13 @@ public class CalculatorResultsDialog extends AppCompatDialogFragment {
 
     private final HandResponse handResponse;
     private final WinConditions conditions;
+    private final boolean gameInProgress;
     private CalculatorResultsDialogListener listener;
 
-    public CalculatorResultsDialog(HandResponse handResponse, WinConditions conditions) {
+    public CalculatorResultsDialog(HandResponse handResponse, WinConditions conditions, boolean gameInProgress) {
         this.handResponse = handResponse;
         this.conditions = conditions;
+        this.gameInProgress = gameInProgress;
     }
 
     @NonNull
@@ -56,9 +56,16 @@ public class CalculatorResultsDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_calculator_results, null);
 
-        builder.setView(view)
-            .setNegativeButton("Cancel", (dialog, which) -> listener.onResultsDismiss())
-            .setPositiveButton("Confirm", (dialog, which) -> listener.onResultsConfirm(handResponse.getHandScore()));
+        if (gameInProgress) {
+            builder.setView(view)
+                .setNegativeButton("Cancel", (dialog, which) -> listener.onResultsDismiss())
+                .setPositiveButton("Confirm", (dialog, which) -> listener.onResultsConfirm(handResponse.getHandScore()));
+        }
+        else {
+            builder.setView(view)
+                .setPositiveButton("Close", ((dialog, which) -> listener.onResultsDismiss()));
+        }
+
 
         initializeViews(view);
         setHandScoreInformation();

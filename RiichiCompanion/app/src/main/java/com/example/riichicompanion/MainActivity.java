@@ -224,17 +224,14 @@ public class MainActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.miHandCalculator) {
             openHandCalculator();
-            dlMain.close();
             return true;
         }
         if (item.getItemId() == R.id.miSettings) {
             openSettings();
-            dlMain.close();
             return true;
         }
         if (item.getItemId() == R.id.miAbout) {
             openAboutDialog();
-            dlMain.close();
             return true;
         }
 
@@ -242,7 +239,8 @@ public class MainActivity
     }
 
     private void openHandCalculator() {
-
+        Intent intent = new Intent(this, HandCalculatorActivity.class);
+        startActivity(intent);
     }
 
     private void openAboutDialog() {
