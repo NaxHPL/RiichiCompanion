@@ -2,7 +2,8 @@
 Riichi Companion is a riichi mahjong score tracker and hand calculator app for Android devices. 
 
 ## Download
-[Latest Release](https://github.com/NaxHPL/RiichiCompanion/releases)
+[Latest Release](https://github.com/NaxHPL/RiichiCompanion/releases)  
+The easiest way to install the app is to download the latest apk using your phone's browser and open it.
 
 ## Screenshots
 <table>
